@@ -1,0 +1,8 @@
+<!-- Diese Komponente wird durch das "leaflet" Attribut mit der "Leaflet" Bibliothek initialisiert -->
+<!-- Bitte Dokumentation lesen: https://github.com/bluehalo/ngx-leaflet -->
+<div class="map"
+     leaflet
+     [leafletOptions]="options"
+     [leafletLayers]="layers"
+     (leafletClick)="onMapClick($event)">
+</div>

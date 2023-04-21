@@ -1,0 +1,24 @@
+<!-- Einige (globale) Klassen, wie 'page-container', sind schon in der 'styles.css' Datei vorgegeben -->
+<div>
+
+    <div class="start">
+        <h1 class="title">Island-Explorer</h1>
+        <img src="/assets/start.jpg" />
+    </div>
+
+    <div class="container scrollable-container">
+        <app-user-input label="Email"></app-user-input>
+        <app-user-input label="Passwort" type="password"></app-user-input>
+
+        <button class="login-btn" mat-flat-button color="accent" (click)="login()">Login</button>
+
+        <div class="info">
+            Noch kein Konto?
+            <a routerLink="/register">Hier registrieren</a>
+        </div>
+
+        <div class="info about">
+            Mehr Informationen <a routerLink="/about">über uns</a>
+        </div>
+    </div>
+</div>
