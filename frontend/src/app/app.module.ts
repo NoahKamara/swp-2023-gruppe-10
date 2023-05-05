@@ -21,6 +21,7 @@ import { ExampleComponent } from './components/example/example.component';
 import { LoginComponent } from './pages/login/login.component';
 import { LoginService } from './services/login.service';
 import { BackButtonComponent } from './components/back-button/back-button.component';
+import { MariusBernerComponent } from './components/marius-berner/marius-berner.component';
 
 
 /**
@@ -108,7 +109,8 @@ const routes: Routes = [
         UserInputComponent,
         ExampleComponent,
         LoginComponent,
-        BackButtonComponent
+        BackButtonComponent,
+        MariusBernerComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
