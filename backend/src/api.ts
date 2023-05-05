@@ -31,11 +31,23 @@ export class ApiController {
     response.status(200);
     response.send('ok');
   }
-  public getFirstLastName(request: Request, response: Response): void{
+
+  public getFirstLastName(request: Request, response: Response): void {
     response.status(200);
     response.send({
       firstName: 'Marius',
       lastName: 'Berner'
+    });
+  }
+
+  /** 
+  * Gibt den Namen von Noah Kamara zurück
+  */
+  public getNoahKamara(request: Request, response: Response): void {
+    response.status(200);
+    response.send({
+      firstName: 'Noah',
+      lastName: 'Kamara'
     });
   }
 }
