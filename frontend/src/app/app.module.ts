@@ -22,6 +22,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { LoginService } from './services/login.service';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { MariusBernerComponent } from './components/marius-berner/marius-berner.component';
+import { NoahKamaraComponent } from './components/noah-kamara/noah-kamara.component';
 
 
 /**
@@ -110,7 +111,8 @@ const routes: Routes = [
         ExampleComponent,
         LoginComponent,
         BackButtonComponent,
-        MariusBernerComponent
+        MariusBernerComponent,
+        NoahKamaraComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
