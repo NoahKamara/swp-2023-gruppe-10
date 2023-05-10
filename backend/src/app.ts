@@ -56,7 +56,7 @@ const api = new ApiController();
 app.get('/api', api.getInfo);
 app.get('/api/name', api.getNameInfo);
 app.post('/api/name/:id', api.postNameInfo);
-app.get('/api/marius-berner', api.getFirstLastName);
+app.get('/api/marius-berner', api.getMariusBerner);
 app.get('/api/noah-kamara', api.getNoahKamara);
 app.get('/api/emanuel-moell', api.getEmanuelMoell);
 

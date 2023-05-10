@@ -17,7 +17,7 @@ export class MariusBernerComponent {
 
  ngOnInit(): void {
   
-   this.aboutService.getFirstLastName().subscribe({
+   this.aboutService.getMariusBerner().subscribe({
      // next: Unser Wert kam erfolgreich an!
      next: (val) => {
        this.myName = val;
