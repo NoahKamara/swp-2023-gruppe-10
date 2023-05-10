@@ -32,7 +32,7 @@ export class ApiController {
     response.send('ok');
   }
 
-  public getFirstLastName(request: Request, response: Response): void {
+  public getMariusBerner(request: Request, response: Response): void {
     response.status(200);
     response.send({
       firstName: 'Marius',
