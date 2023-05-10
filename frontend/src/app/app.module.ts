@@ -23,6 +23,8 @@ import { LoginService } from './services/login.service';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { MariusBernerComponent } from './components/marius-berner/marius-berner.component';
 import { NoahKamaraComponent } from './components/noah-kamara/noah-kamara.component';
+import { EmanuelMoellComponent } from './components/emanuel-moell/emanuel-moell.component';
+
 
 
 /**
@@ -112,7 +114,8 @@ const routes: Routes = [
         LoginComponent,
         BackButtonComponent,
         MariusBernerComponent,
-        NoahKamaraComponent
+        NoahKamaraComponent,
+        EmanuelMoellComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
@@ -122,7 +125,7 @@ const routes: Routes = [
         BrowserAnimationsModule,
         LeafletModule,
         MatButtonModule,
-        MatIconModule
+        MatIconModule,
     ],
     providers: [
         HttpClientModule

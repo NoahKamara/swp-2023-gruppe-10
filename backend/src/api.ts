@@ -40,6 +40,14 @@ export class ApiController {
     });
   }
 
+  public getEmanuelMoell(request: Request, response: Response): void {
+    response.status(200);
+    response.send({
+      firstName: 'Emanuel',
+      lastName: 'Moell'
+    });
+  }
+
   /** 
   * Gibt den Namen von Noah Kamara zurück
   */
