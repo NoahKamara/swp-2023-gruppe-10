@@ -8,9 +8,11 @@
  */
 
 import errorHandler from 'errorhandler';
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import path from 'path';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+
 
 import { ApiController } from './api';
 import { AuthController } from './auth';
@@ -28,6 +30,10 @@ app.use(express.urlencoded({ extended: true }));
 // Wir erlauben alle "Cross-Origin Requests". Normalerweise ist man hier etwas strikter, aber für den Softwareprojekt Kurs
 // erlauben wir alles um eventuelle Fehler zu vermeiden.
 app.use(cors({ origin: '*' }));
+
+
+// Cookies lesen und erstellen
+app.use(cookieParser());
 
 /**
  *  API Routen festlegen
@@ -55,10 +61,18 @@ app.use(cors({ origin: '*' }));
  */
 const api = new ApiController();
 
-// Authentication
+/** 
+ * Authentication
+ */
 const auth = new AuthController();
-app.post('/auth/register', auth.register);
 
+// authorization middleware - adds request.local.session & request.local.user
+app.all('/api/*', auth.authorize.bind(auth));
+
+app.post('/api/user', auth.createUser.bind(auth));
+app.get('/api/auth', auth.getAuth.bind(auth));
+app.post('/api/session', auth.login.bind(auth));
+app.delete('/api/session', auth.logout.bind(auth));
 
 app.get('/api', api.getInfo);
 app.get('/api/name', api.getNameInfo);
