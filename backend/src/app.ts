@@ -13,6 +13,7 @@ import path from 'path';
 import cors from 'cors';
 
 import { ApiController } from './api';
+import { AuthController } from './auth';
 
 // Express server instanziieren
 const app = express();
@@ -53,6 +54,12 @@ app.use(cors({ origin: '*' }));
  *  Bitte schaut euch das Tutorial zur Backend-Entwicklung an für mehr Infos bzgl. REST
  */
 const api = new ApiController();
+
+// Authentication
+const auth = new AuthController();
+app.post('/auth/register', auth.register);
+
+
 app.get('/api', api.getInfo);
 app.get('/api/name', api.getNameInfo);
 app.post('/api/name/:id', api.postNameInfo);
@@ -87,9 +94,9 @@ app.use('/img', express.static('img'));
  *  Diese Route funktioniert erst, sobald der 'build' Schritt im Frontend ausgeführt wurde und ist nur von Relevanz, falls
  *  das Projekt via Docker laufbar sein soll (siehe oben).
  */
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
-});
+// app.use((req, res) => {
+//   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+// });
 
 // Wir machen den konfigurierten Express Server für andere Dateien verfügbar, die diese z.B. Testen oder Starten können.
 export default app;
