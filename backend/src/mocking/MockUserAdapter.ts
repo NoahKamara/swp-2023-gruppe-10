@@ -3,6 +3,9 @@ import { User, UserInfo } from '../models/user';
 import { UserAdapter } from '../adapters/UserAdapter';
 import uid from 'uid-safe';
 
+/**
+* Mocks the UserAdapter interface for development
+*/
 export class MockUserAdapter implements UserAdapter {
     users: User[] = [
         { id: 1, email: 'tulpe@uni.kn', password: '$2b$10$46nOBhJ3IsKJ7Cu.tP02rOCbWuNTkWIlD8oE/vCTRR3/OcBSiLruG', firstName: 'Thomas', lastName: 'Tulpe' }, // Passwort: test
