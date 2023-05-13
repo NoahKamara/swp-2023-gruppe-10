@@ -4,9 +4,11 @@
     "description": "Template for the softwareproject lecture at the University of Konstanz, Germany",
     "private": true,
     "scripts": {
-        "build": "tsc && tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
+        "schemagen": "npx ts-to-zod --all; npm run lintfix",
+        "build": "npm run schemagen && tsc && tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
         "start": "npm run build && node dist/src/server.js",
         "lint": "eslint \"**/*.{js,ts}\"",
+        "lintfix": "eslint \"**/*.{js,ts}\" --fix",
         "test": "npm run build && jasmine --config=jasmine.json",
         "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"tsc -w\" \"nodemon --inspect dist/src/server.js\""
     },
@@ -20,7 +22,8 @@
         "sequelize": "^6.30.0",
         "source-map-support": "0.5.21",
         "ts-to-zod": "^3.0.0",
-        "uid-safe": "^2.1.5"
+        "uid-safe": "^2.1.5",
+        "zod": "^3.21.4"
     },
     "devDependencies": {
         "@types/bcrypt": "^5.0.0",
