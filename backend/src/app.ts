@@ -16,6 +16,7 @@ import cookieParser from 'cookie-parser';
 
 import { ApiController } from './api';
 import { AuthController } from './auth';
+import { MockUserAdapter } from './mocking/MockUserAdapter';
 
 // Express server instanziieren
 const app = express();
@@ -61,10 +62,12 @@ app.use(cookieParser());
  */
 const api = new ApiController();
 
+
 /** 
  * Authentication
  */
-const auth = new AuthController();
+const auth = new AuthController({ userAdapter: new MockUserAdapter(), salt: 10});
+
 
 // authorization middleware - adds request.local.session & request.local.user
 app.all('/api/*', auth.authorize.bind(auth));
