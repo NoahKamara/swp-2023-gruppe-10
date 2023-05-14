@@ -9,7 +9,7 @@
         "start": "npm run build && node dist/src/server.js",
         "lint": "eslint \"**/*.{js,ts}\"",
         "lintfix": "eslint \"**/*.{js,ts}\" --fix",
-        "test": "npm run build && jasmine --config=jasmine.json",
+        "test": "npm run build && jasmine --config=jasmine.json --reporter=jasmine-console-reporter",
         "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"tsc -w\" \"nodemon --inspect dist/src/server.js\""
     },
     "dependencies": {
@@ -42,7 +42,7 @@
         "eslint": "8.37.0",
         "eslint-plugin-prefer-arrow": "^1.2.3",
         "jasmine": "4.6.0",
-        "jasmine-spec-reporter": "^7.0.0",
+        "jasmine-console-reporter": "^3.1.0",
         "nodemon": "2.0.22",
         "supertest": "6.3.3",
         "typescript": "5.0.3"
