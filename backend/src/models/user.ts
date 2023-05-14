@@ -17,7 +17,13 @@ export interface UserLoginInfo {
 * @schema
 */
 export interface UserInfo extends UserLoginInfo {
+  /**
+   * @format email
+   */
     email: string
+    /**
+     * @minLength 8
+     */
     password: string
     firstName: string
     lastName: string
