@@ -5,7 +5,7 @@
     "private": true,
     "scripts": {
         "schemagen": "npx ts-to-zod --all; npm run lintfix",
-        "build": "npm run schemagen && tsc && tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
+        "build": "tsc && tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
         "start": "npm run build && node dist/src/server.js",
         "lint": "eslint \"**/*.{js,ts}\"",
         "lintfix": "eslint \"**/*.{js,ts}\" --fix",
@@ -42,6 +42,7 @@
         "eslint": "8.37.0",
         "eslint-plugin-prefer-arrow": "^1.2.3",
         "jasmine": "4.6.0",
+        "jasmine-spec-reporter": "^7.0.0",
         "nodemon": "2.0.22",
         "supertest": "6.3.3",
         "typescript": "5.0.3"

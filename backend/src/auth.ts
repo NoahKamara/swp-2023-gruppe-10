@@ -150,12 +150,15 @@ export class AuthController {
    */
   logout(request: Request, response: Response): void {
     const sessionId = request.cookies.sessionId;
-    console.log(sessionId);
+
+    console.log('session', sessionId);
 
     if (!sessionId) {
-      response.send({ code: 400, message: 'Client did not send Session ID ' });
+      response.status(400);
+      response.send({ code: 400, message: 'Client did not send Session ID' });
       return;
     }
+
 
     this.userAdapter.delSession(sessionId);
 
