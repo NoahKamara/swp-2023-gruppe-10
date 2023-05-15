@@ -1,4 +1,4 @@
-import { ZodSchema, ZodError } from 'zod';
+import { z } from 'zod';
 import { Request, Response } from 'express';
 
 /**
@@ -12,13 +12,13 @@ import { Request, Response } from 'express';
 export const validateBody = <T>(
   req: Request,
   res: Response,
-  schema: ZodSchema<T>
+  schema: z.ZodSchema<T>
 ): T | void => {
   try {
     const validatedData = schema.parse(req.body);
     return validatedData;
   } catch (err) {
-    if (err instanceof ZodError) {
+    if (err instanceof z.ZodError) {
       res.status(400).json({ errors: err.flatten() });
     } else {
       res.sendStatus(500);

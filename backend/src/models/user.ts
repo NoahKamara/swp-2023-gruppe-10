@@ -5,8 +5,15 @@
 * @schema
 */
 export interface UserLoginInfo {
-    email: string
-    password: string
+  /**
+ * @format email
+ */
+  email: string
+
+  /**
+   * @minLength 8
+   */
+  password: string
 }
 
 /**
@@ -17,16 +24,8 @@ export interface UserLoginInfo {
 * @schema
 */
 export interface UserInfo extends UserLoginInfo {
-  /**
-   * @format email
-   */
-    email: string
-    /**
-     * @minLength 8
-     */
-    password: string
-    firstName: string
-    lastName: string
+  firstName: string
+  lastName: string
 }
 
 /**
@@ -36,5 +35,5 @@ export interface UserInfo extends UserLoginInfo {
 * @extends {UserInfo}
 */
 export interface User extends UserInfo {
-    id: number
+  id: number
 }
