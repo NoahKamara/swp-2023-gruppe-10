@@ -4,21 +4,30 @@
     "description": "Template for the softwareproject lecture at the University of Konstanz, Germany",
     "private": true,
     "scripts": {
+        "schemagen": "npx ts-to-zod --all; npm run lintfix",
         "build": "tsc && tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
         "start": "npm run build && node dist/src/server.js",
         "lint": "eslint \"**/*.{js,ts}\"",
-        "test": "npm run build && jasmine --config=jasmine.json",
+        "lintfix": "eslint \"**/*.{js,ts}\" --fix",
+        "test": "npm run build && jasmine --config=jasmine.json --reporter=jasmine-console-reporter",
         "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"tsc -w\" \"nodemon --inspect dist/src/server.js\""
     },
     "dependencies": {
+        "bcrypt": "^5.1.0",
+        "cookie-parser": "^1.4.6",
         "cors": "2.8.5",
         "errorhandler": "1.5.1",
         "express": "4.18.2",
         "pg": "^8.10.0",
         "sequelize": "^6.30.0",
-        "source-map-support": "0.5.21"
+        "source-map-support": "0.5.21",
+        "ts-to-zod": "^3.0.0",
+        "uid-safe": "^2.1.5",
+        "zod": "^3.21.4"
     },
     "devDependencies": {
+        "@types/bcrypt": "^5.0.0",
+        "@types/cookie-parser": "^1.4.3",
         "@types/cors": "2.8.13",
         "@types/errorhandler": "1.5.0",
         "@types/eslint": "8.37.0",
@@ -26,12 +35,14 @@
         "@types/jasmine": "4.3.1",
         "@types/source-map-support": "0.5.6",
         "@types/supertest": "2.0.12",
+        "@types/uid-safe": "^2.1.2",
         "@typescript-eslint/eslint-plugin": "5.57.1",
         "@typescript-eslint/parser": "5.57.1",
         "concurrently": "8.0.1",
         "eslint": "8.37.0",
         "eslint-plugin-prefer-arrow": "^1.2.3",
         "jasmine": "4.6.0",
+        "jasmine-console-reporter": "^3.1.0",
         "nodemon": "2.0.22",
         "supertest": "6.3.3",
         "typescript": "5.0.3"

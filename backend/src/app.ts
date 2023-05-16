@@ -2,17 +2,21 @@
  *  In dieser Datei konfigurieren wir einen Express Webserver, der es uns ermöglicht,
  *  verschiedene Routen anzugeben und zu programmieren.
  *  Hier verzichten wir auf die Klassendefinition, da diese nicht nötig ist.
- * 
+ *
  *  Weiterführende Links:
  *  https://expressjs.com/en/starter/basic-routing.html
  */
 
 import errorHandler from 'errorhandler';
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import path from 'path';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+
 
 import { ApiController } from './api';
+import { AuthController } from './auth';
+import { MockUserAdapter } from './mocking/MockUserAdapter';
 
 // Express server instanziieren
 const app = express();
@@ -28,6 +32,10 @@ app.use(express.urlencoded({ extended: true }));
 // erlauben wir alles um eventuelle Fehler zu vermeiden.
 app.use(cors({ origin: '*' }));
 
+
+// Cookies lesen und erstellen
+app.use(cookieParser());
+
 /**
  *  API Routen festlegen
  *  Hier legen wir in dem "Express" Server neue Routen fest. Wir übergeben die Methoden
@@ -37,22 +45,38 @@ app.use(cors({ origin: '*' }));
  *       ↑     ↑          ↑
  *       |     |     Diese Methode wird aufgerufen, sobald ein Nutzer die angebene
  *       |     |     URL über einen HTTP GET Request aufruft.
- *       |     |      
+ *       |     |
  *       |   Hier definieren sie die "Route", d.h. diese Route
  *       |   ist unter "http://localhost/api" verfügbar
- *       |   
+ *       |
  *   Für diese Route erwarten wir einen GET Request.
  *   Auf derselben Route können wir auch einen POST
  *   Request angeben, für den dann eine andere Methode
  *   aufgerufen wird.
- * 
+ *
  *  Weiterführende Links:
  *  - Übersicht über verschiedene HTTP Request methoden (GET / POST / PUT / DELETE) https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
  *  - REST Architektur: https://de.wikipedia.org/wiki/Representational_State_Transfer
- * 
+ *
  *  Bitte schaut euch das Tutorial zur Backend-Entwicklung an für mehr Infos bzgl. REST
  */
 const api = new ApiController();
+
+
+/**
+ * Authentication
+ */
+const auth = new AuthController({ userAdapter: new MockUserAdapter(), salt: 10});
+
+
+// authorization middleware - adds request.local.session & request.local.user
+app.all('/api/*', auth.authorize.bind(auth));
+
+app.post('/api/user', auth.createUser.bind(auth));
+app.get('/api/auth', auth.getAuth.bind(auth));
+app.post('/api/session', auth.login.bind(auth));
+app.delete('/api/session', auth.logout.bind(auth));
+
 app.get('/api', api.getInfo);
 app.get('/api/name', api.getNameInfo);
 app.post('/api/name/:id', api.postNameInfo);
@@ -87,9 +111,9 @@ app.use('/img', express.static('img'));
  *  Diese Route funktioniert erst, sobald der 'build' Schritt im Frontend ausgeführt wurde und ist nur von Relevanz, falls
  *  das Projekt via Docker laufbar sein soll (siehe oben).
  */
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
-});
+// app.use((req, res) => {
+//   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+// });
 
 // Wir machen den konfigurierten Express Server für andere Dateien verfügbar, die diese z.B. Testen oder Starten können.
 export default app;
