@@ -24,6 +24,7 @@ import { BackButtonComponent } from './components/back-button/back-button.compon
 import { MariusBernerComponent } from './components/marius-berner/marius-berner.component';
 import { NoahKamaraComponent } from './components/noah-kamara/noah-kamara.component';
 import { EmanuelMoellComponent } from './components/emanuel-moell/emanuel-moell.component';
+import { NiklasGroeneComponent } from './components/niklas-groene/niklas-groene.component';
 
 
 
@@ -115,7 +116,8 @@ const routes: Routes = [
         BackButtonComponent,
         MariusBernerComponent,
         NoahKamaraComponent,
-        EmanuelMoellComponent
+        EmanuelMoellComponent,
+        NiklasGroeneComponent
     ],
     imports: [
         RouterModule.forRoot(routes),
