@@ -1,10 +1,11 @@
+
 /**
 * Info required to login a user
 *
 * @interface
 * @schema
 */
-export interface UserLoginInfo {
+export declare interface UserLoginInfo {
   /**
  * @format email
  */
@@ -23,7 +24,7 @@ export interface UserLoginInfo {
 * @extends {UserInfo}
 * @schema
 */
-export interface UserInfo extends UserLoginInfo {
+export declare interface UserInfo extends Partial<UserLoginInfo> {
   firstName: string
   lastName: string
 }
@@ -34,6 +35,6 @@ export interface UserInfo extends UserLoginInfo {
 * @interface
 * @extends {UserInfo}
 */
-export interface User extends UserInfo {
+export declare interface User extends Partial<UserInfo> {
   id: number
 }
