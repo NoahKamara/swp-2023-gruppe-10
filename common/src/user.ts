@@ -24,7 +24,7 @@ export declare interface UserLoginInfo {
 * @extends {UserInfo}
 * @schema
 */
-export declare interface UserInfo extends Partial<UserLoginInfo> {
+export declare interface UserInfo extends UserLoginInfo {
   firstName: string
   lastName: string
 }
@@ -35,6 +35,6 @@ export declare interface UserInfo extends Partial<UserLoginInfo> {
 * @interface
 * @extends {UserInfo}
 */
-export declare interface User extends Partial<UserInfo> {
+export declare interface User extends UserInfo {
   id: number
 }
