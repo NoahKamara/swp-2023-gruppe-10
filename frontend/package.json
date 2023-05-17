@@ -22,6 +22,7 @@
     "@asymmetrik/ngx-leaflet": "^15.0.1",
     "leaflet": "^1.9.3",
     "rxjs": "7.8.0",
+    "softwareproject-common": "file:../common",
     "tslib": "2.5.0",
     "zone.js": "0.12.0"
   },
