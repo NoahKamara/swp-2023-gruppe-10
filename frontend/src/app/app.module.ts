@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RootComponent } from './pages/root/root.component';
 import { AboutComponent } from './pages/about/about.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
@@ -24,9 +24,12 @@ import { BackButtonComponent } from './components/back-button/back-button.compon
 import { MariusBernerComponent } from './components/marius-berner/marius-berner.component';
 import { NoahKamaraComponent } from './components/noah-kamara/noah-kamara.component';
 import { EmanuelMoellComponent } from './components/emanuel-moell/emanuel-moell.component';
-
-
-
+import { RegisterComponent } from './pages/register/register.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { TopBarComponent } from './components/top-bar/top-bar.component';
+import { ValidatedInputComponent } from './components/validated-input/validated-input.component';
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
  *  Damit fangen wir ab, falls ein Benutzer nicht eingeloggt ist,
@@ -35,7 +38,7 @@ import { EmanuelMoellComponent } from './components/emanuel-moell/emanuel-moell.
  *      inject(Router).navigate(['/login']);
  *  und sagen dem Angular Router, dass die Route geblockt ist
  *      return false;
- * 
+ *
  *  (Siehe 'canActivate' Attribut bei den 'routes')
  */
 const loginGuard = (): boolean => {
@@ -50,7 +53,7 @@ const loginGuard = (): boolean => {
  *  Hier können die verschiedenen Routen definiert werden.
  *  Jeder Eintrag ist eine URL, die von Angular selbst kontrolliert wird.
  *  Dazu wird die angebene Komponente in das "<router-outlet>" der "root" Komponente geladen.
- * 
+ *
  *  Dokumentation: https://angular.io/guide/router
  */
 const routes: Routes = [
@@ -59,7 +62,7 @@ const routes: Routes = [
     // Die hier angegebenen Routen sind ein Beispiel; die "TodoComponent"
     // sollten über den Lauf des Projektes ausgetauscht werden
     { path: 'login', component: LoginComponent },
-    { path: 'register', component: TodoComponent },
+    { path: 'register', component: RegisterComponent },
     { path: 'about', component: AboutComponent },
 
     // Durch 'canActive' können wir festlegen, ob eine Route aktiviert werden kann - z.B. können wir
@@ -115,7 +118,10 @@ const routes: Routes = [
         BackButtonComponent,
         MariusBernerComponent,
         NoahKamaraComponent,
-        EmanuelMoellComponent
+        EmanuelMoellComponent,
+        RegisterComponent,
+        TopBarComponent,
+        ValidatedInputComponent,
     ],
     imports: [
         RouterModule.forRoot(routes),
@@ -126,6 +132,10 @@ const routes: Routes = [
         LeafletModule,
         MatButtonModule,
         MatIconModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatGridListModule
     ],
     providers: [
         HttpClientModule

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, last } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { shareReplay } from 'rxjs';
-import { User } from 'softwareproject-common';
 
 @Injectable({
   providedIn: 'root'
@@ -48,16 +47,18 @@ export class AuthService {
 
   public register(firstname: string, lastname: string, email: string, password: string): Observable<ResponseMessage> {
     const authObservable = this.http.post<ResponseMessage>('/api/user', {
-      firstname: firstname,
-      lastname: lastname,
+      firstName: firstname,
+      lastName: lastname,
       email: email,
       password: password
     }).pipe(shareReplay());
     authObservable.subscribe({
-      next: () => {
+      next: (response) => {
+        console.info('register succeeded', response);
         this.loggedIn = true;
       },
-      error: () => {
+      error: (err: HttpErrorResponse) => {
+        console.error(`register failed: (${err.error.code}) ${err.error.message}`);
         this.loggedIn = false;
       }
     });

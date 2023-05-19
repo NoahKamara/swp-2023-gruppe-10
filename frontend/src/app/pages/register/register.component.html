@@ -1,0 +1,66 @@
+<!-- Einige (globale) Klassen, wie 'page-container', sind schon in der 'styles.css' Datei vorgegeben -->
+<div class="h-screen w-screen">
+    <!-- Top Bar w Title -->
+    <app-top-bar title="Neues Kundenkonto"></app-top-bar>
+
+    <!-- Content -->
+    <div class="p-2">
+        <!-- Error Alert -->
+        <div *ngIf="errorMsg" class="alert bg-transparent alert-error py-2 mb-4">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-sm">{{ errorMsg }}</span>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="grid gap-1 grid-cols-4 grid-rows-4">
+            <!-- Name -->
+            <app-validated-input label="Vorname" [control]="formGroup.controls.firstName" class="col-span-2">
+                *Pflichtfeld
+            </app-validated-input>
+            <app-validated-input label="Nachname" [control]="formGroup.controls.lastName" class="col-span-2">
+                *Pflichtfeld
+            </app-validated-input>
+
+            <!-- Address -->
+            <app-validated-input label="Straße" [control]="formGroup.controls.street"
+                class="col-span-3 mt-3"></app-validated-input>
+            <app-validated-input label="Nummer" [control]="formGroup.controls.number"
+                class="col-span-1 mt-3"></app-validated-input>
+            <app-validated-input label="Ort" [control]="formGroup.controls.town"
+                class="col-span-4"></app-validated-input>
+            <app-validated-input label="Postleitzahl" [control]="formGroup.controls.zipcode"
+                class="col-span-4"></app-validated-input>
+
+            <!-- Credentials -->
+            <app-validated-input label="Email" [control]="formGroup.controls.email"
+                class="col-span-4 mt-3"></app-validated-input>
+            <app-validated-input type="password" label="Passwort" [control]="formGroup.controls.password"
+                class="col-span-4">
+                Mindestens 8 Zeichen
+            </app-validated-input>
+            <app-validated-input type="password" label="Passwort Wiederholen"
+                [control]="formGroup.controls.passwordConfirm" class="col-span-4"></app-validated-input>
+        </div>
+
+        <!-- Buttons -->
+        <div class="text-center m-auto mt-10">
+            <button class="btn btn-active btn-accent text-accent-content" (click)="register()">Registrieren</button>
+
+            <div class="text-sm">
+                Bereits registriert?
+                <a class="link-accent" routerLink="/login">Hier anmelden</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-sm fixed bottom-2 left-0 right-0">
+            Mehr Informationen <a class="link-accent" routerLink="/about">über uns</a>
+        </div>
+    </div>
+</div>
