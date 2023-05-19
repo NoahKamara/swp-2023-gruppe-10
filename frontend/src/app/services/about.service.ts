@@ -54,4 +54,7 @@ export class AboutService {
     public getNoahKamara(): Observable<NameInfo> {
         return this.http.get<NameInfo>('/api/noah-kamara/');
     }
+    public getNiklasGroene(): Observable<NameInfo>{
+        return this.http.get<NameInfo>('/api/niklas-groene/');
+    }
 }
