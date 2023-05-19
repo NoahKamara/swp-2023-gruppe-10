@@ -58,4 +58,12 @@ export class ApiController {
       lastName: 'Kamara'
     });
   }
+
+  public getNiklasGroene(request: Request, response: Response): void{
+    response.status(200);
+    response.send({
+      firstName: 'Niklas',
+      lastName: 'Groene'
+    });
+  }
 }

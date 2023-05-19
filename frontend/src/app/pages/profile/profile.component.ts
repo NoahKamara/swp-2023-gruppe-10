@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   templateUrl: './profile.component.html',
@@ -6,7 +8,9 @@ import { Component } from '@angular/core';
 })
 export class ProfileComponent {
 
+  constructor(private router: Router, private loginService: LoginService) {}
   logout(): void {
-    // Bitte Logik einfügen
+    this.loginService.loggedIn = false;
+    this.router.navigateByUrl('/login');
   }
 }
