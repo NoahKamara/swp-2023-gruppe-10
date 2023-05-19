@@ -8,9 +8,9 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class ProfileComponent {
 
-  constructor(private router: Router, private loginService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) {}
   logout(): void {
-    this.loginService.loggedIn = false;
+    this.authService.logout();
     this.router.navigateByUrl('/login');
   }
 }
