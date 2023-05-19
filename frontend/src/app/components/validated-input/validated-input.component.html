@@ -1,0 +1,16 @@
+<span class="form-control px-1 pb-1 mt-0">
+  <div class="text-xs mb-0.5">
+    <span class="ml-1" [ngClass]="{'text-error': hasError}">
+      {{ label }}
+    </span>
+  </div>
+  <input [type]="type" [formControl]="control" (ngModelChange)="onTextChange()"
+    class="input input-sm w-full bg-primary text-primary-content"
+    [ngClass]="{ 'outline-2 outline-offset-2 outline-dotted outline-error/70': hasError }" />
+    <!-- Error Message -->
+  <!-- <label *ngIf="hasError" class="">
+    <span class="text-xs text-error ml-1 mt-0">
+      <ng-content></ng-content>
+    </span>
+  </label> -->
+</span>

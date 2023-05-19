@@ -21,7 +21,7 @@ export declare interface UserLoginInfo {
 * Info required to create, or update a user
 *
 * @interface
-* @extends {UserInfo}
+* @extends {UserLoginInfo}
 * @schema
 */
 export declare interface UserInfo extends UserLoginInfo {

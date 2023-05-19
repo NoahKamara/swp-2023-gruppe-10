@@ -1,9 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* You can add global styles to this file, and also import other style files */
 body {
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: Roboto, "Helvetica Neue", sans-serif!important;
 
-    
+
     /* Mittels dem -- Prefix können wir in CSS auch Variablen definieren, wie z.B. die Hauptfarben der App */
     /* Da die 'styles.css' global gültig ist, können die hier definierten Variablen in allen Komponenten verwendet werden */
     --mainau-green: #0C4522;
