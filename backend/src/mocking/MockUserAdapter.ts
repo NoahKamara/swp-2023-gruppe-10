@@ -1,5 +1,5 @@
 import { Session } from '../models/session';
-import { User, UserInfo } from '../models/user';
+import { User, UserInfo } from 'softwareproject-common';
 import { UserAdapter } from '../adapters/UserAdapter';
 import uid from 'uid-safe';
 
