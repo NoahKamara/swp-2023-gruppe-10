@@ -19,7 +19,6 @@ import { UserInputComponent } from './components/user-input/user-input.component
 import { Router, RouterModule, Routes } from '@angular/router';
 import { ExampleComponent } from './components/example/example.component';
 import { LoginComponent } from './pages/login/login.component';
-import { LoginService } from './services/login.service';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { MariusBernerComponent } from './components/marius-berner/marius-berner.component';
 import { NoahKamaraComponent } from './components/noah-kamara/noah-kamara.component';
@@ -31,10 +30,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { ValidatedInputComponent } from './components/validated-input/validated-input.component';
+import { AuthService } from './services/auth.service';
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
  *  Damit fangen wir ab, falls ein Benutzer nicht eingeloggt ist,
- *      if (!inject(LoginService).isLoggedIn()) {
+ *      if (!inject(AuthService).isLoggedIn()) {
  *  leiten den Benutzer an die Startseite weiter
  *      inject(Router).navigate(['/login']);
  *  und sagen dem Angular Router, dass die Route geblockt ist
@@ -43,7 +43,7 @@ import { ValidatedInputComponent } from './components/validated-input/validated-
  *  (Siehe 'canActivate' Attribut bei den 'routes')
  */
 const loginGuard = (): boolean => {
-    if (!inject(LoginService).isLoggedIn()) {
+    if (!inject(AuthService).isLoggedIn()) {
         inject(Router).navigate(['/login']);
         return false;
     }
