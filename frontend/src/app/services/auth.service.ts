@@ -71,11 +71,27 @@ export class AuthService {
       password: password
     }).pipe(shareReplay());
     authObservable.subscribe({
-      next: () => {
+      next: (response) => {
+        console.info('login succeeded', response);
         this.loggedIn = true;
       },
-      error: () => {
+      error: (err: HttpErrorResponse) => {
+        console.error(`login failed: (${err.error.code}) ${err.error.message}`);
         this.loggedIn = false;
+      }
+    });
+    return authObservable;
+  }
+
+  public logout(): Observable<ResponseMessage> {
+    const authObservable = this.http.delete<ResponseMessage>('/api/session').pipe(shareReplay());
+    authObservable.subscribe({
+      next: (response) => {
+        console.info('logout succeeded', response);
+        this.loggedIn = false;
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error(`logout failed: (${err.error.code}) ${err.error.message}`);
       }
     });
     return authObservable;
