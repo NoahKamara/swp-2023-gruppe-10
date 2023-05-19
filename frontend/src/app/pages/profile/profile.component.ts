@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoginService } from 'src/app/services/login.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   templateUrl: './profile.component.html',
@@ -8,7 +8,7 @@ import { LoginService } from 'src/app/services/login.service';
 })
 export class ProfileComponent {
 
-  constructor(private router: Router, private loginService: LoginService) {}
+  constructor(private router: Router, private loginService: AuthService) {}
   logout(): void {
     this.loginService.loggedIn = false;
     this.router.navigateByUrl('/login');
