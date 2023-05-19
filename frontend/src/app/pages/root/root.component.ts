@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { LoginService } from 'src/app/services/login.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 /**
  *  Die Root-Komponente stellt die "Haupt-Komponente" dar, die alle anderen Komponenten enthält.
  *  Hier können wir z.B. HTML Komponenten festlegen, die auf allen Seiten erscheinen (beispielsweise
- *  eine Navigation Bar).  In der "app.module.ts" Datei legen wir für Angular fest, dass 
+ *  eine Navigation Bar).  In der "app.module.ts" Datei legen wir für Angular fest, dass
  *  diese Komponente die "Haupt-Komponente" ist.
  */
 @Component({
@@ -14,6 +14,6 @@ import { LoginService } from 'src/app/services/login.service';
 })
 export class RootComponent {
 
-  constructor(public loginService: LoginService) { }
+  constructor(public loginService: AuthService) { }
 
 }

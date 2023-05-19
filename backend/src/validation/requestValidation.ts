@@ -14,6 +14,12 @@ export const validateBody = <T>(
   res: Response,
   schema: z.ZodSchema<T>
 ): T | void => {
+  let body = req.body;
+
+  if (!body) {
+    body = {};
+  }
+
   try {
     const validatedData = schema.parse(req.body);
     return validatedData;
@@ -21,6 +27,7 @@ export const validateBody = <T>(
     if (err instanceof z.ZodError) {
       res.status(400).json({ errors: err.flatten() });
     } else {
+      console.error(err);
       res.sendStatus(500);
     }
   }

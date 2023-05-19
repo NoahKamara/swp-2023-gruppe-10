@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoginService } from 'src/app/services/login.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   templateUrl: './login.component.html',
@@ -10,7 +10,7 @@ export class LoginComponent {
   public email = '';
   public password = '';
 
-  constructor(private router: Router, private loginService: LoginService) {}
+  constructor(private router: Router, private loginService: AuthService) {}
 
   login(): void {
     // Diese Funktion muss in Sprint 1 selbst implementiert werden!
