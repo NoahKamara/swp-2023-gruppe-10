@@ -6,14 +6,18 @@
 
 import request from 'supertest';
 import app from '../src/app';
-
+import { UserInfo, UserLoginInfo } from 'softwareproject-common';
 
 describe('POST /api/user (User Registration)', () => {
   const path = '/api/user';
   const user = {
+    password: '12345678',
     firstName: 'Max',
     lastName: 'Mustermann',
-    password: '12345678',
+    street: 'Musterweg',
+    number: '12',
+    city: 'Musterstadt',
+    zipcode: '12345'
   };
 
   it('should succeed', async () => {
@@ -104,6 +108,10 @@ describe('POST /api/session (User Login)', () => {
         ...loginInfo,
         firstName: 'Max',
         lastName: 'Mustermann',
+        street: 'Musterweg',
+        number: '12',
+        city: 'Musterstadt',
+        zipcode: '12345'
       })
       .expect(200);
   });
@@ -124,7 +132,7 @@ describe('POST /api/session (User Login)', () => {
       .post(path)
       .send({
         ...loginInfo,
-        password: 'wrong'
+        password: 'wrongpassword'
       })
       .expect(401)
       .expect({
@@ -151,15 +159,19 @@ describe('POST /api/session (User Login)', () => {
 describe('POST /api/session (User Logout)', () => {
   const path = '/api/session';
 
-  const loginInfo = {
+  const loginInfo: UserLoginInfo = {
     email: 'user.logout@uni.kn',
     password: '12345678'
   };
 
-  const user = {
+  const user: UserInfo = {
     ...loginInfo,
     firstName: 'Max',
     lastName: 'Mustermann',
+    street: 'Musterweg',
+    number: '12',
+    city: 'Musterstadt',
+    zipcode: '12345'
   };
 
   // Helper function for determining login status

@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 
 import { validateBody } from './validation/requestValidation';
 import { userInfoSchema, userLoginInfoSchema } from './validation/user';
+import { UserInfo } from 'softwareproject-common';
 
 export class AuthController {
   private userAdapter: UserAdapter;
@@ -62,16 +63,13 @@ export class AuthController {
    * Create a new user
    */
   createUser(request: Request, response: Response): void {
-    const bodyData = validateBody(request, response, userInfoSchema);
-    if (!bodyData) return;
+    const userInfo = validateBody(request, response, userInfoSchema);
+    if (!userInfo) return;
+    const pwdHash = bcrypt.hashSync(userInfo.password, this.salt);
 
-    const password = bodyData.password;
-    const passwordHash = bcrypt.hashSync(password, this.salt);
-    const firstName = bodyData.firstName;
-    const lastName = bodyData.lastName;
-    const email = bodyData.email;
+    userInfo.password = pwdHash;
 
-    const existingUser = this.userAdapter.getUserByEmail(email);
+    const existingUser = this.userAdapter.getUserByEmail(userInfo.email);
     if (existingUser) {
       response.status(400);
       response.send({ code: 400, message: 'User with Email already exists' });
@@ -79,12 +77,7 @@ export class AuthController {
     }
 
     // create user with controller
-    const user = this.userAdapter.createUser({
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: passwordHash,
-    });
+    const user = this.userAdapter.createUser(userInfo);
 
     // create session
     const session = this.userAdapter.createSession(user);

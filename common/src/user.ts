@@ -27,6 +27,10 @@ export declare interface UserLoginInfo {
 export declare interface UserInfo extends UserLoginInfo {
   firstName: string
   lastName: string
+  street: string
+  number: string
+  city: string
+  zipcode: string
 }
 
 /**
