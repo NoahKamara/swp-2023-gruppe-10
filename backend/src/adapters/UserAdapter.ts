@@ -17,14 +17,14 @@ export interface UserAdapter {
     * @param {string} email of the user
     * @return {User} the user for the email, if no user exists, return nothing
     */
-    getUserByEmail(email: string): User
+    getUserByEmail(email: string): User | undefined
 
     /**
     * returns the user for the id, if no user exists, return nothing
     * @param {number} id of the user
     * @return {User} the user for the id, if no user exists, return nothing
     */
-    getUserById(id: number): User
+    getUserById(id: number): User | undefined
 
     /**
     * creates a new session for a user
@@ -38,7 +38,7 @@ export interface UserAdapter {
     * @return {Session} session if it exists
     * @return {undefined} nothing if there exists no session with this id
     */
-    getSession(sessionId: string): Session
+    getSession(sessionId: string): Session | undefined
 
     /**
     * deletes the session

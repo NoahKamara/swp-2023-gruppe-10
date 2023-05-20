@@ -45,10 +45,14 @@ export class AuthService {
   //   return userObservable;
   // }
 
-  public register(firstname: string, lastname: string, email: string, password: string): Observable<ResponseMessage> {
+  public register({ firstname, lastname, street, number, city, zipcode, email, password }: { firstname: string; lastname: string; street: string; number: string; city: string; zipcode: string; email: string; password: string; }): Observable<ResponseMessage> {
     const authObservable = this.http.post<ResponseMessage>('/api/user', {
       firstName: firstname,
       lastName: lastname,
+      street: street,
+      number: number,
+      city: city,
+      zipcode: zipcode,
       email: email,
       password: password
     }).pipe(shareReplay());

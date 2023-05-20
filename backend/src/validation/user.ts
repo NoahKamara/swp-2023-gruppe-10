@@ -9,4 +9,8 @@ export const userLoginInfoSchema = z.object({
 export const userInfoSchema = userLoginInfoSchema.extend({
   firstName: z.string(),
   lastName: z.string(),
+  street: z.string(),
+  number: z.string(),
+  city: z.string(),
+  zipcode: z.string(),
 });
