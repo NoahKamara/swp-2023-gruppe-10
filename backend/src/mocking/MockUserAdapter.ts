@@ -8,8 +8,8 @@ import uid from 'uid-safe';
 */
 export class MockUserAdapter implements UserAdapter {
     users: User[] = [
-        { id: 1, email: 'tulpe@uni.kn', password: '$2b$10$46nOBhJ3IsKJ7Cu.tP02rOCbWuNTkWIlD8oE/vCTRR3/OcBSiLruG', firstName: 'Thomas', lastName: 'Tulpe' }, // Passwort: test
-        { id: 2, email: 'halm@uni.kn', password: '$2a$10$hPS.A0J.EQYg0.tRXMfyg.Dx5BsgDYvtAk4uoBts.dBvJs8Uoi7uu', firstName: 'Hanna', lastName: 'Halm' } // Passwort: blume
+        { id: 1, email: 'tulpe@uni.kn', password: '$2b$10$46nOBhJ3IsKJ7Cu.tP02rOCbWuNTkWIlD8oE/vCTRR3/OcBSiLruG', firstName: 'Thomas', lastName: 'Tulpe', street: 'Hauptstraße', number: '1', city: 'Konstanz', zipcode: '78467' }, // Passwort: test
+        { id: 2, email: 'halm@uni.kn', password: '$2a$10$hPS.A0J.EQYg0.tRXMfyg.Dx5BsgDYvtAk4uoBts.dBvJs8Uoi7uu', firstName: 'Hanna', lastName: 'Halm', street: 'Hauptstraße', number: '1', city: 'Konstanz', zipcode: '78467' } // Passwort: blume
     ];
 
     sessions: Session[] = [];
@@ -24,11 +24,11 @@ export class MockUserAdapter implements UserAdapter {
         return user;
     }
 
-    getUserByEmail(email: string): User {
+    getUserByEmail(email: string): User | undefined {
         return this.users.find(u => u.email === email);
     }
 
-    getUserById(id: number): User {
+    getUserById(id: number): User | undefined {
         return this.users.find(u => u.id === id);
     }
 
@@ -42,7 +42,7 @@ export class MockUserAdapter implements UserAdapter {
         return session;
     }
 
-    getSession(sessionId: string): Session {
+    getSession(sessionId: string): Session | undefined {
         return this.sessions.find(s => s.sessionId === sessionId);
     }
 
