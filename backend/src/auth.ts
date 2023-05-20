@@ -3,8 +3,8 @@ import { UserAdapter } from './adapters/UserAdapter';
 import bcrypt from 'bcrypt';
 
 import { validateBody } from './validation/requestValidation';
-import { userInfoSchema, userLoginInfoSchema } from './validation/user';
-import { UserInfo } from 'softwareproject-common';
+import { createUserSchema, updatePasswordSchema, userAddressSchema, userCredentialsSchema, userNameSchema } from './validation/user';
+import { PublicUser, User } from 'softwareproject-common/dist/user';
 
 export class AuthController {
   private userAdapter: UserAdapter;
@@ -63,7 +63,7 @@ export class AuthController {
    * Create a new user
    */
   createUser(request: Request, response: Response): void {
-    const userInfo = validateBody(request, response, userInfoSchema);
+    const userInfo = validateBody(request, response, createUserSchema);
     if (!userInfo) return;
     const pwdHash = bcrypt.hashSync(userInfo.password, this.salt);
 
@@ -104,10 +104,150 @@ export class AuthController {
   }
 
   /**
+   *  returns user info if they are authorized
+   */
+  getUser(request: Request, response: Response): void {
+    const user: User = response.locals.user;
+
+    if (!user) {
+      response.status(200);
+      response.send({
+        code: 401,
+        message: 'Unauthorized'
+      });
+      return;
+    }
+
+    const publicUser: PublicUser = {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      street: user.street,
+      number: user.number,
+      city: user.city,
+      zipcode: user.zipcode
+    };
+
+    response.status(200);
+    response.send(publicUser);
+    return;
+  }
+
+  /**
+   *  update user name info
+   */
+  updateName(request: Request, response: Response): void {
+    const data = validateBody(request, response, userNameSchema);
+    if (!data) return;
+
+    const user: User = response.locals.user;
+
+    if (!user) {
+      response.status(200);
+      response.send({
+        code: 401,
+        message: 'Unauthorized'
+      });
+      return;
+    }
+
+    const newUser: User = {
+      ...user,
+      ...data
+    };
+
+    this.userAdapter.updateUser(newUser);
+
+    response.status(200);
+    response.send({
+      code: 200,
+      message: 'User Names where Updated'
+    });
+    return;
+  }
+
+  /**
+   *  update user address info
+   */
+  updateAddress(request: Request, response: Response): void {
+    const data = validateBody(request, response, userAddressSchema);
+    if (!data) return;
+
+    const user: User = response.locals.user;
+
+    if (!user) {
+      response.status(200);
+      response.send({
+        code: 401,
+        message: 'Unauthorized'
+      });
+      return;
+    }
+
+    const newUser: User = {
+      ...user,
+      ...data
+    };
+
+    this.userAdapter.updateUser(newUser);
+
+    response.status(200);
+    response.send({
+      code: 200,
+      message: 'User Names where Updated'
+    });
+    return;
+  }
+
+  /**
+   *  update user password info
+   */
+  updatePassword(request: Request, response: Response): void {
+    const data = validateBody(request, response, updatePasswordSchema);
+    if (!data) return;
+
+    const user: User = response.locals.user;
+
+    if (!user) {
+      response.status(200);
+      response.send({
+        code: 401,
+        message: 'Unauthorized'
+      });
+      return;
+    }
+
+    if (!bcrypt.compareSync(data.oldPassword, user.password)) {
+      response.status(401);
+      response.send({
+        code: 401,
+        message: 'Passwort inkorrekt'
+      });
+      return;
+    }
+
+    const pwdHash = bcrypt.hashSync(data.newPassword, this.salt);
+    const newUser: User = {
+      ...user,
+      password: pwdHash
+    };
+
+    this.userAdapter.updateUser(newUser);
+
+    response.status(200);
+    response.send({
+      code: 200,
+      message: 'User Names where Updated'
+    });
+    return;
+  }
+
+  /**
    * Login an existing user
    */
   login(request: Request, response: Response): void {
-    const bodyData = validateBody(request, response, userLoginInfoSchema);
+    const bodyData = validateBody(request, response, userCredentialsSchema);
     if (!bodyData) return;
 
     const email: string = bodyData.email;
