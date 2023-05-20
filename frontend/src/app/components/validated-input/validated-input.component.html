@@ -8,9 +8,11 @@
     class="input input-sm w-full bg-primary text-primary-content"
     [ngClass]="{ 'outline-2 outline-offset-2 outline-dotted outline-error/70': hasError }" />
     <!-- Error Message -->
-  <!-- <label *ngIf="hasError" class="">
-    <span class="text-xs text-error ml-1 mt-0">
-      <ng-content></ng-content>
-    </span>
-  </label> -->
+  <!-- <div *ngIf="hasError">
+    <label *ngIf="hasError" class="">
+      <span class="text-xs text-error ml-1 mt-0">
+        <ng-content></ng-content>
+      </span>
+    </label>
+  </div> -->
 </span>

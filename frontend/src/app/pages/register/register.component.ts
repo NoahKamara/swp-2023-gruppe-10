@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserInfo } from 'softwareproject-common';
 import { AuthService } from 'src/app/services/auth.service';
 
 
@@ -27,7 +26,7 @@ interface RegisterFormGroup {
     lastName: FormControl<string|null>
     street: FormControl<string|null>
     number: FormControl<string|null>
-    town: FormControl<string|null>
+    city: FormControl<string|null>
     zipcode: FormControl<string|null>
     email: FormControl<string|null>
     password: FormControl<string|null>
@@ -40,12 +39,12 @@ interface RegisterFormGroup {
 })
 export class RegisterComponent {
   public formGroup = new FormGroup<RegisterFormGroup>({
-    firstName: new FormControl<string>(''),
-    lastName: new FormControl<string>(''),
-    street: new FormControl<string>(''),
-    number: new FormControl<string>(''),
-    town: new FormControl<string>(''),
-    zipcode: new FormControl<string>(''),
+    firstName: new FormControl<string>('', [Validators.required]),
+    lastName: new FormControl<string>('', [Validators.required]),
+    street: new FormControl<string>('', [Validators.required]),
+    number: new FormControl<string>('', [Validators.required]),
+    city: new FormControl<string>('', [Validators.required]),
+    zipcode: new FormControl<string>('', [Validators.required]),
     email: new FormControl<string>('', [Validators.required, Validators.email]),
     password: new FormControl<string>('', [Validators.required, Validators.minLength(8)]),
     passwordConfirm: new FormControl<string>('', [Validators.required])
@@ -63,7 +62,15 @@ export class RegisterComponent {
 
     const values = this.formGroup.value;
     this.authService
-      .register(values.firstName ?? '', values.lastName ?? '', values.email ?? '', values.password ?? '')
+      .register({
+        firstname: values.firstName ?? '',
+        lastname: values.lastName ?? '',
+        street: values.street ?? '',
+        number: values.number ?? '',
+        city: values.city ?? '',
+        zipcode: values.zipcode ?? '',
+        email: values.email ?? '',
+        password: values.password ?? '' })
       .subscribe({
         next: () => {
           this.router.navigateByUrl('/map');
