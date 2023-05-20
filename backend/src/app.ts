@@ -64,18 +64,23 @@ const api = new ApiController();
 
 
 /**
- * Authentication
+ * AUTHENTICATION
  */
 const auth = new AuthController({ userAdapter: new MockUserAdapter(), salt: 10});
 
 
-// authorization middleware - adds request.local.session & request.local.user
-app.all('/api/*', auth.authorize.bind(auth));
+app.all('/api/*', auth.authorize.bind(auth));                     // authorization middleware - adds request.local.session & request.local.user
 
-app.post('/api/user', auth.createUser.bind(auth));
-app.get('/api/auth', auth.getAuth.bind(auth));
-app.post('/api/session', auth.login.bind(auth));
-app.delete('/api/session', auth.logout.bind(auth));
+app.post('/api/user', auth.createUser.bind(auth));                // Create New User
+app.get('/api/user', auth.getUser.bind(auth));                    // Get Current User
+app.patch('/api/user/name', auth.updateName.bind(auth));          // Update Current User Names
+app.patch('/api/user/address', auth.updateAddress.bind(auth));    // Update Current User Address
+app.patch('/api/user/password', auth.updatePassword.bind(auth));  // Update Current User Password
+
+app.get('/api/auth', auth.getAuth.bind(auth));                    // Get Authorization status (true/false)
+
+app.post('/api/session', auth.login.bind(auth));                  // Sign in & Get Session Token
+app.delete('/api/session', auth.logout.bind(auth));               // Invalidate Session
 
 app.get('/api', api.getInfo);
 app.get('/api/name', api.getNameInfo);

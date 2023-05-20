@@ -1,5 +1,5 @@
 
-import { User, UserInfo } from 'softwareproject-common';
+import { User, CreateUser } from 'softwareproject-common';
 import { Session } from '../models/session';
 /**
 * User Adapter between API Layer & Database Layer
@@ -11,7 +11,14 @@ export interface UserAdapter {
     * @param {UserInfo} info required information to create a user
     * @return {User} a new user with the data from the function parameters
     */
-    createUser(info: UserInfo): User
+    createUser(info: CreateUser): User
+
+    /**
+    * creates a new user in the database and returns it
+    * @param {User} info the modified user, the id remains the same
+    * @return {User} a new user with the data from the function parameters
+    */
+    updateUser(info: User): void
 
     /**
     * @param {string} email of the user

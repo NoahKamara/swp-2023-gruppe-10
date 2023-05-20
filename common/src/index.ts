@@ -1,3 +1,3 @@
-import { User, UserInfo, UserLoginInfo } from './user';
+import { User, PublicUser, UserAddress, UserCredentials, CreateUser, UpdatePassword } from './user';
 
-export { User, UserInfo, UserLoginInfo };
+export { User, PublicUser, UserAddress, UserCredentials, CreateUser, UpdatePassword };

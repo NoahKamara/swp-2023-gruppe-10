@@ -6,7 +6,7 @@
 
 import request from 'supertest';
 import app from '../src/app';
-import { UserInfo, UserLoginInfo } from 'softwareproject-common';
+import { CreateUser, UserCredentials } from 'softwareproject-common';
 
 describe('POST /api/user (User Registration)', () => {
   const path = '/api/user';
@@ -159,12 +159,12 @@ describe('POST /api/session (User Login)', () => {
 describe('POST /api/session (User Logout)', () => {
   const path = '/api/session';
 
-  const loginInfo: UserLoginInfo = {
+  const loginInfo: UserCredentials = {
     email: 'user.logout@uni.kn',
     password: '12345678'
   };
 
-  const user: UserInfo = {
+  const user: CreateUser = {
     ...loginInfo,
     firstName: 'Max',
     lastName: 'Mustermann',

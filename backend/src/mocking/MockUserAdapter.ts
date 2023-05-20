@@ -1,5 +1,5 @@
 import { Session } from '../models/session';
-import { User, UserInfo } from 'softwareproject-common';
+import { CreateUser, User } from 'softwareproject-common';
 import { UserAdapter } from '../adapters/UserAdapter';
 import uid from 'uid-safe';
 
@@ -14,7 +14,7 @@ export class MockUserAdapter implements UserAdapter {
 
     sessions: Session[] = [];
 
-    createUser(info: UserInfo): User {
+    createUser(info: CreateUser): User {
         const user: User = {
             id: this.users.length + 1,
             ...info
@@ -23,6 +23,11 @@ export class MockUserAdapter implements UserAdapter {
         this.users.push(user);
         return user;
     }
+
+    updateUser(info: User): void {
+      const idx = this.users.findIndex(u => u.id === info.id);
+      this.users[idx] = info;
+  }
 
     getUserByEmail(email: string): User | undefined {
         return this.users.find(u => u.email === email);

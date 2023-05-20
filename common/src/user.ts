@@ -5,10 +5,10 @@
 * @interface
 * @schema
 */
-export declare interface UserLoginInfo {
+export declare interface UserCredentials {
   /**
- * @format email
- */
+   * @format email
+  */
   email: string
 
   /**
@@ -18,15 +18,12 @@ export declare interface UserLoginInfo {
 }
 
 /**
-* Info required to create, or update a user
+* User Address
 *
 * @interface
-* @extends {UserLoginInfo}
 * @schema
 */
-export declare interface UserInfo extends UserLoginInfo {
-  firstName: string
-  lastName: string
+export declare interface UserAddress {
   street: string
   number: string
   city: string
@@ -34,11 +31,50 @@ export declare interface UserInfo extends UserLoginInfo {
 }
 
 /**
+* User Names
+*
+* @interface
+* @schema
+*/
+export declare interface UserName {
+  firstName: string
+  lastName: string
+}
+
+/**
+* Model for creating a new user
+*
+* @interface
+* @schema
+*/
+export declare interface CreateUser extends UserCredentials, UserAddress, UserName {}
+
+/**
+* Model for creating a user's password
+*
+* @interface
+* @schema
+*/
+export declare interface UpdatePassword {
+  oldPassword: string
+  newPassword: string
+}
+
+/**
 * A user from the database
 *
 * @interface
-* @extends {UserInfo}
 */
-export declare interface User extends UserInfo {
+export declare interface User extends UserCredentials, UserAddress, UserName {
   id: number
+}
+
+/**
+* A public user that can be return by the API (without password)
+*
+* @interface
+*/
+export declare interface PublicUser extends UserAddress, UserName {
+  id: number
+  email: string
 }
