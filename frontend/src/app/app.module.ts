@@ -25,6 +25,7 @@ import { MariusBernerComponent } from './components/marius-berner/marius-berner.
 import { NoahKamaraComponent } from './components/noah-kamara/noah-kamara.component';
 import { EmanuelMoellComponent } from './components/emanuel-moell/emanuel-moell.component';
 import { NiklasGroeneComponent } from './components/niklas-groene/niklas-groene.component';
+import { ChangeNameComponent } from './pages/profile/change-name.component';
 
 
 
@@ -86,6 +87,8 @@ const routes: Routes = [
             { path: 'edit', component: TodoComponent },
             // Alternativ können die Seiten (Komponenten) auch wiederverwendet werden auf mehreren Routen
             { path: 'about', component: AboutComponent },
+            { path: 'editname', component: ChangeNameComponent}
+        
         ]
     },
 

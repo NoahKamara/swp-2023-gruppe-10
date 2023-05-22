@@ -7,7 +7,7 @@ export class LoginService {
   /**
    *  Bitte die Logik entsprechend anpassen in Sprint 1!
    */
-  public loggedIn = false;
+  public loggedIn = true;
 
   constructor() { }
   

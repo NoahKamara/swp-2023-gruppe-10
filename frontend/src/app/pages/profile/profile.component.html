@@ -5,15 +5,34 @@
     <div class="scrollable-container">
 
         <div class="profile-info">
-            Hier können beispielsweise die Profil-Informationen geändert werden.
+            <div>
+                <p>Name:  <button class="btn edit-btn" routerLink="edit">
+                    <mat-icon>edit</mat-icon>
+                </button></p> 
+            </div>
+            <hr>
+        
+            <div>
+                <p>Adresse:  <button class="btn edit-btn" routerLink="edit">
+                    <mat-icon>edit</mat-icon>
+                </button></p> 
+            </div>
+            <hr>
+            <div>
+                <p>Email:  <button class="btn edit-btn" routerLink="edit">
+                    <mat-icon>edit</mat-icon>
+                </button></p> 
+            </div>
+            <hr>
+            <div>
+                <p>Passwort:  <button class="btn edit-btn" routerLink="edit">
+                    <mat-icon>edit</mat-icon>
+                </button></p> 
+            </div>
 
             <!-- Router Links sind generell relativ -- da diese Komponente auf der /profile Route erscheint, -->
             <!-- leitet folgender Link auf die /profile/about Seite. Falls ein "absoluter" Link gewünscht ist, -->
             <!-- sollte der Link mit "/" beginnen, z.b. "/map" -->
-            <button class="btn edit-btn" routerLink="edit">
-                <mat-icon>edit</mat-icon>
-            </button>
-        </div>
 
 
         <button class="btn logout-btn" (click)="logout()">
