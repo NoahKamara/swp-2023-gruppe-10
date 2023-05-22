@@ -11,7 +11,10 @@ export class AuthService {
   public authChecked = false;
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.http = http;
+    this.checkAuth();
+  }
 
   public isLoggedIn(): boolean {
     return this.loggedIn;
@@ -21,10 +24,12 @@ export class AuthService {
     const authObservable: Observable<boolean> = this.http.get<boolean>('/api/auth').pipe(shareReplay());
     authObservable.subscribe({
       next: (val) => {
+        console.info('getAuth', val);
         this.loggedIn = val;
         this.authChecked = true;
       },
       error: (err) => {
+        console.error('getAuth failed', err);
         this.loggedIn = false;
         console.error(err);
       }
@@ -92,6 +97,7 @@ export class AuthService {
     authObservable.subscribe({
       next: (response) => {
         console.info('logout succeeded', response);
+        this.authChecked = false;
         this.loggedIn = false;
       },
       error: (err: HttpErrorResponse) => {

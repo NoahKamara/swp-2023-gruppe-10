@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import { validateBody } from './validation/requestValidation';
 import { createUserSchema, updatePasswordSchema, userAddressSchema, userCredentialsSchema, userNameSchema } from './validation/user';
 import { PublicUser, User } from 'softwareproject-common/dist/user';
+import { convertToObject } from 'typescript';
 
 export class AuthController {
   private userAdapter: UserAdapter;
@@ -72,7 +73,7 @@ export class AuthController {
     const existingUser = this.userAdapter.getUserByEmail(userInfo.email);
     if (existingUser) {
       response.status(400);
-      response.send({ code: 400, message: 'User with Email already exists' });
+      response.send({ code: 400, message: 'Nutzer mit Email existiert bereits' });
       return;
     }
 
@@ -247,9 +248,11 @@ export class AuthController {
    * Login an existing user
    */
   login(request: Request, response: Response): void {
+    console.log(request.body);
     const bodyData = validateBody(request, response, userCredentialsSchema);
     if (!bodyData) return;
 
+    console.log(bodyData);
     const email: string = bodyData.email;
     const password: string = bodyData.password;
 

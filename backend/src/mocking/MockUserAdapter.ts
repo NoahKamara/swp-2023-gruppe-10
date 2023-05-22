@@ -7,12 +7,25 @@ import uid from 'uid-safe';
 * Mocks the UserAdapter interface for development
 */
 export class MockUserAdapter implements UserAdapter {
-    users: User[] = [
-        { id: 1, email: 'tulpe@uni.kn', password: '$2b$10$46nOBhJ3IsKJ7Cu.tP02rOCbWuNTkWIlD8oE/vCTRR3/OcBSiLruG', firstName: 'Thomas', lastName: 'Tulpe', street: 'Hauptstraße', number: '1', city: 'Konstanz', zipcode: '78467' }, // Passwort: test
-        { id: 2, email: 'halm@uni.kn', password: '$2a$10$hPS.A0J.EQYg0.tRXMfyg.Dx5BsgDYvtAk4uoBts.dBvJs8Uoi7uu', firstName: 'Hanna', lastName: 'Halm', street: 'Hauptstraße', number: '1', city: 'Konstanz', zipcode: '78467' } // Passwort: blume
-    ];
+    users: User[] = [];
 
     sessions: Session[] = [];
+
+    constructor() {
+      this.users = [
+        {
+          id: 1,
+          email: 'max.mustermann@email.com',
+          password: '$2b$10$h5Q/lJlyz9SfOSITxfdGYetTXdayrXlx/W8nLrUe1Zq4.z0RQGD1S',
+          street: 'Musterweg',
+          number: '123',
+          city: 'Musterstadt',
+          zipcode: '12345',
+          firstName: 'Max',
+          lastName: 'Mustermann'
+        }
+      ];
+    }
 
     createUser(info: CreateUser): User {
         const user: User = {
@@ -21,6 +34,7 @@ export class MockUserAdapter implements UserAdapter {
         };
 
         this.users.push(user);
+        console.log(user);
         return user;
     }
 

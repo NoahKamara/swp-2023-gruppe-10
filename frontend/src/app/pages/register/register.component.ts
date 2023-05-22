@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -37,7 +37,7 @@ interface RegisterFormGroup {
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   public formGroup = new FormGroup<RegisterFormGroup>({
     firstName: new FormControl<string>('', [Validators.required]),
     lastName: new FormControl<string>('', [Validators.required]),
@@ -54,6 +54,12 @@ export class RegisterComponent {
 
   public errorMsg: string | undefined;
   constructor(private router: Router, private authService: AuthService) { }
+
+  ngOnInit(): void {
+    this.authService.checkAuth().subscribe(isAuth => {
+      if (isAuth) this.router.navigateByUrl('/map');
+    });
+  }
 
   register(): void {
     this.formGroup.markAllAsTouched();

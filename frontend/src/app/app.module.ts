@@ -43,11 +43,11 @@ import { AuthService } from './services/auth.service';
  *  (Siehe 'canActivate' Attribut bei den 'routes')
  */
 const loginGuard = (): boolean => {
-    if (!inject(AuthService).isLoggedIn()) {
-        inject(Router).navigate(['/login']);
-        return false;
-    }
-    return true;
+  if (!inject(AuthService).isLoggedIn()) {
+    inject(Router).navigate(['/login']);
+    return false;
+  }
+  return true;
 };
 
 /**
@@ -58,44 +58,44 @@ const loginGuard = (): boolean => {
  *  Dokumentation: https://angular.io/guide/router
  */
 const routes: Routes = [
-    // Jede Route, die wir festlegen wollen, braucht eine Komponente,
-    // die beim Laden der Route instanziiert und angezeigt wird.
-    // Die hier angegebenen Routen sind ein Beispiel; die "TodoComponent"
-    // sollten über den Lauf des Projektes ausgetauscht werden
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
-    { path: 'about', component: AboutComponent },
+  // Jede Route, die wir festlegen wollen, braucht eine Komponente,
+  // die beim Laden der Route instanziiert und angezeigt wird.
+  // Die hier angegebenen Routen sind ein Beispiel; die "TodoComponent"
+  // sollten über den Lauf des Projektes ausgetauscht werden
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'about', component: AboutComponent },
 
-    // Durch 'canActive' können wir festlegen, ob eine Route aktiviert werden kann - z.B. können wir
-    // die Route sperren, falls der Benutzer nicht eingeloggt ist.
-    { path: 'map', component: MapComponent, canActivate: [loginGuard] },
-    { path: 'events', component: TodoComponent, canActivate: [loginGuard]  },
-    { path: 'tickets', component: TodoComponent, canActivate: [loginGuard]  },
+  // Durch 'canActive' können wir festlegen, ob eine Route aktiviert werden kann - z.B. können wir
+  // die Route sperren, falls der Benutzer nicht eingeloggt ist.
+  { path: 'map', component: MapComponent, canActivate: [loginGuard] },
+  { path: 'events', component: TodoComponent, canActivate: [loginGuard] },
+  { path: 'tickets', component: TodoComponent, canActivate: [loginGuard] },
 
-    // Routen können auch geschachtelt werden, indem der "Child" Eigenschaft der
-    // Route nochmals ein paar Routen übergeben werden.
-    // Falls Routen geschachtelt werden muss die "Hauptkomponente" der Schachtelung
-    // auch eine <router-outlet> Komponente anbieten, in die "Unterkomponenten" hereingeladen
-    // werden können (siehe auch RootComponent)
-    {
-        path: 'profile',
-        canActivate: [loginGuard],
-        children: [
-            // Falls kein Pfad angegeben ist, wird diese Komponente automatisch geladen
-            // (z.B. bei Aufruf von /profile/ )
-            { path: '', component: ProfileComponent },
-            // Ansonsten werden die Pfade geschachtelt - folgende Komponente wird über den Pfad
-            // "/profile/edit" geladen.
-            { path: 'edit', component: TodoComponent },
-            // Alternativ können die Seiten (Komponenten) auch wiederverwendet werden auf mehreren Routen
-            { path: 'about', component: AboutComponent },
-        ]
-    },
+  // Routen können auch geschachtelt werden, indem der "Child" Eigenschaft der
+  // Route nochmals ein paar Routen übergeben werden.
+  // Falls Routen geschachtelt werden muss die "Hauptkomponente" der Schachtelung
+  // auch eine <router-outlet> Komponente anbieten, in die "Unterkomponenten" hereingeladen
+  // werden können (siehe auch RootComponent)
+  {
+    path: 'profile',
+    canActivate: [loginGuard],
+    children: [
+      // Falls kein Pfad angegeben ist, wird diese Komponente automatisch geladen
+      // (z.B. bei Aufruf von /profile/ )
+      { path: '', component: ProfileComponent },
+      // Ansonsten werden die Pfade geschachtelt - folgende Komponente wird über den Pfad
+      // "/profile/edit" geladen.
+      { path: 'edit', component: TodoComponent },
+      // Alternativ können die Seiten (Komponenten) auch wiederverwendet werden auf mehreren Routen
+      { path: 'about', component: AboutComponent },
+    ]
+  },
 
-    // Je nach Konfiguration können wir auf eine andere Route weiterleiten
-    // z.B. wollen wir bei Seitenaufruf (wenn keine 'route' festgelegt ist)
-    // sofort auf die Login Route weiterleiten
-    { path: '**', redirectTo: '/map' }
+  // Je nach Konfiguration können wir auf eine andere Route weiterleiten
+  // z.B. wollen wir bei Seitenaufruf (wenn keine 'route' festgelegt ist)
+  // sofort auf die Login Route weiterleiten
+  { path: '**', redirectTo: '/map' }
 ];
 
 
@@ -106,42 +106,42 @@ const routes: Routes = [
  *  sowie third-party Bibliotheken (bspw. Angular-Material) in die "imports".
  */
 @NgModule({
-    declarations: [
-        RootComponent,
-        AboutComponent,
-        NavigationBarComponent,
-        MapComponent,
-        TodoComponent,
-        ProfileComponent,
-        UserInputComponent,
-        ExampleComponent,
-        LoginComponent,
-        BackButtonComponent,
-        MariusBernerComponent,
-        NoahKamaraComponent,
-        EmanuelMoellComponent,
-        NiklasGroeneComponent,
-        RegisterComponent,
-        TopBarComponent,
-        ValidatedInputComponent,
-    ],
-    imports: [
-        RouterModule.forRoot(routes),
-        BrowserModule,
-        HttpClientModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        LeafletModule,
-        MatButtonModule,
-        MatIconModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatGridListModule
-    ],
-    providers: [
-        HttpClientModule
-    ],
-    bootstrap: [RootComponent]
+  declarations: [
+    RootComponent,
+    AboutComponent,
+    NavigationBarComponent,
+    MapComponent,
+    TodoComponent,
+    ProfileComponent,
+    UserInputComponent,
+    ExampleComponent,
+    LoginComponent,
+    BackButtonComponent,
+    MariusBernerComponent,
+    NoahKamaraComponent,
+    EmanuelMoellComponent,
+    NiklasGroeneComponent,
+    RegisterComponent,
+    TopBarComponent,
+    ValidatedInputComponent,
+  ],
+  imports: [
+    RouterModule.forRoot(routes),
+    BrowserModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    LeafletModule,
+    MatButtonModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatGridListModule
+  ],
+  providers: [
+    HttpClientModule
+  ],
+  bootstrap: [RootComponent]
 })
 export class AppModule { }
