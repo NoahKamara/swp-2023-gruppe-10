@@ -10,7 +10,8 @@ export class ProfileComponent {
 
   constructor(private router: Router, private authService: AuthService) {}
   logout(): void {
-    this.authService.logout();
-    this.router.navigateByUrl('/login');
+    this.authService.logout().subscribe(() => {
+      this.router.navigateByUrl('/login');
+    });
   }
 }

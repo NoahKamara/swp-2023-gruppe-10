@@ -5,7 +5,6 @@ import bcrypt from 'bcrypt';
 import { validateBody } from './validation/requestValidation';
 import { createUserSchema, updatePasswordSchema, userAddressSchema, userCredentialsSchema, userNameSchema } from './validation/user';
 import { PublicUser, User } from 'softwareproject-common/dist/user';
-import { convertToObject } from 'typescript';
 
 export class AuthController {
   private userAdapter: UserAdapter;
@@ -85,7 +84,7 @@ export class AuthController {
 
     response.status(200);
     response.cookie('sessionId', session.sessionId, { httpOnly: true });
-    response.send({ code: 200, message: 'Login successful' });
+    response.send({ code: 200, message: 'Registrierung erfolgreich' });
     return;
   }
 
@@ -261,14 +260,14 @@ export class AuthController {
 
     if (!user) {
       response.status(401);
-      response.send({ code: 401, message: 'E-Mail address not found' });
+      response.send({ code: 401, message: 'Es existiert kein Nutzer zu dieser Email' });
       return;
     }
 
     // check password
     if (!bcrypt.compareSync(password, user.password)) {
       response.status(401);
-      response.send({ code: 401, message: 'Wrong password' });
+      response.send({ code: 401, message: 'Passwort stimmt nicht überein' });
       return;
     }
 
@@ -277,7 +276,7 @@ export class AuthController {
 
     response.status(200);
     response.cookie('sessionId', session.sessionId, { httpOnly: true });
-    response.send({ code: 200, message: 'Login successful' });
+    response.send({ code: 200, message: 'Anmeldung erfolgreich' });
     return;
   }
 
