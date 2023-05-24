@@ -8,7 +8,6 @@ const matchPasswords: ValidatorFn = (controls: AbstractControl) => {
   const control = controls.get('password');
   const matchControl = controls.get('passwordConfirm');
 
-  console.log(control, matchControl);
   if (!matchControl?.errors && control?.value !== matchControl?.value) {
     matchControl?.setErrors({
       matching: {
@@ -39,15 +38,15 @@ interface RegisterFormGroup {
 })
 export class RegisterComponent implements OnInit {
   public formGroup = new FormGroup<RegisterFormGroup>({
-    firstName: new FormControl<string>('', [Validators.required]),
-    lastName: new FormControl<string>('', [Validators.required]),
-    street: new FormControl<string>('', [Validators.required]),
-    number: new FormControl<string>('', [Validators.required]),
-    city: new FormControl<string>('', [Validators.required]),
-    zipcode: new FormControl<string>('', [Validators.required]),
-    email: new FormControl<string>('', [Validators.required, Validators.email]),
-    password: new FormControl<string>('', [Validators.required, Validators.minLength(8)]),
-    passwordConfirm: new FormControl<string>('', [Validators.required])
+    firstName: new FormControl<string>('Max', [Validators.required]),
+    lastName: new FormControl<string>('Mustermann', [Validators.required]),
+    street: new FormControl<string>('Musterweg', [Validators.required]),
+    number: new FormControl<string>('4', [Validators.required]),
+    city: new FormControl<string>('Musterstadt', [Validators.required]),
+    zipcode: new FormControl<string>('12345', [Validators.required]),
+    email: new FormControl<string>('max.mustermann@email.com', [Validators.required, Validators.email]),
+    password: new FormControl<string>('max.mustermann@email.com', [Validators.required, Validators.minLength(8)]),
+    passwordConfirm: new FormControl<string>('max.mustermann@email.com', [Validators.required])
   }, {
     validators: matchPasswords
   });
@@ -83,6 +82,11 @@ export class RegisterComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
+          if (err.error.message === 'Nutzer mit Email existiert bereits') {
+            this.formGroup.controls.email.setErrors({
+              'duplicate': true
+            });
+          }
           this.errorMsg = err.error.message;
         }
       });

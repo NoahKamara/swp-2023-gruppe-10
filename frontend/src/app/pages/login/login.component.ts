@@ -23,7 +23,10 @@ export class LoginComponent implements OnInit {
   login(): void {
     this.loginService.login('max.mustermann@email.com', 'max.mustermann@email.com').subscribe(res => {
       console.log(res);
-      this.loginService.checkAuth();
+      this.loginService.checkAuth().subscribe(res => {
+        console.log('CHECK');
+        if (res) this.router.navigateByUrl('/map');
+      });
     });
   }
 }

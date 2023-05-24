@@ -8,7 +8,7 @@ import { Session } from '../models/session';
 export interface UserAdapter {
     /**
     * creates a new user in the database and returns it
-    * @param {UserInfo} info required information to create a user
+    * @param {CreateUser} info required information to create a user
     * @return {User} a new user with the data from the function parameters
     */
     createUser(info: CreateUser): User

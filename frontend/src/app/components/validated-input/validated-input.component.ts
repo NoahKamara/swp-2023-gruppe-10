@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, ContentChild, ContentChildren, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -12,6 +12,9 @@ export class ValidatedInputComponent {
 
   @Input()
   public control!: FormControl;
+
+  @ContentChildren('content')
+  content!: QueryList<ElementRef>;
 
   @Output()
   textChange = new EventEmitter<FormControl>();
