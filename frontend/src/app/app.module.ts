@@ -25,7 +25,9 @@ import { MariusBernerComponent } from './components/marius-berner/marius-berner.
 import { NoahKamaraComponent } from './components/noah-kamara/noah-kamara.component';
 import { EmanuelMoellComponent } from './components/emanuel-moell/emanuel-moell.component';
 import { NiklasGroeneComponent } from './components/niklas-groene/niklas-groene.component';
-import { ChangeNameComponent } from './pages/profile/change-name.component';
+import { ChangeInfoComponent } from './components/change-info/change-info.component';
+import { ChangeAdressComponent } from './components/change-adress/change-adress.component';
+import { ChangePwComponent } from './components/change-pw/change-pw.component';
 
 
 
@@ -84,10 +86,14 @@ const routes: Routes = [
             { path: '', component: ProfileComponent },
             // Ansonsten werden die Pfade geschachtelt - folgende Komponente wird über den Pfad
             // "/profile/edit" geladen.
-            { path: 'edit', component: TodoComponent },
+            { path: 'editname', component: ChangeInfoComponent },
+            { path: 'editaddress', component: ChangeAdressComponent },
+            { path: 'editpw', component: ChangePwComponent },
+
+
+
             // Alternativ können die Seiten (Komponenten) auch wiederverwendet werden auf mehreren Routen
             { path: 'about', component: AboutComponent },
-            { path: 'editname', component: ChangeNameComponent}
         
         ]
     },
@@ -120,7 +126,10 @@ const routes: Routes = [
         MariusBernerComponent,
         NoahKamaraComponent,
         EmanuelMoellComponent,
-        NiklasGroeneComponent
+        NiklasGroeneComponent,
+        ChangeInfoComponent,
+        ChangeAdressComponent,
+        ChangePwComponent
     ],
     imports: [
         RouterModule.forRoot(routes),

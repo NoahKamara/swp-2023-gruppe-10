@@ -6,7 +6,16 @@ import { Component } from '@angular/core';
 })
 export class ProfileComponent {
 
+  public name ='Example Name';
+  public address = 'ExampleStreet 1';
+  public email = 'examplemail@exp.com';
+  public password = '***********';
+
   logout(): void {
     // Bitte Logik einfügen
+  }
+
+  getName(): string{
+    return this.name;
   }
 }

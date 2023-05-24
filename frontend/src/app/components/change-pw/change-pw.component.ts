@@ -14,7 +14,7 @@ export class ChangePwComponent {
     // Bitte Logik einfügen
   }
 
-  constructor(prof)
+
   
 
 }
