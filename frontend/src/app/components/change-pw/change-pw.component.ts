@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ProfileUpdateService } from 'src/app/services/profile-update.service';
 
 @Component({
   templateUrl: './change-pw.component.html',
@@ -13,6 +14,8 @@ export class ChangePwComponent {
   save(): void {
     // Bitte Logik einfügen
   }
+
+  constructor(public profileUpdateService: ProfileUpdateService) { }
 
 
   

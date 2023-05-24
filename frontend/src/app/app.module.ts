@@ -28,6 +28,7 @@ import { NiklasGroeneComponent } from './components/niklas-groene/niklas-groene.
 import { ChangeInfoComponent } from './components/change-info/change-info.component';
 import { ChangeAdressComponent } from './components/change-adress/change-adress.component';
 import { ChangePwComponent } from './components/change-pw/change-pw.component';
+import { ProfileUpdateService } from './services/profile-update.service';
 
 
 
