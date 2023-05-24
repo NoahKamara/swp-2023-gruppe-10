@@ -1,5 +1,5 @@
 
-import { User, CreateUser } from 'softwareproject-common';
+import { User, CreateUser } from 'softwareproject-common/src';
 import { Session } from '../models/session';
 /**
 * User Adapter between API Layer & Database Layer

@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 
 import { validateBody } from './validation/requestValidation';
 import { createUserSchema, updatePasswordSchema, userAddressSchema, userCredentialsSchema, userNameSchema } from './validation/user';
-import { PublicUser, User } from 'softwareproject-common/dist/user';
+import { PublicUser, User } from 'softwareproject-common/src';
 
 export class AuthController {
   private userAdapter: UserAdapter; 

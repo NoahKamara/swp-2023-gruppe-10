@@ -28,7 +28,10 @@ export class MariusBernerComponent {
        console.error(err);
        this.myName = {
          firstName: 'Error!',
-         lastName: 'Error!'
+         lastName: 'Error!',
+         semester: 'Error!',
+         course: 'Error!',
+         mail: 'Error!'
        };
      }
    });
