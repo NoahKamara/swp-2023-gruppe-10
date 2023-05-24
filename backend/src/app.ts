@@ -67,6 +67,7 @@ const api = new ApiController();
  * AUTHENTICATION
  */
 const auth = new AuthController({ userAdapter: new MockUserAdapter(), salt: 10});
+app.post('api/login',auth.login.bind(auth));
 
 
 app.all('/api/*', auth.authorize.bind(auth));                     // authorization middleware - adds request.local.session & request.local.user

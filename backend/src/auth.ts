@@ -7,7 +7,7 @@ import { createUserSchema, updatePasswordSchema, userAddressSchema, userCredenti
 import { PublicUser, User } from 'softwareproject-common/dist/user';
 
 export class AuthController {
-  private userAdapter: UserAdapter;
+  private userAdapter: UserAdapter; 
 
   private salt: number | string = 10;
 
