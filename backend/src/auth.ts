@@ -4,10 +4,11 @@ import bcrypt from 'bcrypt';
 
 import { validateBody } from './validation/requestValidation';
 import { createUserSchema, updatePasswordSchema, userAddressSchema, userCredentialsSchema, userNameSchema } from './validation/user';
-import { PublicUser, User } from 'softwareproject-common/src';
+import { PublicUser, User } from 'softwareproject-common';
+
 
 export class AuthController {
-  private userAdapter: UserAdapter; 
+  private userAdapter: UserAdapter;
 
   private salt: number | string = 10;
 

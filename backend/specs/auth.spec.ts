@@ -6,7 +6,7 @@
 
 import request from 'supertest';
 import app from '../src/app';
-import { CreateUser, UserCredentials } from 'softwareproject-common/src';
+import { CreateUser, UserCredentials } from 'softwareproject-common';
 
 describe('POST /api/user (User Registration)', () => {
   const path = '/api/user';
