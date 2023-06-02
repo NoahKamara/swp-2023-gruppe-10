@@ -4,10 +4,11 @@ import bcrypt from 'bcrypt';
 
 import { validateBody } from './validation/requestValidation';
 import { createUserSchema, updatePasswordSchema, userAddressSchema, userCredentialsSchema, userNameSchema } from './validation/user';
-import { PublicUser, User } from 'softwareproject-common/dist/user';
+import { PublicUser, User } from 'softwareproject-common';
+
 
 export class AuthController {
-  private userAdapter: UserAdapter; 
+  private userAdapter: UserAdapter;
 
   private salt: number | string = 10;
 
@@ -31,7 +32,7 @@ export class AuthController {
   /**
    * Authorize a user by session cookie
    */
-  authorize(request: Request, response: Response, next: NextFunction): void {
+  async authorize(request: Request, response: Response, next: NextFunction): Promise<void> {
     // get session id from cookies
     const sessionId = request.cookies.sessionId;
     if (!sessionId) {
@@ -40,7 +41,7 @@ export class AuthController {
     }
 
     // get session by id
-    const sess = this.userAdapter.getSession(sessionId);
+    const sess = await this.userAdapter.getSession(sessionId);
     if (!sess) {
       next();
       return;
@@ -62,30 +63,41 @@ export class AuthController {
   /**
    * Create a new user
    */
-  createUser(request: Request, response: Response): void {
+  async createUser(request: Request, response: Response): Promise<void> {
     const userInfo = validateBody(request, response, createUserSchema);
     if (!userInfo) return;
     const pwdHash = bcrypt.hashSync(userInfo.password, this.salt);
 
     userInfo.password = pwdHash;
 
-    const existingUser = this.userAdapter.getUserByEmail(userInfo.email);
+    const existingUser = await this.userAdapter.getUserByEmail(userInfo.email);
     if (existingUser) {
       response.status(400);
       response.send({ code: 400, message: 'Nutzer mit Email existiert bereits' });
       return;
     }
 
-    // create user with controller
-    const user = this.userAdapter.createUser(userInfo);
+    try {
+      // create user with controller
+      const user = await this.userAdapter.createUser(userInfo);
 
-    // create session
-    const session = this.userAdapter.createSession(user);
+      if (!user.id) {
+        response.status(500);
+        response.send({ code: 500, message: 'Nutzer hat keine ID' });
+        return;
+      }
 
-    response.status(200);
-    response.cookie('sessionId', session.sessionId, { httpOnly: true });
-    response.send({ code: 200, message: 'Registrierung erfolgreich' });
-    return;
+      // create session
+      const session = await this.userAdapter.createSession(user.id);
+
+      response.status(200);
+      response.cookie('sessionId', session.sessionId, { httpOnly: true });
+      response.send({ code: 200, message: 'Registrierung erfolgreich' });
+      return;
+    } catch (err) {
+      console.error(err);
+      response.send({ code: 500, message: err });
+    }
   }
 
   /**
@@ -109,7 +121,7 @@ export class AuthController {
   getUser(request: Request, response: Response): void {
     const user: User = response.locals.user;
 
-    if (!user) {
+    if (!user || !user.id) {
       response.status(200);
       response.send({
         code: 401,
@@ -246,7 +258,7 @@ export class AuthController {
   /**
    * Login an existing user
    */
-  login(request: Request, response: Response): void {
+  async login(request: Request, response: Response): Promise<void> {
     console.log(request.body);
     const bodyData = validateBody(request, response, userCredentialsSchema);
     if (!bodyData) return;
@@ -256,7 +268,7 @@ export class AuthController {
     const password: string = bodyData.password;
 
     // retrieve user
-    const user = this.userAdapter.getUserByEmail(email);
+    const user = await this.userAdapter.getUserByEmail(email);
 
     if (!user) {
       response.status(401);
@@ -271,8 +283,14 @@ export class AuthController {
       return;
     }
 
-    // create session token
-    const session = this.userAdapter.createSession(user);
+    if (!user.id) {
+      response.status(500);
+      response.send({ code: 500, message: 'Nutzer hat keine ID' });
+      return;
+    }
+
+    // create session
+    const session = await this.userAdapter.createSession(user.id);
 
     response.status(200);
     response.cookie('sessionId', session.sessionId, { httpOnly: true });

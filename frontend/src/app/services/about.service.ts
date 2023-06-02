@@ -12,6 +12,9 @@ import { Observable } from 'rxjs';
 export type NameInfo = {
     firstName: string,
     lastName: string,
+    semester: string,
+    course: string,
+    mail: string,
     optionalAttribut?: string
 }
 

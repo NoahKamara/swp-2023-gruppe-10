@@ -28,8 +28,11 @@ export class NoahKamaraComponent {
      error: (err) => {
        console.error(err);
        this.myName = {
-         firstName: 'Error!',
-         lastName: 'Error!'
+        firstName: 'Error!',
+        lastName: 'Error!',
+        semester: 'Error!',
+        course: 'Error!',
+        mail: 'Error!'
        };
      }
    });

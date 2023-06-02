@@ -9,14 +9,16 @@
 
 import errorHandler from 'errorhandler';
 import express, { RequestHandler } from 'express';
-import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
-
+import { initDatabase } from './database/sequelize';
 import { ApiController } from './api';
 import { AuthController } from './auth';
 import { MockUserAdapter } from './mocking/MockUserAdapter';
+import { Sequelize } from 'sequelize-typescript';
+import { DBUser } from './models/db.user';
+import { DBUserAdapter } from './database/DBUserAdapter';
 
 // Express server instanziieren
 const app = express();
@@ -66,7 +68,7 @@ const api = new ApiController();
 /**
  * AUTHENTICATION
  */
-const auth = new AuthController({ userAdapter: new MockUserAdapter(), salt: 10});
+const auth = new AuthController({ userAdapter: new DBUserAdapter(), salt: 10});
 app.post('api/login',auth.login.bind(auth));
 
 
@@ -123,4 +125,17 @@ app.use('/img', express.static('img'));
 // });
 
 // Wir machen den konfigurierten Express Server für andere Dateien verfügbar, die diese z.B. Testen oder Starten können.
+
+// Database
+const sequelize =  new Sequelize('postgres://admin:CHOOSE_A_PASSWORD@localhost:5432/postgres', {
+  models: [
+    DBUser,
+  ]
+});
+
+
+
+initDatabase(sequelize);
+
+
 export default app;

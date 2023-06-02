@@ -4,7 +4,6 @@
 # daher ignorieren wir das für das software projekt
 package-lock.json
 
-dist
 
 lib-cov
 *.seed
