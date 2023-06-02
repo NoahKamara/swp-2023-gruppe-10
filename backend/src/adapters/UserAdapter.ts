@@ -11,45 +11,45 @@ export interface UserAdapter {
     * @param {CreateUser} info required information to create a user
     * @return {User} a new user with the data from the function parameters
     */
-    createUser(info: CreateUser): User
+    createUser(info: CreateUser): Promise<User>
 
     /**
     * creates a new user in the database and returns it
     * @param {User} info the modified user, the id remains the same
     * @return {User} a new user with the data from the function parameters
     */
-    updateUser(info: User): void
+    updateUser(info: User): Promise<void>
 
     /**
     * @param {string} email of the user
     * @return {User} the user for the email, if no user exists, return nothing
     */
-    getUserByEmail(email: string): User | undefined
+    getUserByEmail(email: string): Promise<User | null>
 
     /**
     * returns the user for the id, if no user exists, return nothing
     * @param {number} id of the user
     * @return {User} the user for the id, if no user exists, return nothing
     */
-    getUserById(id: number): User | undefined
+    getUserById(id: number): Promise<User | null>
 
     /**
     * creates a new session for a user
     * @param {User} user
     * @return {Session} a new session
     */
-    createSession(user: User): Session
+    createSession(userID: number): Promise<Session>
 
     /**
     * returns a session from the session id,
     * @return {Session} session if it exists
     * @return {undefined} nothing if there exists no session with this id
     */
-    getSession(sessionId: string): Session | undefined
+    getSession(sessionId: string): Promise<Session | null>
 
     /**
     * deletes the session
     * @param {string} sessionId
     */
-    delSession(sessionId: string): void
+    delSession(sessionId: string): Promise<void>
 }

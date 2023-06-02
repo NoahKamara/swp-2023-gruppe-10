@@ -7,67 +7,73 @@ import uid from 'uid-safe';
 * Mocks the UserAdapter interface for development
 */
 export class MockUserAdapter implements UserAdapter {
-    users: User[] = [];
+  users: User[] = [];
 
-    sessions: Session[] = [];
+  sessions: Session[] = [];
 
-    constructor() {
-      this.users = [
-        {
-          id: 1,
-          email: 'max.mustermann@email.com',
-          password: '$2b$10$h5Q/lJlyz9SfOSITxfdGYetTXdayrXlx/W8nLrUe1Zq4.z0RQGD1S',
-          street: 'Musterweg',
-          number: '123',
-          city: 'Musterstadt',
-          zipcode: '12345',
-          firstName: 'Max',
-          lastName: 'Mustermann'
-        }
-      ];
-    }
-
-    createUser(info: CreateUser): User {
-        const user: User = {
-            id: this.users.length + 1,
-            ...info
-        };
-
-        this.users.push(user);
-        console.log(user);
-        return user;
-    }
-
-    updateUser(info: User): void {
-      const idx = this.users.findIndex(u => u.id === info.id);
-      this.users[idx] = info;
+  constructor() {
+    this.users = [
+      {
+        id: 1,
+        email: 'max.mustermann@email.com',
+        password: '$2b$10$h5Q/lJlyz9SfOSITxfdGYetTXdayrXlx/W8nLrUe1Zq4.z0RQGD1S',
+        street: 'Musterweg',
+        number: '123',
+        city: 'Musterstadt',
+        zipcode: '12345',
+        firstName: 'Max',
+        lastName: 'Mustermann'
+      }
+    ];
   }
 
-    getUserByEmail(email: string): User | undefined {
-        return this.users.find(u => u.email === email);
-    }
+  createUser(info: CreateUser): Promise<User> {
+    const user: User = {
+      id: this.users.length + 1,
+      ...info
+    };
 
-    getUserById(id: number): User | undefined {
-        return this.users.find(u => u.id === id);
-    }
+    this.users.push(user);
+    console.log(user);
+    return Promise.resolve(user);
+  }
 
-    createSession(user: User): Session {
-        const sessionId = uid.sync(24);
-        const session: Session = { sessionId: sessionId, userId: user.id };
+  async updateUser(info: User): Promise<void> {
+    const idx = this.users.findIndex(u => u.id === info.id);
+    this.users[idx] = info;
+  }
 
-        // add to active sessions
-        this.sessions.push(session);
+  async getUserByEmail(email: string): Promise<User | null> {
+    const user = this.users.find(u => u.email === email);
+    if (!user) return null;
+    return Promise.resolve(user);
+  }
 
-        return session;
-    }
+  async getUserById(id: number): Promise<User | null> {
+    const user = this.users.find(u => u.id === id);
+    if (!user) return null;
+    return Promise.resolve(user);
+  }
 
-    getSession(sessionId: string): Session | undefined {
-        return this.sessions.find(s => s.sessionId === sessionId);
-    }
+  async createSession(userID: number): Promise<Session> {
+    const sessionId = uid.sync(24);
+    const session: Session = { sessionId: sessionId, userId: userID };
 
-    delSession(sessionId: string): void {
-        const index = this.sessions.findIndex(s => s.sessionId === sessionId);
-        if (!index) return;
-        this.sessions.splice(index, 1);
-    }
+    // add to active sessions
+    this.sessions.push(session);
+
+    return Promise.resolve(session);
+  }
+
+  async getSession(sessionId: string): Promise<Session | null> {
+    const session = this.sessions.find(s => s.sessionId === sessionId);
+    if (!session) return null;
+    return Promise.resolve(session);
+  }
+
+  async delSession(sessionId: string): Promise<void> {
+    const index = this.sessions.findIndex(s => s.sessionId === sessionId);
+    if (!index) return;
+    this.sessions.splice(index, 1);
+  }
 }
