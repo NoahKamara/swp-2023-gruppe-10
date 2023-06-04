@@ -69,8 +69,6 @@ app.use(requestLogger);
 // Cookies lesen und erstellen
 app.use(cookieParser());
 
-console.log('DIR', __dirname);
-
 // Database
 const sequelize = new Sequelize({
   dialect: 'postgres',
@@ -113,7 +111,6 @@ console.log(sequelize.models);
  */
 const api = new ApiController();
 
-const apiRoute = app.route('/api');
 
 /**
  * AUTHENTICATION
