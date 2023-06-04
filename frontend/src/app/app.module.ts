@@ -31,6 +31,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { ValidatedInputComponent } from './components/validated-input/validated-input.component';
 import { AuthService } from './services/auth.service';
+import { EventListComponent } from './pages/event-list/event-list.component';
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
  *  Damit fangen wir ab, falls ein Benutzer nicht eingeloggt ist,
@@ -69,7 +70,7 @@ const routes: Routes = [
   // Durch 'canActive' können wir festlegen, ob eine Route aktiviert werden kann - z.B. können wir
   // die Route sperren, falls der Benutzer nicht eingeloggt ist.
   { path: 'map', component: MapComponent, canActivate: [loginGuard] },
-  { path: 'events', component: TodoComponent, canActivate: [loginGuard] },
+  { path: 'events', component: EventListComponent, canActivate: [loginGuard] },
   { path: 'tickets', component: TodoComponent, canActivate: [loginGuard] },
 
   // Routen können auch geschachtelt werden, indem der "Child" Eigenschaft der
@@ -124,6 +125,7 @@ const routes: Routes = [
     RegisterComponent,
     TopBarComponent,
     ValidatedInputComponent,
+    EventListComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),

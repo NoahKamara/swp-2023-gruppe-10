@@ -1,0 +1,35 @@
+<div class="page-container">
+  <app-back-button></app-back-button>
+
+  <h1>Events</h1>
+
+    <div class="scrollable-container">
+        <p>
+            Auf dieser Seite finden Sie mehr Informationen über die Entwicklern der Webseite von Island-Explorer.
+        </p>
+
+        <div *ngFor="let item of events">
+          <b>{{ item.title }}</b>
+          <div class="grid-flow-row">
+            <div>
+              {{ dateFormat(item.start_date) }}
+            </div>
+            <div *ngIf="item.start_date !== item.end_date">
+              {{ dateFormat(item.end_date) }}
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Folgender Code kann gelöscht werden -->
+        <!-- <h2> Beispiel </h2>
+        <p>
+            Hier nochmals das Beispiel der Startseite, bei dem der Text über einen Service gespeichert wird.
+            Falls der Text auf einer der beiden Seiten geändert wird, ändert er sich auch automatisch auf der jeweils
+            anderen Seite!
+            Somit können Daten mithilfe von Services Komponenten-übergreifend geteilt werden.
+        </p>
+        <app-user-input label="Global synchronisierter Text" [(text)]="sampleService.globalText"></app-user-input> -->
+
+    </div>
+</div>
