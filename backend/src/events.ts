@@ -1,6 +1,6 @@
 import { DBEvent } from './models/db.event';
 import { Request, Response } from 'express';
-import { FindAttributeOptions, Op, Order } from 'sequelize';
+import { FindAttributeOptions, Op, Order, Sequelize } from 'sequelize';
 
 
 export class EventController {
@@ -35,10 +35,10 @@ export class EventController {
             },
             [Op.or]: {
               title: {
-                [Op.like]: '%' + searchTerm + '%'
+                [Op.iLike]: '%' + searchTerm + '%'
               },
               description: {
-                [Op.like]: '%' + searchTerm + '%'
+                [Op.iLike]: '%' + searchTerm + '%'
               }
             }
           },
