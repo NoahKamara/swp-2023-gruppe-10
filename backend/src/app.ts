@@ -8,7 +8,7 @@
  */
 
 import errorHandler from 'errorhandler';
-import express, { RequestHandler } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
@@ -19,6 +19,9 @@ import { MockUserAdapter } from './mocking/MockUserAdapter';
 import { Sequelize } from 'sequelize-typescript';
 import { DBUser } from './models/db.user';
 import { DBUserAdapter } from './database/DBUserAdapter';
+import { EventController } from './events';
+import { DBEvent } from './models/db.event';
+import { URL } from 'url';
 
 // Express server instanziieren
 const app = express();
@@ -34,9 +37,34 @@ app.use(express.urlencoded({ extended: true }));
 // erlauben wir alles um eventuelle Fehler zu vermeiden.
 app.use(cors({ origin: '*' }));
 
+const requestLogger = (request: Request, response: Response, next: NextFunction): void => {
+  console.info(`${request.method} ${request.path}`);
+  next();
+};
+
+app.use(requestLogger);
+
 
 // Cookies lesen und erstellen
 app.use(cookieParser());
+
+console.log('DIR', __dirname);
+
+// Database
+const sequelize = new Sequelize({
+  dialect: 'postgres',
+  host: 'localhost',
+  username: 'admin',
+  password: 'CHOOSE_A_PASSWORD',
+  database: 'postgres',
+  models: [DBUser, DBEvent],
+  modelMatch: (filename, member): boolean => {
+    console.error(filename, member);
+    return true;
+  },
+  port: 5432
+});
+console.log(sequelize.models);
 
 /**
  *  API Routen festlegen
@@ -64,6 +92,7 @@ app.use(cookieParser());
  */
 const api = new ApiController();
 
+const apiRoute = app.route('/api');
 
 /**
  * AUTHENTICATION
@@ -85,6 +114,19 @@ app.get('/api/auth', auth.getAuth.bind(auth));                    // Get Authori
 app.post('/api/session', auth.login.bind(auth));                  // Sign in & Get Session Token
 app.delete('/api/session', auth.logout.bind(auth));               // Invalidate Session
 
+/**
+ * Events
+ */
+
+const events = new EventController();
+
+
+app.get('/api/events', events.list);                              // List Events
+app.get('/api/events/:id', events.details);                       // Get Details of Event
+
+/**
+ * Other Routes
+ */
 app.get('/api', api.getInfo);
 app.get('/api/name', api.getNameInfo);
 app.post('/api/name/:id', api.postNameInfo);
@@ -126,12 +168,8 @@ app.use('/img', express.static('img'));
 
 // Wir machen den konfigurierten Express Server für andere Dateien verfügbar, die diese z.B. Testen oder Starten können.
 
-// Database
-const sequelize =  new Sequelize('postgres://admin:CHOOSE_A_PASSWORD@localhost:5432/postgres', {
-  models: [
-    DBUser,
-  ]
-});
+
+
 
 
 

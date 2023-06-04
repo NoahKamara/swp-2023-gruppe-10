@@ -1,0 +1,24 @@
+{
+  "folders": [
+	{
+      "path": "common"
+    },
+	{
+      "path": "database",
+    },
+    {
+      "path": "backend"
+    },
+	{
+      "path": "frontend"
+    }
+  ],
+  "settings": {
+    "git.openRepositoryInParentFolders": "always",
+    "files.exclude": {
+      "**/node_modules": true,
+	   "**/dist": true,
+	    "**/.vscode": true
+    }
+  }
+}
