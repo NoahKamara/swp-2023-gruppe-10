@@ -2,7 +2,6 @@ import { Session } from '../models/session';
 import { CreateUser, User } from 'softwareproject-common';
 import { UserAdapter } from '../adapters/UserAdapter';
 import uid from 'uid-safe';
-import { Sequelize } from 'sequelize-typescript';
 import { DBUser } from '../models/db.user';
 
 /**
@@ -21,8 +20,11 @@ export class DBUserAdapter implements UserAdapter {
     }
 
     async updateUser(info: User): Promise<void> {
-        // const idx = this.users.findIndex(u => u.id === info.id);
-        // this.users[idx] = info;
+      await DBUser.update(info, {
+        where: {
+          id: info.id
+        }
+      });
     }
 
     async getUserByEmail(email: string): Promise<User | null> {

@@ -4,8 +4,6 @@
  *  Weitere Information im "Unit Testing" Video in Sprint 4.
  */
 
-import request from 'supertest';
-import app from '../src/app';
 
 // describe('GET /api', () => {
 //   it('should return 200 OK', () => {

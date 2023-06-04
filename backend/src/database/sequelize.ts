@@ -1,5 +1,4 @@
 import { Sequelize } from 'sequelize';
-import { DBUser } from '../models/db.user';
 
 
 

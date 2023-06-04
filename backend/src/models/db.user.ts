@@ -1,9 +1,12 @@
+import { CreationOptional } from 'sequelize';
 import { Table, Column, Model } from 'sequelize-typescript';
 import { CreateUser, User } from 'softwareproject-common';
 
-@Table({modelName: 'users', timestamps: false})
-export class DBUser extends Model<User,CreateUser> {
- @Column
+@Table({ modelName: 'users', timestamps: false })
+export class DBUser extends Model<User, CreateUser> {
+  declare id: CreationOptional<number>;
+
+  @Column
   email!: string;
 
   @Column
