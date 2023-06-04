@@ -15,13 +15,12 @@ import cookieParser from 'cookie-parser';
 import { initDatabase } from './database/sequelize';
 import { ApiController } from './api';
 import { AuthController } from './auth';
-import { MockUserAdapter } from './mocking/MockUserAdapter';
 import { Sequelize } from 'sequelize-typescript';
 import { DBUser } from './models/db.user';
 import { DBUserAdapter } from './database/DBUserAdapter';
 import { EventController } from './events';
 import { DBEvent } from './models/db.event';
-import { URL } from 'url';
+import { v4 as uuidv4 } from 'uuid';
 
 // Express server instanziieren
 const app = express();
@@ -37,10 +36,32 @@ app.use(express.urlencoded({ extended: true }));
 // erlauben wir alles um eventuelle Fehler zu vermeiden.
 app.use(cors({ origin: '*' }));
 
+// Inject Request ID
+// Logs Request Method + Path at the beginning of every request
 const requestLogger = (request: Request, response: Response, next: NextFunction): void => {
-  console.info(`${request.method} ${request.path}`);
+  const requestID = uuidv4().toUpperCase();
+
+  // Set request id
+  response.set('X-REQUEST-ID', requestID);
+  request.id = requestID;
+
+  // Log request info
+  console.info(`${request.method} ${request.path} - [${request.id}]`);
+
+  // Continue q request
   next();
 };
+
+// Extend Request with id property
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    export interface Request {
+      id?: string;
+    }
+  }
+}
+
 
 app.use(requestLogger);
 
@@ -97,8 +118,8 @@ const apiRoute = app.route('/api');
 /**
  * AUTHENTICATION
  */
-const auth = new AuthController({ userAdapter: new DBUserAdapter(), salt: 10});
-app.post('api/login',auth.login.bind(auth));
+const auth = new AuthController({ userAdapter: new DBUserAdapter(), salt: 10 });
+app.post('api/login', auth.login.bind(auth));
 
 
 app.all('/api/*', auth.authorize.bind(auth));                     // authorization middleware - adds request.local.session & request.local.user
