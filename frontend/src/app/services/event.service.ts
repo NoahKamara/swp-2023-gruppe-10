@@ -14,6 +14,10 @@ export class EventService {
     return this.http.get<EventListItem[]>('/api/events/');
   }
 
+  public search(term: string): Observable<EventListItem[]> {
+    return this.http.get<EventListItem[]>('/api/events?term='+term);
+  }
+
   public detail(id: string | number): Observable<Event> {
     return this.http.get<Event>('/api/events/'+id);
   }

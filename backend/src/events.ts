@@ -1,6 +1,6 @@
 import { DBEvent } from './models/db.event';
 import { Request, Response } from 'express';
-import { FindAttributeOptions, Op, Order } from 'sequelize';
+import { FindAttributeOptions, Op } from 'sequelize';
 
 
 export class EventController {
