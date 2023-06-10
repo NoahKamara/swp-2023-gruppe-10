@@ -8,17 +8,19 @@
  */
 
 import errorHandler from 'errorhandler';
-import express, { RequestHandler } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 import { initDatabase } from './database/sequelize';
 import { ApiController } from './api';
 import { AuthController } from './auth';
-import { MockUserAdapter } from './mocking/MockUserAdapter';
 import { Sequelize } from 'sequelize-typescript';
 import { DBUser } from './models/db.user';
 import { DBUserAdapter } from './database/DBUserAdapter';
+import { EventController } from './events';
+import { DBEvent } from './models/db.event';
+import { v4 as uuidv4 } from 'uuid';
 
 // Express server instanziieren
 const app = express();
@@ -34,9 +36,54 @@ app.use(express.urlencoded({ extended: true }));
 // erlauben wir alles um eventuelle Fehler zu vermeiden.
 app.use(cors({ origin: '*' }));
 
+// Inject Request ID
+// Logs Request Method + Path at the beginning of every request
+const requestLogger = (request: Request, response: Response, next: NextFunction): void => {
+  const requestID = uuidv4().toUpperCase();
+
+  // Set request id
+  response.set('X-REQUEST-ID', requestID);
+  request.id = requestID;
+
+  // Log request info
+  console.info(`${request.method} ${request.path} - [${request.id}]`);
+
+  // Continue q request
+  next();
+};
+
+// Extend Request with id property
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    export interface Request {
+      id?: string;
+    }
+  }
+}
+
+
+app.use(requestLogger);
+
 
 // Cookies lesen und erstellen
 app.use(cookieParser());
+
+// Database
+const sequelize = new Sequelize({
+  dialect: 'postgres',
+  host: 'localhost',
+  username: 'admin',
+  password: 'CHOOSE_A_PASSWORD',
+  database: 'postgres',
+  models: [DBUser, DBEvent],
+  modelMatch: (filename, member): boolean => {
+    console.error(filename, member);
+    return true;
+  },
+  port: 5432
+});
+console.log(sequelize.models);
 
 /**
  *  API Routen festlegen
@@ -68,8 +115,8 @@ const api = new ApiController();
 /**
  * AUTHENTICATION
  */
-const auth = new AuthController({ userAdapter: new DBUserAdapter(), salt: 10});
-app.post('api/login',auth.login.bind(auth));
+const auth = new AuthController({ userAdapter: new DBUserAdapter(), salt: 10 });
+app.post('api/login', auth.login.bind(auth));
 
 
 app.all('/api/*', auth.authorize.bind(auth));                     // authorization middleware - adds request.local.session & request.local.user
@@ -85,6 +132,19 @@ app.get('/api/auth', auth.getAuth.bind(auth));                    // Get Authori
 app.post('/api/session', auth.login.bind(auth));                  // Sign in & Get Session Token
 app.delete('/api/session', auth.logout.bind(auth));               // Invalidate Session
 
+/**
+ * Events
+ */
+
+const events = new EventController();
+
+
+app.get('/api/events', events.list);                              // List Events
+app.get('/api/events/:id', events.details);                       // Get Details of Event
+
+/**
+ * Other Routes
+ */
 app.get('/api', api.getInfo);
 app.get('/api/name', api.getNameInfo);
 app.post('/api/name/:id', api.postNameInfo);
@@ -126,12 +186,8 @@ app.use('/img', express.static('img'));
 
 // Wir machen den konfigurierten Express Server für andere Dateien verfügbar, die diese z.B. Testen oder Starten können.
 
-// Database
-const sequelize =  new Sequelize('postgres://admin:CHOOSE_A_PASSWORD@localhost:5432/postgres', {
-  models: [
-    DBUser,
-  ]
-});
+
+
 
 
 
