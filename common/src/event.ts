@@ -4,6 +4,7 @@ export declare type EventListItem = {
   title: string,
   start_date: Date,
   end_date: Date,
+  picture: string,
   price: number
 }
 
