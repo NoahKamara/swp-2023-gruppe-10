@@ -34,7 +34,7 @@ import { AuthService } from './services/auth.service';
 import { EventsComponent } from './pages/events/events.component';
 import { EventListItemComponent } from './components/event-list-item/event-list-item.component';
 import { EventDetailComponent } from './pages/event-detail/event-detail.component';
-import { DevProfileComponent } from './dev-profile/dev-profile.component';
+import { DevProfileComponent } from './components/dev-profile/dev-profile.component';
 import { LocationMapComponent } from './components/location-map/location-map.component';
 
 /**
@@ -69,19 +69,33 @@ const loginGuard = (): boolean => {
  *  Dokumentation: https://angular.io/guide/router
  */
 const routes: Routes = [
-  // Jede Route, die wir festlegen wollen, braucht eine Komponente,
-  // die beim Laden der Route instanziiert und angezeigt wird.
-  // Die hier angegebenen Routen sind ein Beispiel; die "TodoComponent"
-  // sollten über den Lauf des Projektes ausgetauscht werden
+  // Authentication
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+
+  // About
   { path: 'about', component: AboutComponent },
 
-  // Durch 'canActive' können wir festlegen, ob eine Route aktiviert werden kann - z.B. können wir
-  // die Route sperren, falls der Benutzer nicht eingeloggt ist.
-  { path: 'map', component: MapComponent, canActivate: [loginGuard] },
-  { path: 'events', component: EventsComponent}, //canActivate: [loginGuard] },
-  { path: 'events/:id', component: EventDetailComponent}, //canActivate: [loginGuard] },
+  // Map & Locations
+  {
+    path: 'map',
+    canActivate: [loginGuard],
+    children: [
+      { path: '', component: MapComponent },
+      { path: ':name', component: TodoComponent },
+    ]
+  },
+
+
+  // Events
+  {
+    path: 'events',
+    canActivate: [loginGuard],
+    children: [
+      { path: '', component: EventsComponent },
+      { path: ':id', component: EventDetailComponent }
+    ]
+  },
   { path: 'tickets', component: TodoComponent, canActivate: [loginGuard] },
 
   // Routen können auch geschachtelt werden, indem der "Child" Eigenschaft der
