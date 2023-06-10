@@ -21,6 +21,8 @@ import { DBUserAdapter } from './database/DBUserAdapter';
 import { EventController } from './events';
 import { DBEvent } from './models/db.event';
 import { v4 as uuidv4 } from 'uuid';
+import { LocationController } from './locations';
+import { DBLocation } from './models/db.location';
 
 // Express server instanziieren
 const app = express();
@@ -76,7 +78,7 @@ const sequelize = new Sequelize({
   username: 'admin',
   password: 'CHOOSE_A_PASSWORD',
   database: 'postgres',
-  models: [DBUser, DBEvent],
+  models: [DBUser, DBEvent, DBLocation],
   modelMatch: (filename, member): boolean => {
     console.error(filename, member);
     return true;
@@ -138,9 +140,19 @@ app.delete('/api/session', auth.logout.bind(auth));               // Invalidate 
 
 const events = new EventController();
 
-
 app.get('/api/events', events.list);                              // List Events
 app.get('/api/events/:id', events.details);                       // Get Details of Event
+
+
+/**
+ * Locations
+ */
+
+const locations = new LocationController();
+
+app.get('/api/locations', locations.list);                          // List locations
+app.get('/api/locations/:name', locations.lookup);                 // lookup location by name
+
 
 /**
  * Other Routes

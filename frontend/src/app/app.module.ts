@@ -35,6 +35,7 @@ import { EventsComponent } from './pages/events/events.component';
 import { EventListItemComponent } from './components/event-list-item/event-list-item.component';
 import { EventDetailComponent } from './pages/event-detail/event-detail.component';
 import { DevProfileComponent } from './dev-profile/dev-profile.component';
+import { LocationMapComponent } from './components/location-map/location-map.component';
 
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
@@ -139,6 +140,7 @@ const routes: Routes = [
     EventListItemComponent,
     EventDetailComponent,
     DevProfileComponent,
+    LocationMapComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
