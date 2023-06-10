@@ -17,10 +17,6 @@ export class EventController {
     let events: DBEvent[];
 
     const attribs: FindAttributeOptions = ['id', 'title', 'start_date', 'end_date', 'price', 'picture'];
-    const order: Order = [
-      ['start_date', 'ASC'],
-      ['end_date', 'DESC']
-    ];
 
     try {
       if (searchTerm) {
@@ -33,16 +29,10 @@ export class EventController {
             start_date: {
               [Op.gte]: Date.now()
             },
-            [Op.or]: {
-              title: {
-                [Op.iLike]: '%' + searchTerm + '%'
-              },
-              description: {
-                [Op.iLike]: '%' + searchTerm + '%'
-              }
-            }
-          },
-          order: order
+            title: {
+              [Op.iLike]: '%' + searchTerm + '%'
+            },
+          }
         });
       } else {
         console.info('listing all events');
@@ -55,7 +45,10 @@ export class EventController {
               [Op.gte]: Date.now()
             }
           },
-          order: order
+          order: [
+            ['start_date', 'ASC'],
+            ['end_date', 'DESC']
+          ]
         });
       }
 
