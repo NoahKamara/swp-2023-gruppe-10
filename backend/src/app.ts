@@ -146,8 +146,6 @@ app.get('/api/events/:id', events.details);                       // Get Details
  * Other Routes
  */
 app.get('/api', api.getInfo);
-app.get('/api/name', api.getNameInfo);
-app.post('/api/name/:id', api.postNameInfo);
 app.get('/api/marius-berner', api.getMariusBerner);
 app.get('/api/noah-kamara', api.getNoahKamara);
 app.get('/api/emanuel-moell', api.getEmanuelMoell);
