@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EventListItem } from 'softwareproject-common';
+import { Event } from 'softwareproject-common';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class EventService {
     return this.http.get<EventListItem[]>('/api/events/');
   }
 
-  //   public details(id: number): Observable<Event> {
-  //     return this.http.get<NameInfo>('/api/name/');
-  // }
+  public detail(id: string | number): Observable<Event> {
+    return this.http.get<Event>('/api/events/'+id);
+  }
 }

@@ -1,0 +1,12 @@
+<div class="card space-x-2 w-full" routerLink="/events/{{ item.id }}">
+  <figure>
+    <img src="/img/events/{{ item.picture }}" alt="Event Bild" />
+  </figure>
+  <div class="card-title text-base">
+    <!-- This splits the actual title and the date & time info into separate lines -->
+    {{ item.title }}
+  </div>
+  <div class="card-actions">
+    {{ item.price }} €
+  </div>
+</div>

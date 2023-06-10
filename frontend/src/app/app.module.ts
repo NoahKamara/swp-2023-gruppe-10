@@ -31,7 +31,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { ValidatedInputComponent } from './components/validated-input/validated-input.component';
 import { AuthService } from './services/auth.service';
-import { EventListComponent } from './pages/event-list/event-list.component';
+import { EventsComponent } from './pages/events/events.component';
+import { EventListItemComponent } from './components/event-list-item/event-list-item.component';
+import { EventDetailComponent } from './pages/event-detail/event-detail.component';
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
  *  Damit fangen wir ab, falls ein Benutzer nicht eingeloggt ist,
@@ -44,10 +46,15 @@ import { EventListComponent } from './pages/event-list/event-list.component';
  *  (Siehe 'canActivate' Attribut bei den 'routes')
  */
 const loginGuard = (): boolean => {
+  console.info('loginGuard', 'testing auth status');
+
   if (!inject(AuthService).isLoggedIn()) {
+    console.warn('loginGuard', 'not authenticated');
     inject(Router).navigate(['/login']);
     return false;
   }
+  console.info('loginGuard', 'auth ok');
+
   return true;
 };
 
@@ -70,7 +77,8 @@ const routes: Routes = [
   // Durch 'canActive' können wir festlegen, ob eine Route aktiviert werden kann - z.B. können wir
   // die Route sperren, falls der Benutzer nicht eingeloggt ist.
   { path: 'map', component: MapComponent, canActivate: [loginGuard] },
-  { path: 'events', component: EventListComponent, canActivate: [loginGuard] },
+  { path: 'events', component: EventsComponent}, //canActivate: [loginGuard] },
+  { path: 'events/:id', component: EventDetailComponent}, //canActivate: [loginGuard] },
   { path: 'tickets', component: TodoComponent, canActivate: [loginGuard] },
 
   // Routen können auch geschachtelt werden, indem der "Child" Eigenschaft der
@@ -125,7 +133,9 @@ const routes: Routes = [
     RegisterComponent,
     TopBarComponent,
     ValidatedInputComponent,
-    EventListComponent,
+    EventsComponent,
+    EventListItemComponent,
+    EventDetailComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),

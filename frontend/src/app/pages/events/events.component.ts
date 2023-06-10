@@ -1,15 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { EventListItem } from 'softwareproject-common';
 import { EventService } from 'src/app/services/event.service';
 
 @Component({
-  selector: 'app-event-list',
-  templateUrl: './event-list.component.html',
-  styleUrls: ['./event-list.component.css']
+  templateUrl: './events.component.html',
+  styleUrls: ['./events.component.css']
 })
-export class EventListComponent implements OnInit {
+export class EventsComponent implements OnInit {
   events: EventListItem[] = [];
 
   constructor(private eventService: EventService) { }

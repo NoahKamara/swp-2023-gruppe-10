@@ -1,0 +1,23 @@
+<div class="page-container">
+  <app-top-bar title="Events">Events</app-top-bar>
+
+  <div class="scrollable-container">
+    <div class="space-y-4">
+      <div *ngFor="let item of events">
+        <app-event-list-item [item]="item"></app-event-list-item>
+      </div>
+    </div>
+
+
+    <!-- Folgender Code kann gelöscht werden -->
+    <!-- <h2> Beispiel </h2>
+        <p>
+            Hier nochmals das Beispiel der Startseite, bei dem der Text über einen Service gespeichert wird.
+            Falls der Text auf einer der beiden Seiten geändert wird, ändert er sich auch automatisch auf der jeweils
+            anderen Seite!
+            Somit können Daten mithilfe von Services Komponenten-übergreifend geteilt werden.
+        </p>
+        <app-user-input label="Global synchronisierter Text" [(text)]="sampleService.globalText"></app-user-input> -->
+
+  </div>
+</div>
