@@ -16,7 +16,7 @@ export class EventController {
 
     let events: DBEvent[];
 
-    const attribs: FindAttributeOptions = ['id', 'title', 'start_date', 'end_date', 'price'];
+    const attribs: FindAttributeOptions = ['id', 'title', 'start_date', 'end_date', 'price', 'picture'];
     const order: Order = [
       ['start_date', 'ASC'],
       ['end_date', 'DESC']

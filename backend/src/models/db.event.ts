@@ -38,6 +38,7 @@ export class DBEvent extends Model<Event> {
     return {
       id: this.id,
       title: this.title,
+      picture: this.picture,
       start_date: this.start_date,
       end_date: this.end_date,
       price: this.price
