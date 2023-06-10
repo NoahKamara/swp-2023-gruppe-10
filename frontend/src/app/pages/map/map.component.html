@@ -1,8 +1,17 @@
 <!-- Diese Komponente wird durch das "leaflet" Attribut mit der "Leaflet" Bibliothek initialisiert -->
 <!-- Bitte Dokumentation lesen: https://github.com/bluehalo/ngx-leaflet -->
-<div class="map"
+<div *ngIf="didLoad;else placeholder" class="map"
+  leaflet
+  [leafletOptions]="options"
+  [leafletLayers]="layers"
+  (leafletClick)="onMapClick($event)">
+</div>
+<ng-template #placeholder>
+  <!-- <div class="map"
      leaflet
      [leafletOptions]="options"
-     [leafletLayers]="layers"
      (leafletClick)="onMapClick($event)">
-</div>
+</div> -->
+<p>{{ didLoad }}</p>
+</ng-template>
+

@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
  * aufgerufen werden, z.B. "Leaflet.LeafletMouseEvent" (siehe unten)
  */
 import * as Leaflet from 'leaflet';
+import { Location } from 'softwareproject-common';
+import { LocationService } from 'src/app/services/location.service';
 
 @Component({
   templateUrl: './map.component.html',
@@ -28,10 +30,11 @@ export class MapComponent implements OnInit {
    * dann an Leaflet weitergegeben.
    * Dokumentation: https://github.com/bluehalo/ngx-leaflet#add-custom-layers-base-layers-markers-shapes-etc
    */
-  layers = [
-    Leaflet.marker([47.70642034921702, 9.195273407778386])
-  ];
+  layers: Leaflet.Marker[] = [];
 
+  didLoad = false;
+
+  constructor(private locationService: LocationService) { }
 
   /**
    * Diese Methode wird im "map.component.html" Code bei Leaflet registriert
@@ -43,21 +46,36 @@ export class MapComponent implements OnInit {
 
 
   ngOnInit(): void {
-    
-    for (const layer of this.layers) {
-      // Eventhandler (z.B. wenn der Benutzer auf den Marker klickt) können
-      // auch direkt in Typescript hinzugefügt werden
-      layer.on('click', (e: Leaflet.LeafletMouseEvent) => {
 
-        // Mittels der (im Browser eingebauten) alert() Methode wird ein
-        // Browser Pop-up Fenster geöffnet
-        alert('Marker was clicked!');
-
-        // In der Konsole können die Events genauer angeschaut werden,
-        // was die Entwicklung erleichtern kann
-        console.log(e);
-      });
-    }
+    // Load locations and set markers
+    this.locationService.list().subscribe({
+      next: (locs) => {
+        this.layers = this.makeMarkers(locs);
+        this.didLoad = true;
+      },
+      error: (err) => console.error('map failed to load locations', err)
+    });
   }
 
+  makeMarkers(locations: Location[]): Leaflet.Marker[] {
+    return locations.map(loc => {
+      console.log(loc.coordinates_lat, loc.coordinates_lng);
+
+      const marker = Leaflet.marker(
+        [loc.coordinates_lat, loc.coordinates_lng],
+        {title: loc.name}
+      );
+
+      marker.on('click', () => {
+        this.didClickLocation(loc);
+      });
+
+      return marker;
+    });
+  }
+
+  didClickLocation(location: Location): void {
+    alert(`Location ${location.name} was clicked!`);
+    console.log('clicked', location);
+  }
 }

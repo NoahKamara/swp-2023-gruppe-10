@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
 import { Event } from 'softwareproject-common';
+import * as Leaflet from 'leaflet';
+import { LocationService } from 'src/app/services/location.service';
 
 @Component({
   selector: 'app-event-detail',
@@ -9,7 +11,7 @@ import { Event } from 'softwareproject-common';
   styleUrls: ['./event-detail.component.css']
 })
 export class EventDetailComponent implements OnInit {
-  public event!: Event;
+  public event: Event | null = null;
 
   constructor(private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
 
@@ -21,7 +23,11 @@ export class EventDetailComponent implements OnInit {
       return;
     }
 
-    this.eventService.detail(id).subscribe({
+    // fetch event
+    const observeEvent = this.eventService.detail(id);
+
+    // When event succeeds, set local var
+    observeEvent.subscribe({
       next: (value) => {
         this.event = value;
       },
