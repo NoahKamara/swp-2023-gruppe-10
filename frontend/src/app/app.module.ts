@@ -34,6 +34,8 @@ import { AuthService } from './services/auth.service';
 import { EventsComponent } from './pages/events/events.component';
 import { EventListItemComponent } from './components/event-list-item/event-list-item.component';
 import { EventDetailComponent } from './pages/event-detail/event-detail.component';
+import { DevProfileComponent } from './dev-profile/dev-profile.component';
+
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
  *  Damit fangen wir ab, falls ein Benutzer nicht eingeloggt ist,
@@ -136,6 +138,7 @@ const routes: Routes = [
     EventsComponent,
     EventListItemComponent,
     EventDetailComponent,
+    DevProfileComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),

@@ -5,7 +5,7 @@
  *  Jede Methode, die mit einer Webroute verknüpft wird, muss einen
  *  "Request" (was angefragt wird) und eine "response" (was unser Server antwortet)
  *  entgegennehmen.
- *  *Wichtig ist, dass jede Response zeitgemäß abgeschlossen wird*, z.B. via 
+ *  *Wichtig ist, dass jede Response zeitgemäß abgeschlossen wird*, z.B. via
  *  response.send(...data...)
  *  oder response.end()
  */
@@ -13,21 +13,6 @@ import { Request, Response } from 'express';
 
 export class ApiController {
   public getInfo(request: Request, response: Response): void {
-    response.status(200);
-    response.send('ok');
-  }
-
-  public getNameInfo(request: Request, response: Response): void {
-    response.status(200);
-    response.send({
-      firstName: 'Max',
-      lastName: 'Mustermann'
-    });
-  }
-
-  public postNameInfo(request: Request, response: Response): void {
-    console.log(request.params.id);
-    console.log(request.body.requestedName);
     response.status(200);
     response.send('ok');
   }
@@ -49,12 +34,12 @@ export class ApiController {
       firstName: 'Emanuel',
       lastName: 'Moell',
       semester: '?',
-      course:'?',
+      course:'Computer Science',
       mail: 'emanuel.moell@uni.kn'
     });
   }
 
-  /** 
+  /**
   * Gibt den Namen von Noah Kamara zurück
   */
   public getNoahKamara(request: Request, response: Response): void {
@@ -62,7 +47,7 @@ export class ApiController {
     response.send({
       firstName: 'Noah',
       lastName: 'Kamara',
-      semester: '?',
+      semester: '8th Semester',
       course: 'Computer Science',
       mail: 'noah.kamara@uni.kn'
     });
