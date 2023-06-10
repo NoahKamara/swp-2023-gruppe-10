@@ -6,10 +6,10 @@ import { AboutService, NameInfo } from 'src/app/services/about.service';
   templateUrl: './niklas-groene.component.html',
   styleUrls: ['./niklas-groene.component.css']
 })
-export class NiklasGroeneComponent{
+export class NiklasGroeneComponent implements OnInit {
 
   public myName?: NameInfo;
-  
+
   constructor(
     private aboutService: AboutService) {}
 

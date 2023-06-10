@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AboutService, NameInfo } from 'src/app/services/about.service';
 
 @Component({
@@ -6,17 +6,17 @@ import { AboutService, NameInfo } from 'src/app/services/about.service';
   templateUrl: './marius-berner.component.html',
   styleUrls: ['./marius-berner.component.css']
 })
-export class MariusBernerComponent {
+export class MariusBernerComponent implements OnInit {
 
  public myName?: NameInfo;
-  
+
  constructor(
    private aboutService: AboutService) {
 
  }
 
  ngOnInit(): void {
-  
+
    this.aboutService.getMariusBerner().subscribe({
      // next: Unser Wert kam erfolgreich an!
      next: (val) => {
