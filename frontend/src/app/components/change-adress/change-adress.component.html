@@ -1,0 +1,42 @@
+<br>
+<h1>Adresse</h1>
+<div><app-back-button></app-back-button>
+</div>
+
+<div class="container2">
+    <div class="str"><app-user-input label="Straße" type="text" [(text)]="street"></app-user-input></div>
+    
+    <div class='number'><app-user-input label="Nummer" type="number" [(text)]="nummer"></app-user-input></div>
+    
+</div>
+    
+<div class="container">
+    <app-user-input label="Postleitzahl" type="number" [(text)]="plz"></app-user-input>
+    <app-user-input label="Ort" type="text" [(text)]="ort"></app-user-input>
+</div>
+
+<div class="container1">
+    <button class="btn save-btn" (click)="save()">
+
+        <div class="btn-layout">
+            <div class="icon">
+                <mat-icon></mat-icon>
+            </div>
+            <div class="text">
+                Speichern
+            </div>
+        </div>
+    </button>
+
+<button class="btn cancel-btn" routerLink="/profile/">
+
+    <div class="btn-layout">
+        <div class="icon">
+            <mat-icon></mat-icon>
+        </div>
+        <div class="text">
+            Abbrechen
+        </div>
+    </div>
+</button>
+</div>

@@ -4,15 +4,55 @@
 
     <div class="scrollable-container">
 
-        <div class="profile-info">
-            Hier können beispielsweise die Profil-Informationen geändert werden.
+        <div class="profile-info w-full">
+            <div class="profile-row">
+                <div><p>Name: <p> </div>
+                    <div class='profil-input'>Example Name</div>
+                <div>
+                <button class="btn edit-btn" routerLink="editname">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                </div>
+
+            </div>
+
+            <hr>
+            <div class="profile-row">
+                <div><p>Adresse: <p> </div>
+                    <div class='profil-input'>ExampleStreet 1</div>
+                <div>
+                <button class="btn edit-btn" routerLink="editaddress">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="profile-row">
+                <div><p>Email: <p> </div>
+                    <div class='profil-input'>examplemail@exp.com</div>
+
+            </div>
+
+
+            <hr>
+            <div class="profile-row">
+                <div><p>Passwort: <p> </div>
+                    <div class='profil-input'>***********</div>
+                <div>
+                <button class="btn edit-btn" routerLink="editpw">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                </div>
+
+            </div>
+
 
             <!-- Router Links sind generell relativ -- da diese Komponente auf der /profile Route erscheint, -->
             <!-- leitet folgender Link auf die /profile/about Seite. Falls ein "absoluter" Link gewünscht ist, -->
             <!-- sollte der Link mit "/" beginnen, z.b. "/map" -->
-            <button class="btn edit-btn" routerLink="edit">
-                <mat-icon>edit</mat-icon>
-            </button>
         </div>
 
 
@@ -32,6 +72,5 @@
         <div class="about">
             Mehr Informationen <a routerLink="about">über uns</a>
         </div>
-
-    </div>
-</div>
+    <div>
+<div>

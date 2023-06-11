@@ -1,0 +1,7 @@
+<figure>
+  <div class="w-full rounded-lg" style="aspect-ratio: 1.5;" leaflet [leafletOptions]="options" [leafletLayers]="layers" (leafletClick)="didClick()">
+  </div>
+  <figcaption class="text-sm px-1">
+    {{ locationName }}
+  </figcaption>
+</figure>

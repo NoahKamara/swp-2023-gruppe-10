@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-top-bar',
@@ -11,13 +12,12 @@ export class TopBarComponent {
   public title!: string;
 
   @Input()
-  public backURL?: string = '..';
+  public showBackBtn = true;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private location: Location) { }
 
-  pop(): void {
-    if (!this.backURL) return;
-
-    this.router.navigateByUrl(this.backURL);
+  didClickBackBtn(): void {
+    console.info('going back', this.location);
+    this.location.back();
   }
 }

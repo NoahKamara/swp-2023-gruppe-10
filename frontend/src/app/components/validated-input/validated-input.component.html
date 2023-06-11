@@ -9,7 +9,6 @@
     [ngClass]="{ 'outline-2 outline-offset-2 outline-dotted outline-error/70': hasError }" />
   <!-- Error Message -->
   <ng-container *ngIf="!content.length && hasError">
-    {{ content.childElementCount }}
     <label>
       <span #content class="text-xs text-error ml-1 mt-0">
         <ng-content></ng-content>
