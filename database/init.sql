@@ -1,3 +1,16 @@
+CREATE TABLE users (
+    id serial NOT NULL PRIMARY KEY,
+    email character varying(255) NOT NULL UNIQUE,
+    "firstName" character varying(255) NOT NULL UNIQUE,
+    "lastName" character varying(255) NOT NULL UNIQUE,
+    password character varying(255) NOT NULL,
+    street character varying(255) NOT NULL,
+    number character varying(255) NOT NULL,
+    city character varying(255) NOT NULL,
+    zipcode character  varying(255) NOT NULL
+);
+
+
 CREATE TABLE locations (
     id serial NOT NULL,
     name character varying(255) PRIMARY KEY,

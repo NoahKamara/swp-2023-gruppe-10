@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   templateUrl: './profile.component.html',
@@ -11,8 +13,11 @@ export class ProfileComponent {
   public email = 'examplemail@exp.com';
   public password = '***********';
 
+  constructor(private router: Router, private authService: AuthService) {}
   logout(): void {
-    // Bitte Logik einfügen
+    this.authService.logout().subscribe(() => {
+      this.router.navigateByUrl('/login');
+    });
   }
 
   getName(): string{

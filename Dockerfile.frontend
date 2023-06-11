@@ -1,0 +1,23 @@
+# Use an official Node.js runtime as the base image
+FROM node:16
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy code to the container
+COPY ./frontend /app
+COPY ./common /common
+
+# Clean Install project dependencies
+RUN rm -rf node_modules && \
+    npm install
+
+# Build project
+RUN npm run build
+
+# Expose the port that your Express server listens on
+EXPOSE 4200
+
+# Start the Express server
+CMD [ "npx", "ng", "serve", "--host", "0.0.0.0" ]
+

@@ -7,7 +7,7 @@
 module.exports = [
   {
     name: 'user',
-    input: 'src/models/user.ts',
+    input: '../common/src/user.ts',
     output: 'src/validation/user.ts',
     jsDocTagFilter: (tags) => tags.map(tag => tag.name).includes('schema')
   },

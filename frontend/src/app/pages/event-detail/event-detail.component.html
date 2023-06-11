@@ -1,0 +1,20 @@
+<div class="page-container">
+  <app-top-bar [title]="event?.title ?? 'Event'"/>
+
+  <div *ngIf="event" class="scrollable-container space-y-8">
+    <img src="/img/events/{{ event.picture }}" class="rounded-lg" alt="Event Bild" />
+
+    <div class="card-title text-base">
+      {{ event.title }}
+    </div>
+
+    <div [innerHTML]="event.description_html"></div>
+
+    <app-location-map [locationName]="event.location"/>
+
+    <button class="btn btn-accent btn-block text-base-content space-x-4" routerLink="/events/{{ event.id }}/tickets">
+      <mat-icon fontIcon="local_activity"></mat-icon>
+      Tickets Buchen
+    </button>
+  </div>
+</div>

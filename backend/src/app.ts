@@ -8,15 +8,21 @@
  */
 
 import errorHandler from 'errorhandler';
-import express, { RequestHandler } from 'express';
-import path from 'path';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
-
+import { initDatabase } from './database/sequelize';
 import { ApiController } from './api';
 import { AuthController } from './auth';
-import { MockUserAdapter } from './mocking/MockUserAdapter';
+import { Sequelize } from 'sequelize-typescript';
+import { DBUser } from './models/db.user';
+import { DBUserAdapter } from './database/DBUserAdapter';
+import { EventController } from './events';
+import { DBEvent } from './models/db.event';
+import { v4 as uuidv4 } from 'uuid';
+import { LocationController } from './locations';
+import { DBLocation } from './models/db.location';
 
 // Express server instanziieren
 const app = express();
@@ -32,9 +38,54 @@ app.use(express.urlencoded({ extended: true }));
 // erlauben wir alles um eventuelle Fehler zu vermeiden.
 app.use(cors({ origin: '*' }));
 
+// Inject Request ID
+// Logs Request Method + Path at the beginning of every request
+const requestLogger = (request: Request, response: Response, next: NextFunction): void => {
+  const requestID = uuidv4().toUpperCase();
+
+  // Set request id
+  response.set('X-REQUEST-ID', requestID);
+  request.id = requestID;
+
+  // Log request info
+  console.info(`${request.method} ${request.path} - [${request.id}]`);
+
+  // Continue q request
+  next();
+};
+
+// Extend Request with id property
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    export interface Request {
+      id?: string;
+    }
+  }
+}
+
+
+app.use(requestLogger);
+
 
 // Cookies lesen und erstellen
 app.use(cookieParser());
+
+// Database
+const sequelize = new Sequelize({
+  dialect: 'postgres',
+  host: 'localhost',
+  username: 'admin',
+  password: 'CHOOSE_A_PASSWORD',
+  database: 'postgres',
+  models: [DBUser, DBEvent, DBLocation],
+  modelMatch: (filename, member): boolean => {
+    console.error(filename, member);
+    return true;
+  },
+  port: 5432
+});
+console.log(sequelize.models);
 
 /**
  *  API Routen festlegen
@@ -64,22 +115,49 @@ const api = new ApiController();
 
 
 /**
- * Authentication
+ * AUTHENTICATION
  */
-const auth = new AuthController({ userAdapter: new MockUserAdapter(), salt: 10});
+const auth = new AuthController({ userAdapter: new DBUserAdapter(), salt: 10 });
+app.post('api/login', auth.login.bind(auth));
 
 
-// authorization middleware - adds request.local.session & request.local.user
-app.all('/api/*', auth.authorize.bind(auth));
+app.all('/api/*', auth.authorize.bind(auth));                     // authorization middleware - adds request.local.session & request.local.user
 
-app.post('/api/user', auth.createUser.bind(auth));
-app.get('/api/auth', auth.getAuth.bind(auth));
-app.post('/api/session', auth.login.bind(auth));
-app.delete('/api/session', auth.logout.bind(auth));
+app.post('/api/user', auth.createUser.bind(auth));                // Create New User
+app.get('/api/user', auth.getUser.bind(auth));                    // Get Current User
+app.patch('/api/user/name', auth.updateName.bind(auth));          // Update Current User Names
+app.patch('/api/user/address', auth.updateAddress.bind(auth));    // Update Current User Address
+app.patch('/api/user/password', auth.updatePassword.bind(auth));  // Update Current User Password
 
+app.get('/api/auth', auth.getAuth.bind(auth));                    // Get Authorization status (true/false)
+
+app.post('/api/session', auth.login.bind(auth));                  // Sign in & Get Session Token
+app.delete('/api/session', auth.logout.bind(auth));               // Invalidate Session
+
+/**
+ * Events
+ */
+
+const events = new EventController();
+
+app.get('/api/events', events.list);                              // List Events
+app.get('/api/events/:id', events.details);                       // Get Details of Event
+
+
+/**
+ * Locations
+ */
+
+const locations = new LocationController();
+
+app.get('/api/locations', locations.list);                          // List locations
+app.get('/api/locations/:name', locations.lookup);                 // lookup location by name
+
+
+/**
+ * Other Routes
+ */
 app.get('/api', api.getInfo);
-app.get('/api/name', api.getNameInfo);
-app.post('/api/name/:id', api.postNameInfo);
 app.get('/api/marius-berner', api.getMariusBerner);
 app.get('/api/noah-kamara', api.getNoahKamara);
 app.get('/api/emanuel-moell', api.getEmanuelMoell);
@@ -117,4 +195,13 @@ app.use('/img', express.static('img'));
 // });
 
 // Wir machen den konfigurierten Express Server für andere Dateien verfügbar, die diese z.B. Testen oder Starten können.
+
+
+
+
+
+
+initDatabase(sequelize);
+
+
 export default app;

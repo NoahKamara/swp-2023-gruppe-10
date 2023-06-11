@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AboutService, NameInfo } from 'src/app/services/about.service';
 
 @Component({
@@ -7,17 +7,17 @@ import { AboutService, NameInfo } from 'src/app/services/about.service';
   styleUrls: ['./noah-kamara.component.css']
 })
 
-export class NoahKamaraComponent {
+export class NoahKamaraComponent implements OnInit {
 
  public myName?: NameInfo;
-  
+
  constructor(
    private aboutService: AboutService) {
 
  }
 
  ngOnInit(): void {
-  
+
    this.aboutService.getNoahKamara().subscribe({
      // next: Unser Wert kam erfolgreich an!
      next: (val) => {
@@ -28,8 +28,11 @@ export class NoahKamaraComponent {
      error: (err) => {
        console.error(err);
        this.myName = {
-         firstName: 'Error!',
-         lastName: 'Error!'
+        firstName: 'Error!',
+        lastName: 'Error!',
+        semester: 'Error!',
+        course: 'Error!',
+        mail: 'Error!'
        };
      }
    });

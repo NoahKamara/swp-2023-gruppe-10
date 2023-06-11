@@ -1,0 +1,5 @@
+
+
+.default-content:not(:only-child) {
+  display: none;
+}

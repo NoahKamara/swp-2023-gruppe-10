@@ -7,8 +7,8 @@
     </div>
 
     <div class="container scrollable-container">
-        <app-user-input label="Email"></app-user-input>
-        <app-user-input label="Passwort" type="password"></app-user-input>
+        <app-user-input label="Email" [(text)]="email"></app-user-input>
+        <app-user-input label="Passwort" type="password" [(text)]="password"></app-user-input>
 
         <button class="login-btn" mat-flat-button color="accent" (click)="login()">Login</button>
 

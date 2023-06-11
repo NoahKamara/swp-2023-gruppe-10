@@ -3,7 +3,9 @@ import { UserAdapter } from './adapters/UserAdapter';
 import bcrypt from 'bcrypt';
 
 import { validateBody } from './validation/requestValidation';
-import { userInfoSchema, userLoginInfoSchema } from './validation/user';
+import { createUserSchema, updatePasswordSchema, userAddressSchema, userCredentialsSchema, userNameSchema } from './validation/user';
+import { PublicUser, User } from 'softwareproject-common';
+
 
 export class AuthController {
   private userAdapter: UserAdapter;
@@ -30,7 +32,7 @@ export class AuthController {
   /**
    * Authorize a user by session cookie
    */
-  authorize(request: Request, response: Response, next: NextFunction): void {
+  async authorize(request: Request, response: Response, next: NextFunction): Promise<void> {
     // get session id from cookies
     const sessionId = request.cookies.sessionId;
     if (!sessionId) {
@@ -39,7 +41,7 @@ export class AuthController {
     }
 
     // get session by id
-    const sess = this.userAdapter.getSession(sessionId);
+    const sess = await this.userAdapter.getSession(sessionId);
     if (!sess) {
       next();
       return;
@@ -61,38 +63,41 @@ export class AuthController {
   /**
    * Create a new user
    */
-  createUser(request: Request, response: Response): void {
-    const bodyData = validateBody(request, response, userInfoSchema);
-    if (!bodyData) return;
+  async createUser(request: Request, response: Response): Promise<void> {
+    const userInfo = validateBody(request, response, createUserSchema);
+    if (!userInfo) return;
+    const pwdHash = bcrypt.hashSync(userInfo.password, this.salt);
 
-    const password = bodyData.password;
-    const passwordHash = bcrypt.hashSync(password, this.salt);
-    const firstName = bodyData.firstName;
-    const lastName = bodyData.lastName;
-    const email = bodyData.email;
+    userInfo.password = pwdHash;
 
-    const existingUser = this.userAdapter.getUserByEmail(email);
+    const existingUser = await this.userAdapter.getUserByEmail(userInfo.email);
     if (existingUser) {
       response.status(400);
-      response.send({ code: 400, message: 'User with Email already exists' });
+      response.send({ code: 400, message: 'Nutzer mit Email existiert bereits' });
       return;
     }
 
-    // create user with controller
-    const user = this.userAdapter.createUser({
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: passwordHash,
-    });
+    try {
+      // create user with controller
+      const user = await this.userAdapter.createUser(userInfo);
 
-    // create session
-    const session = this.userAdapter.createSession(user);
+      if (!user.id) {
+        response.status(500);
+        response.send({ code: 500, message: 'Nutzer hat keine ID' });
+        return;
+      }
 
-    response.status(200);
-    response.cookie('sessionId', session.sessionId, { httpOnly: true });
-    response.send({ code: 200, message: 'Login successful' });
-    return;
+      // create session
+      const session = await this.userAdapter.createSession(user.id);
+
+      response.status(200);
+      response.cookie('sessionId', session.sessionId, { httpOnly: true });
+      response.send({ code: 200, message: 'Registrierung erfolgreich' });
+      return;
+    } catch (err) {
+      console.error(err);
+      response.send({ code: 500, message: err });
+    }
   }
 
   /**
@@ -111,37 +116,185 @@ export class AuthController {
   }
 
   /**
+   *  returns user info if they are authorized
+   */
+  getUser(request: Request, response: Response): void {
+    const user: User = response.locals.user;
+
+    if (!user || !user.id) {
+      response.status(200);
+      response.send({
+        code: 401,
+        message: 'Unauthorized'
+      });
+      return;
+    }
+
+    const publicUser: PublicUser = {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      street: user.street,
+      number: user.number,
+      city: user.city,
+      zipcode: user.zipcode
+    };
+
+    response.status(200);
+    response.send(publicUser);
+    return;
+  }
+
+  /**
+   *  update user name info
+   */
+  updateName(request: Request, response: Response): void {
+    const data = validateBody(request, response, userNameSchema);
+    if (!data) return;
+
+    const user: User = response.locals.user;
+
+    if (!user) {
+      response.status(200);
+      response.send({
+        code: 401,
+        message: 'Unauthorized'
+      });
+      return;
+    }
+
+    const newUser: User = {
+      ...user,
+      ...data
+    };
+
+    this.userAdapter.updateUser(newUser);
+
+    response.status(200);
+    response.send({
+      code: 200,
+      message: 'User Names where Updated'
+    });
+    return;
+  }
+
+  /**
+   *  update user address info
+   */
+  updateAddress(request: Request, response: Response): void {
+    const data = validateBody(request, response, userAddressSchema);
+    if (!data) return;
+
+    const user: User = response.locals.user;
+
+    if (!user) {
+      response.status(200);
+      response.send({
+        code: 401,
+        message: 'Unauthorized'
+      });
+      return;
+    }
+
+    const newUser: User = {
+      ...user,
+      ...data
+    };
+
+    this.userAdapter.updateUser(newUser);
+
+    response.status(200);
+    response.send({
+      code: 200,
+      message: 'User Names where Updated'
+    });
+    return;
+  }
+
+  /**
+   *  update user password info
+   */
+  updatePassword(request: Request, response: Response): void {
+    const data = validateBody(request, response, updatePasswordSchema);
+    if (!data) return;
+
+    const user: User = response.locals.user;
+
+    if (!user) {
+      response.status(200);
+      response.send({
+        code: 401,
+        message: 'Unauthorized'
+      });
+      return;
+    }
+
+    if (!bcrypt.compareSync(data.oldPassword, user.password)) {
+      response.status(401);
+      response.send({
+        code: 401,
+        message: 'Passwort inkorrekt'
+      });
+      return;
+    }
+
+    const pwdHash = bcrypt.hashSync(data.newPassword, this.salt);
+    const newUser: User = {
+      ...user,
+      password: pwdHash
+    };
+
+    this.userAdapter.updateUser(newUser);
+
+    response.status(200);
+    response.send({
+      code: 200,
+      message: 'User Names where Updated'
+    });
+    return;
+  }
+
+  /**
    * Login an existing user
    */
-  login(request: Request, response: Response): void {
-    const bodyData = validateBody(request, response, userLoginInfoSchema);
+  async login(request: Request, response: Response): Promise<void> {
+    console.log(request.body);
+    const bodyData = validateBody(request, response, userCredentialsSchema);
     if (!bodyData) return;
 
+    console.log(bodyData);
     const email: string = bodyData.email;
     const password: string = bodyData.password;
 
     // retrieve user
-    const user = this.userAdapter.getUserByEmail(email);
+    const user = await this.userAdapter.getUserByEmail(email);
 
     if (!user) {
       response.status(401);
-      response.send({ code: 401, message: 'E-Mail address not found' });
+      response.send({ code: 401, message: 'Es existiert kein Nutzer zu dieser Email' });
       return;
     }
 
     // check password
     if (!bcrypt.compareSync(password, user.password)) {
       response.status(401);
-      response.send({ code: 401, message: 'Wrong password' });
+      response.send({ code: 401, message: 'Passwort stimmt nicht überein' });
       return;
     }
 
-    // create session token
-    const session = this.userAdapter.createSession(user);
+    if (!user.id) {
+      response.status(500);
+      response.send({ code: 500, message: 'Nutzer hat keine ID' });
+      return;
+    }
+
+    // create session
+    const session = await this.userAdapter.createSession(user.id);
 
     response.status(200);
     response.cookie('sessionId', session.sessionId, { httpOnly: true });
-    response.send({ code: 200, message: 'Login successful' });
+    response.send({ code: 200, message: 'Anmeldung erfolgreich' });
     return;
   }
 

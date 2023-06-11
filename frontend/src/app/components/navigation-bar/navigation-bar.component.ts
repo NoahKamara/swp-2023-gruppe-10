@@ -45,9 +45,9 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
     /**
      *  Hier hören wir auf die Navigations-Events von Angular ("subscribe").
      *  Sobald die "Router" Komponente ein Event verschickt, wird die
-     *  übergebene Methode aufgerufen (welche die derzeit aktuelle Route 
+     *  übergebene Methode aufgerufen (welche die derzeit aktuelle Route
      *  in der Navigationsleiste anzeigen).
-     * 
+     *
      *  Da Komponenten immer wieder zerstört und wieder-kreiert werden ist es wichtig,
      *  dass wir uns selbst wieder deregistrieren ("unsubscribe") sobald die Komponente
      *  zerstört wird (siehe ngOnDestroy Methode)
