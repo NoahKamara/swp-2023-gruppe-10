@@ -25,6 +25,7 @@
         "sequelize-typescript": "^2.1.5",
         "softwareproject-common": "file:../common",
         "source-map-support": "0.5.21",
+        "sqlite3": "^5.1.6",
         "ts-to-zod": "^3.0.0",
         "uid-safe": "^2.1.5",
         "uuid": "^9.0.0",

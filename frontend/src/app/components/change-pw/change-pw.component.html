@@ -1,0 +1,36 @@
+<br>
+<h1>Passwort</h1>
+<div><app-back-button></app-back-button>
+</div>
+
+<div class="container">
+    <app-user-input label="Aktuelles Passwort" type="password" [(text)]="oldpw"></app-user-input>
+    <app-user-input label="Neues Passwort" type="password" [(text)]="newpw1"></app-user-input>
+    <app-user-input label="Neues Passwort Wiederholen" type="password" [(text)]="newpw2"></app-user-input>
+</div>
+
+<div class="container1">
+    <button class="btn save-btn" (click)="save()">
+
+        <div class="btn-layout">
+            <div class="icon">
+                <mat-icon></mat-icon>
+            </div>
+            <div class="text">
+                Speichern
+            </div>
+        </div>
+    </button>
+
+<button class="btn cancel-btn" routerLink="/profile/">
+
+    <div class="btn-layout">
+        <div class="icon">
+            <mat-icon></mat-icon>
+        </div>
+        <div class="text">
+            Abbrechen
+        </div>
+    </div>
+</button>
+</div>
