@@ -1,24 +1,55 @@
 <!-- Einige (globale) Klassen, wie 'page-container', sind schon in der 'styles.css' Datei vorgegeben -->
 <div>
+  <div class="start">
+    <h1 class="title">Island-Explorer</h1>
+    <img src="/assets/start.jpg" />
+  </div>
 
-    <div class="start">
-        <h1 class="title">Island-Explorer</h1>
-        <img src="/assets/start.jpg" />
+  <div class="scrollable-container">
+    <app-validated-input label="Email" aria-placeholder="beispiel@mail.de" [control]="formGroup.controls.email"
+      class="col-span-4 mt-3">
+      <span *ngIf="formGroup.controls.email.hasError('email')">
+        Keine gültige email
+      </span>
+      <span *ngIf="formGroup.controls.email.hasError('required')">
+        *Pflichtfeld
+      </span>
+    </app-validated-input>
+    <app-validated-input type="password" label="Passwort" [control]="formGroup.controls.password" class="col-span-4">
+      <span *ngIf="formGroup.controls.password.hasError('required')">
+        *Pflichtfeld
+      </span>
+    </app-validated-input>
+
+    <!-- Buttons -->
+    <div class="text-center m-auto mt-10">
+      <button class="btn btn-active btn-accent btn-block text-accent-content" (click)="login()">Login</button>
+
+      <div *ngIf="formGroup.hasError('required')" class="alert bg-transparent alert-error py-2 mb-4">
+        Alle Felder müssen ausgefüllt werden
+      </div>
+
+      <!-- Error Alert -->
+      <div *ngIf="errorMsg" class="alert bg-transparent alert-error py-2 mb-4">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="text-sm">{{ errorMsg }}</span>
+        </div>
+      </div>
+
+      <div class="text-sm">
+        Noch kein Konto?
+        <a class="link-accent" routerLink="/register">Hier registrieren</a>
+      </div>
     </div>
 
-    <div class="container scrollable-container">
-        <app-user-input label="Email" [(text)]="email"></app-user-input>
-        <app-user-input label="Passwort" type="password" [(text)]="password"></app-user-input>
-
-        <button class="login-btn" mat-flat-button color="accent" (click)="login()">Login</button>
-
-        <div class="info">
-            Noch kein Konto?
-            <a routerLink="/register">Hier registrieren</a>
-        </div>
-
-        <div class="info about">
-            Mehr Informationen <a routerLink="/about">über uns</a>
-        </div>
+    <!-- Footer -->
+    <div class="text-center text-sm fixed bottom-2 left-0 right-0">
+      Mehr Informationen <a class="link-accent" routerLink="/about">über uns</a>
     </div>
+  </div>
 </div>

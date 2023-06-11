@@ -56,7 +56,7 @@
 
     <!-- Buttons -->
     <div class="text-center m-auto mt-10">
-      <button class="btn btn-active btn-accent text-accent-content" (click)="register()">Registrieren</button>
+      <button class="btn btn-active btn-accent btn-block text-accent-content" (click)="register()">Registrieren</button>
 
       <div *ngIf="formGroup.hasError('required')" class="alert bg-transparent alert-error py-2 mb-4">
         Alle Felder müssen ausgefüllt werden
@@ -79,7 +79,6 @@
         <a class="link-accent" routerLink="/login">Hier anmelden</a>
       </div>
     </div>
-
 
 
     <!-- Footer -->

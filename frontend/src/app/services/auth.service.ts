@@ -80,7 +80,7 @@ export class AuthService {
   /**
   * login existing user
   */
-  public login(email: string, password: string): Observable<ResponseMessage> {
+  public login({ email, password }: { email: string; password: string; }): Observable<ResponseMessage> {
     const authObservable = this.http.post<ResponseMessage>('/api/session', {
       email: email,
       password: password
