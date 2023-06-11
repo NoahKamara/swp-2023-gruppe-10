@@ -18,7 +18,7 @@ export class LocationController {
   }
 
   /**
-   * returns details for an event (id specified at /events/:id)
+   * returns details for a location by name
    */
   async lookup(request: Request, response: Response): Promise<void> {
     const name = request.params.name.toLowerCase();

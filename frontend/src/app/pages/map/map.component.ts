@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 /**
  * Typescript erlaub es uns, auch einen ganzen Namespace zu importieren statt einzelne Komponenten.
@@ -32,9 +33,10 @@ export class MapComponent implements OnInit {
    */
   layers: Leaflet.Marker[] = [];
 
+  // property that switches between map placeholder and actual map
   didLoad = false;
 
-  constructor(private locationService: LocationService) { }
+  constructor(private locationService: LocationService, private router: Router, private zone: NgZone) { }
 
   /**
    * Diese Methode wird im "map.component.html" Code bei Leaflet registriert
@@ -57,10 +59,9 @@ export class MapComponent implements OnInit {
     });
   }
 
+  // Create a marker from a location
   makeMarkers(locations: Location[]): Leaflet.Marker[] {
     return locations.map(loc => {
-      console.log(loc.coordinates_lat, loc.coordinates_lng);
-
       const marker = Leaflet.marker(
         [loc.coordinates_lat, loc.coordinates_lng],
         {title: loc.name}
@@ -74,8 +75,11 @@ export class MapComponent implements OnInit {
     });
   }
 
+  // handle clicks on a location marker
   didClickLocation(location: Location): void {
-    alert(`Location ${location.name} was clicked!`);
     console.log('clicked', location);
+    this.zone.run(() => {
+      this.router.navigateByUrl('/map/'+location.name);
+    });
   }
 }

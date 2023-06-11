@@ -1,5 +1,5 @@
 <div class="page-container">
-  <app-top-bar title="Events">Events</app-top-bar>
+  <app-top-bar title="Events" [showBackBtn]="false"/>
 
   <div class="scrollable-container space-y-8">
     <input type="text" placeholder="Events Suchen" class="input input-bordered w-full" [(ngModel)]="searchTerm" (ngModelChange)="onSearchTermChange()"/>

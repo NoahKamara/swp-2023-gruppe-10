@@ -54,6 +54,7 @@ export class UserInputComponent {
   type: 'text' | 'number' | 'password' = 'text';
 
 
+
   /**
    *  Da wir die 'text' Property an eine <input> Komponente weitergeben, wollen wir Änderungen, die der Nutzer eingibt,
    *  auch wieder in unsere 'text' Property zurückerhalten. Dazu ist ein "Two-Way Data Binding" notwendig, d.h. dass *sowohl*
@@ -94,4 +95,5 @@ export class UserInputComponent {
   onTextChange(): void {
     this.textChange.emit(this.text);
   }
+
 }
