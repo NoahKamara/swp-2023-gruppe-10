@@ -50,6 +50,9 @@ export class AuthService {
   //   return userObservable;
   // }
 
+  /**
+  * Create new user with data
+  */
   public register({ firstname, lastname, street, number, city, zipcode, email, password }: { firstname: string; lastname: string; street: string; number: string; city: string; zipcode: string; email: string; password: string; }): Observable<ResponseMessage> {
     const authObservable = this.http.post<ResponseMessage>('/api/user', {
       firstName: firstname,
@@ -74,6 +77,9 @@ export class AuthService {
     return authObservable;
   }
 
+  /**
+  * login existing user
+  */
   public login(email: string, password: string): Observable<ResponseMessage> {
     const authObservable = this.http.post<ResponseMessage>('/api/session', {
       email: email,
@@ -92,6 +98,9 @@ export class AuthService {
     return authObservable;
   }
 
+  /**
+    * Log out the currently signed in user
+    */
   public logout(): Observable<ResponseMessage> {
     const authObservable = this.http.delete<ResponseMessage>('/api/session').pipe(shareReplay());
     authObservable.subscribe({

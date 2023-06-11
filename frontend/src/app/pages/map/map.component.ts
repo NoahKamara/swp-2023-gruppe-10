@@ -32,6 +32,7 @@ export class MapComponent implements OnInit {
    */
   layers: Leaflet.Marker[] = [];
 
+  // property that switches between map placeholder and actual map
   didLoad = false;
 
   constructor(private locationService: LocationService) { }
@@ -57,10 +58,9 @@ export class MapComponent implements OnInit {
     });
   }
 
+  // Create a marker from a location
   makeMarkers(locations: Location[]): Leaflet.Marker[] {
     return locations.map(loc => {
-      console.log(loc.coordinates_lat, loc.coordinates_lng);
-
       const marker = Leaflet.marker(
         [loc.coordinates_lat, loc.coordinates_lng],
         {title: loc.name}
@@ -74,6 +74,7 @@ export class MapComponent implements OnInit {
     });
   }
 
+  // handle clicks on a location marker
   didClickLocation(location: Location): void {
     alert(`Location ${location.name} was clicked!`);
     console.log('clicked', location);

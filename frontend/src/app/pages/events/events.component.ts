@@ -29,12 +29,14 @@ export class EventsComponent implements OnInit {
 
   public searchTerm: string | null = null;
 
-  dateFormat(date: string | Date): string {
-    console.log(typeof date);
-    return (new Date(date)).toLocaleDateString();
-  }
+  // dateFormat(date: string | Date): string {
+  //   console.log(typeof date);
+  //   return (new Date(date)).toLocaleDateString();
+  // }
 
+  // Perform search
   onSearchTermChange(): void {
+    // If serach term is empty, fetch all events
     if (!this.searchTerm) {
       this.fetchAll();
       return;
@@ -48,6 +50,7 @@ export class EventsComponent implements OnInit {
     });
   }
 
+  // fetch all events
   fetchAll(): void {
     this.eventService.list().subscribe({
       next: (value) => {
