@@ -5,11 +5,13 @@
     </div>
 
   </figure>
-  <div class="card-title text-base">
-    <!-- This splits the actual title and the date & time info into separate lines -->
-    {{ item.title }}
-  </div>
-  <div class="card-actions">
-    {{ item.price }} €
+  <div class="px-1 pb-2 pt-1">
+    <div class="text-sm" style="font-weight: bold;">
+      <!-- This splits the actual title and the date & time info into separate lines -->
+      {{ item.title }}
+    </div>
+    <div class="text-sm">
+      {{ item.price }} €
+    </div>
   </div>
 </div>
