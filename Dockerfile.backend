@@ -10,6 +10,7 @@ COPY ./common /common
 
 # Clean Install project dependencies
 RUN rm -rf node_modules && \
+    rm package-lock.json && \
     npm install
 
 # Build project

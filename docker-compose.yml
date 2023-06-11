@@ -1,11 +1,24 @@
 version: '3'
 services:
+  database:
+    image: postgres:15.2-alpine
+    restart: unless-stopped
+    environment:
+        - POSTGRES_USER=admin
+        - POSTGRES_PASSWORD=CHOOSE_A_PASSWORD
+        - POSTGRES_DB=postgres
+    ports:
+        - 5432:5432
+    volumes: 
+        - ./datbase/db_data:/var/lib/postgresql/data
+        - ./datbase/init.sql:/docker-entrypoint-initdb.d/init.sql
   backend:
     build:
       context: .
       dockerfile: Dockerfile.backend
     ports:
       - 80:80
+      
   frontend:
     build:
       dockerfile: Dockerfile.frontend
