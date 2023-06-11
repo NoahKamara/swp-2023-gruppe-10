@@ -16,13 +16,21 @@
       </app-validated-input>
 
       <!-- Address -->
-      <app-validated-input label="Straße" [control]="formGroup.controls.street"
-        class="col-span-3 mt-3"></app-validated-input>
-      <app-validated-input label="Nummer" [control]="formGroup.controls.number"
-        class="col-span-1 mt-3"></app-validated-input>
-      <app-validated-input label="Ort" [control]="formGroup.controls.city" class="col-span-4"></app-validated-input>
-      <app-validated-input label="Postleitzahl" [control]="formGroup.controls.zipcode"
-        class="col-span-4"></app-validated-input>
+      <app-validated-input label="Straße" [control]="formGroup.controls.street" class="col-span-3 mt-3">
+        *Pflichtfeld
+      </app-validated-input>
+
+      <app-validated-input label="Nummer" [control]="formGroup.controls.number" class="col-span-1 mt-3">
+        *Pflichtfeld
+      </app-validated-input>
+
+      <app-validated-input label="Ort" [control]="formGroup.controls.city" class="col-span-4">
+        *Pflichtfeld
+      </app-validated-input>
+
+      <app-validated-input label="Postleitzahl" [control]="formGroup.controls.zipcode" class="col-span-4">
+        *Pflichtfeld
+      </app-validated-input>
 
       <!-- Credentials -->
       <app-validated-input label="Email" [control]="formGroup.controls.email" class="col-span-4 mt-3">
@@ -32,8 +40,12 @@
         <span *ngIf="formGroup.controls.email.hasError('email')">
           Keine gültige email
         </span>
+        <span *ngIf="formGroup.controls.email.hasError('required')">
+          *Pflichtfeld
+        </span>
       </app-validated-input>
-      <app-validated-input type="password" label="Passwort (8 Zeichen)" [control]="formGroup.controls.password" class="col-span-4">
+      <app-validated-input type="password" label="Passwort (8 Zeichen)" [control]="formGroup.controls.password"
+        class="col-span-4">
         Das Passwort ist zu kurz
       </app-validated-input>
       <app-validated-input type="password" label="Passwort Wiederholen" [control]="formGroup.controls.passwordConfirm"
@@ -47,7 +59,7 @@
       <button class="btn btn-active btn-accent text-accent-content" (click)="register()">Registrieren</button>
 
       <div *ngIf="formGroup.hasError('required')" class="alert bg-transparent alert-error py-2 mb-4">
-          Alle Felder müssen ausgefüllt werden
+        Alle Felder müssen ausgefüllt werden
       </div>
 
       <!-- Error Alert -->
