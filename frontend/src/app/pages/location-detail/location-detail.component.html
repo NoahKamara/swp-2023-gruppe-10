@@ -1,0 +1,11 @@
+<div class="page-container">
+  <app-top-bar [title]="location?.name ?? 'Attraktion'"/>
+
+  <div *ngIf="location" class="scrollable-container space-y-8">
+    <img src="/img/locations/{{ location.picture }}" class="rounded-lg" alt="Event Bild" />
+
+    <div [innerHTML]="location.description_html"></div>
+
+    <app-location-map [locationName]="location.name"/>
+  </div>
+</div>

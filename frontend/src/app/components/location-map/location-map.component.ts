@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MapOptions, LatLng, TileLayer, Marker, marker } from 'leaflet';
 import { Location } from 'softwareproject-common';
 import { LocationService } from 'src/app/services/location.service';
@@ -19,9 +20,12 @@ export class LocationMapComponent implements OnInit {
   @Input()
   public locationName!: string;
 
+  @Input()
+  public enableNavigation = true;
+
   private location: Location | null = null;
 
-  constructor(private locationService: LocationService) { }
+  constructor(private locationService: LocationService, private router: Router) { }
 
   options: MapOptions = {
     layers: [new TileLayer('http://konstrates.uni-konstanz.de:8080/tile/{z}/{x}/{y}.png'),],
@@ -36,6 +40,10 @@ export class LocationMapComponent implements OnInit {
 
   layers: Marker[] = [];
 
+  didClick(): void {
+    if (!this.enableNavigation) return;
+    this.router.navigateByUrl('/map/'+this.locationName);
+  }
   ngOnInit(): void {
     this.locationService.lookup(this.locationName).subscribe({
       next: (location) => {
