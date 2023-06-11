@@ -3,7 +3,5 @@
     <div class="normal-case text-xl font-semibold text-center fixed left-0 right-0">{{ title }}</div>
   </div>
 
-  <a class="btn btn-link normal-case fixed left-0">
-    <mat-icon routerLink="{{ backURL }}" fontIcon="keyboard_arrow_left" class="icon"></mat-icon>
-  </a>
+  <app-back-button *ngIf="showBackBtn"/>
 </div>

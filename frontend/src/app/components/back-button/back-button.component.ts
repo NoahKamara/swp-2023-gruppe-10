@@ -9,7 +9,8 @@ import { Component } from '@angular/core';
 export class BackButtonComponent {
   constructor(private location: Location) {}
 
-  back(): void {
+  didClick(): void {
+    console.log('go back');
     this.location.back();
   }
 }
