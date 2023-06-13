@@ -36,6 +36,7 @@ export class AuthController {
     // get session id from cookies
     const sessionId = request.cookies.sessionId;
     if (!sessionId) {
+      request.logger.warn('authorization: failure - no session id in header');
       next();
       return;
     }
@@ -43,16 +44,21 @@ export class AuthController {
     // get session by id
     const sess = await this.userAdapter.getSession(sessionId);
     if (!sess) {
+      request.logger.warn(`authorization: failure - unknown session sessId='${sessionId}' `);
       next();
       return;
     }
 
     // get user by id
-    const user = this.userAdapter.getUserById(sess.userId);
+    const user = await this.userAdapter.getUserById(sess.userId);
+
     if (!user) {
+      request.logger.warn(`authorization: failure - unknown user sessId='${sessionId}' userID='${sess.userId}'`);
       next();
       return;
     }
+
+    request.logger.info(`authorization: success - sessId='${sess.sessionId}' userID='${user.id}'`);
 
     response.locals.session = sess;
     response.locals.user = user;
@@ -270,6 +276,7 @@ export class AuthController {
     // retrieve user
     const user = await this.userAdapter.getUserByEmail(email);
 
+    console.log(email, user);
     if (!user) {
       response.status(401);
       response.send({ code: 401, message: 'Es existiert kein Nutzer zu dieser Email' });
