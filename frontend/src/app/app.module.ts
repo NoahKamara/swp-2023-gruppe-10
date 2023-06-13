@@ -37,6 +37,12 @@ import { EventDetailComponent } from './pages/event-detail/event-detail.componen
 import { DevProfileComponent } from './components/dev-profile/dev-profile.component';
 import { LocationMapComponent } from './components/location-map/location-map.component';
 import { LocationDetailComponent } from './pages/location-detail/location-detail.component';
+import { EditProfileNameComponent } from './pages/edit-profile-name/edit-profile-name.component';
+import { EditProfileAddressComponent } from './pages/edit-profile-address/edit-profile-address.component';
+import { EditProfilePasswordComponent } from './pages/edit-profile-password/edit-profile-password.component';
+import { Observable } from 'rxjs';
+import {MatDialogModule} from '@angular/material/dialog';
+import { EditDialogComponent } from './components/edit-dialog/edit-dialog.component';
 
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
@@ -49,17 +55,25 @@ import { LocationDetailComponent } from './pages/location-detail/location-detail
  *
  *  (Siehe 'canActivate' Attribut bei den 'routes')
  */
-const loginGuard = (): boolean => {
-  console.info('loginGuard', 'testing auth status');
+const loginGuard = (): Observable<boolean> => {
+  const authObservable = inject(AuthService).checkAuth();
 
-  if (!inject(AuthService).isLoggedIn()) {
-    console.warn('loginGuard', 'not authenticated');
-    inject(Router).navigate(['/login']);
-    return false;
-  }
-  console.info('loginGuard', 'auth ok');
+  const router = inject(Router);
 
-  return true;
+  authObservable.subscribe({
+    next: success => {
+      if (!success) {
+
+        router.navigate(['/login']);
+      }
+    },
+    error: err => {
+      console.error(err);
+      router.navigate(['/login']);
+    }
+  });
+
+  return authObservable;
 };
 
 /**
@@ -111,10 +125,9 @@ const routes: Routes = [
       // Falls kein Pfad angegeben ist, wird diese Komponente automatisch geladen
       // (z.B. bei Aufruf von /profile/ )
       { path: '', component: ProfileComponent },
-      // Ansonsten werden die Pfade geschachtelt - folgende Komponente wird über den Pfad
-      // "/profile/edit" geladen.
-      { path: 'edit', component: TodoComponent },
-      // Alternativ können die Seiten (Komponenten) auch wiederverwendet werden auf mehreren Routen
+      { path: 'name', component: EditProfileNameComponent },
+      { path: 'address', component: EditProfileAddressComponent },
+      { path: 'password', component: EditProfilePasswordComponent },
       { path: 'about', component: AboutComponent },
     ]
   },
@@ -157,6 +170,10 @@ const routes: Routes = [
     DevProfileComponent,
     LocationMapComponent,
     LocationDetailComponent,
+    EditProfileNameComponent,
+    EditProfileAddressComponent,
+    EditProfilePasswordComponent,
+    EditDialogComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -170,7 +187,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatGridListModule
+    MatGridListModule,
+    MatDialogModule,
   ],
   providers: [
     HttpClientModule
