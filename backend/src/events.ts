@@ -20,7 +20,7 @@ export class EventController {
 
     try {
       if (searchTerm) {
-        console.info(`listing events matching: "${searchTerm}"`);
+        request.logger.info(`listing events matching: "${searchTerm}"`);
 
         // Filter title or description like search term
         events = await DBEvent.findAll({
@@ -35,7 +35,7 @@ export class EventController {
           }
         });
       } else {
-        console.info('listing all events');
+        request.logger.info('listing all events');
 
         // dont filter
         events = await DBEvent.findAll({
@@ -67,7 +67,7 @@ export class EventController {
     const id = request.params.id;
 
     if (!id) {
-      console.error('client not provide id');
+      request.logger.error('client not provide id');
       response.status(404);
       response.send();
     }
@@ -75,7 +75,7 @@ export class EventController {
     const event = await DBEvent.findByPk(id);
 
     if (!event) {
-      console.error('did not find event for id');
+      request.logger.error('did not find event for id');
 
       response.status(404);
       response.send({ code: 404, message: 'Kein Event zu dieser ID' });
