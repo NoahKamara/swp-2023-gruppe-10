@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { shareReplay } from 'rxjs';
+import { PublicUser } from 'softwareproject-common';
 
 @Injectable({
   providedIn: 'root'
@@ -36,19 +37,6 @@ export class AuthService {
     });
     return authObservable;
   }
-
-
-
-  // public getUser(): Observable<User> {
-  //   const userObservable: Observable<User> = this.http.get<User>('/api/user').pipe(shareReplay());
-  //   userObservable.subscribe({
-  //     error: (err) => {
-  //       this.checkAuth();
-  //       console.error(err);
-  //     }
-  //   });
-  //   return userObservable;
-  // }
 
   /**
   * Create new user with data

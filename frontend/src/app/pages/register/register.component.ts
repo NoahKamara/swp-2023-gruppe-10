@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 
-const matchPasswords: ValidatorFn = (controls: AbstractControl) => {
+export const matchPasswords: ValidatorFn = (controls: AbstractControl) => {
   const control = controls.get('password');
   const matchControl = controls.get('passwordConfirm');
 
