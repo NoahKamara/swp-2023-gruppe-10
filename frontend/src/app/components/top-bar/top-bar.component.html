@@ -1,7 +1,12 @@
 <div class="navbar bg-base-100 sticky top-0 left-0 right-0">
-  <div class="mx-auto">
-    <div class="normal-case text-xl font-semibold text-center fixed left-0 right-0">{{ title }}</div>
+  <div class="flex-none">
+    <button mat-icon-button class="back-btn btn-square btn-ghost" (click)="didClickBackBtn()">
+      <mat-icon>arrow_back</mat-icon>
+  </button>
+
   </div>
 
-  <app-back-button *ngIf="showBackBtn"/>
+  <div class="flex-1">
+    <div class="normal-case text-xl font-semibold text-center fixed left-0 right-0 text-ellipsis line-clamp-1">{{ title }}</div>
+  </div>
 </div>

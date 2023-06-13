@@ -13,12 +13,17 @@ export class AboutComponent implements OnInit {
   constructor(private aboutService: AboutService) {}
 
   ngOnInit(): void {
-    combineLatest([
+    const observables = [
       this.aboutService.getNoahKamara(),
       this.aboutService.getMariusBerner(),
       this.aboutService.getEmanuelMoell(),
       this.aboutService.getNiklasGroene()
-    ])
+    ]
+    .map(value => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+
+    combineLatest(observables)
       .subscribe({
         next: val => {
           this.developers = val;
