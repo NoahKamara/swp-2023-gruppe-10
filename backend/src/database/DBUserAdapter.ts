@@ -20,11 +20,7 @@ export class DBUserAdapter implements UserAdapter {
     }
 
     async updateUser(info: User): Promise<void> {
-      await DBUser.update(info, {
-        where: {
-          id: info.id
-        }
-      });
+      await DBUser.upsert(info);
     }
 
     async getUserByEmail(email: string): Promise<User | null> {
@@ -36,7 +32,7 @@ export class DBUserAdapter implements UserAdapter {
     }
 
     async getUserById(id: number): Promise<User | null> {
-        return await DBUser.findByPk(id);
+        return (await DBUser.findByPk(id))?.dataValues ?? null;
     }
 
     async createSession(userID: number): Promise<Session> {

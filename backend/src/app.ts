@@ -60,7 +60,6 @@ const sequelize = new Sequelize({
   },
   port: 5432
 });
-console.log(sequelize.models);
 
 /**
  *  API Routen festlegen
