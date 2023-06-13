@@ -1,76 +1,94 @@
 <div class="page-container">
 
-    <h1>Profil</h1>
+  <h1>Profil</h1>
 
-    <div class="scrollable-container">
-
-        <div class="profile-info w-full">
-            <div class="profile-row">
-                <div><p>Name: <p> </div>
-                    <div class='profil-input'>Example Name</div>
-                <div>
-                <button class="btn edit-btn" routerLink="editname">
-                    <mat-icon>edit</mat-icon>
-                </button>
-                </div>
-
-            </div>
-
-            <hr>
-            <div class="profile-row">
-                <div><p>Adresse: <p> </div>
-                    <div class='profil-input'>ExampleStreet 1</div>
-                <div>
-                <button class="btn edit-btn" routerLink="editaddress">
-                    <mat-icon>edit</mat-icon>
-                </button>
-                </div>
-
-            </div>
-
-            <hr>
-
-            <div class="profile-row">
-                <div><p>Email: <p> </div>
-                    <div class='profil-input'>examplemail@exp.com</div>
-
-            </div>
-
-
-            <hr>
-            <div class="profile-row">
-                <div><p>Passwort: <p> </div>
-                    <div class='profil-input'>***********</div>
-                <div>
-                <button class="btn edit-btn" routerLink="editpw">
-                    <mat-icon>edit</mat-icon>
-                </button>
-                </div>
-
-            </div>
-
-
-            <!-- Router Links sind generell relativ -- da diese Komponente auf der /profile Route erscheint, -->
-            <!-- leitet folgender Link auf die /profile/about Seite. Falls ein "absoluter" Link gewünscht ist, -->
-            <!-- sollte der Link mit "/" beginnen, z.b. "/map" -->
+  <div class="scrollable-container">
+    <div class="profile-info w-full">
+      <div class="profile-row">
+        <div>
+          <p>Name:
+          <p>
+        </div>
+        <div class='profil-input'>{{ user?.firstName }} {{ user?.lastName }}</div>
+        <div>
+          <button class="btn edit-btn" (click)="openEditNameModal()">
+            <mat-icon>edit</mat-icon>
+          </button>
         </div>
 
+      </div>
 
-        <button class="btn logout-btn" (click)="logout()">
-
-            <div class="btn-layout">
-                <div class="icon">
-                    <mat-icon>logout</mat-icon>
-                </div>
-                <div class="text">
-                    Abmelden
-                </div>
-            </div>
-        </button>
-
-
-        <div class="about">
-            Mehr Informationen <a routerLink="about">über uns</a>
+      <hr>
+      <div class="profile-row">
+        <div>
+          <p>Adresse:
+          <p>
         </div>
+        <div>
+
+        </div>
+        <div class='profil-input'>
+          {{ user?.street }} {{ user?.number }}
+          <br>
+          {{ user?.zipcode }} {{ user?.city }}
+        </div>
+        <div>
+          <button class="btn edit-btn"  (click)="openEditAddressModal()">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+
+      </div>
+
+      <hr>
+
+      <div class="profile-row">
+        <div>
+          <p>Email:
+          <p>
+        </div>
+        <div class='profil-input'>{{ user?.email }}</div>
+
+      </div>
+
+
+      <hr>
+      <div class="profile-row">
+        <div>
+          <p>Passwort:
+          <p>
+        </div>
+        <div class='profil-input'>***********</div>
+        <div>
+          <button class="btn edit-btn"  (click)="openEditPasswordModal()">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- Router Links sind generell relativ -- da diese Komponente auf der /profile Route erscheint, -->
+      <!-- leitet folgender Link auf die /profile/about Seite. Falls ein "absoluter" Link gewünscht ist, -->
+      <!-- sollte der Link mit "/" beginnen, z.b. "/map" -->
+    </div>
+
+
+    <button class="btn logout-btn" (click)="logout()">
+
+      <div class="btn-layout">
+        <div class="icon">
+          <mat-icon>logout</mat-icon>
+        </div>
+        <div class="text">
+          Abmelden
+        </div>
+      </div>
+    </button>
+
+
+    <div class="about">
+      Mehr Informationen <a routerLink="about">über uns</a>
+    </div>
     <div>
-<div>
+      <div>

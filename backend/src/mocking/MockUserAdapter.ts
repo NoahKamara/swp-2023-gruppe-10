@@ -34,7 +34,6 @@ export class MockUserAdapter implements UserAdapter {
     };
 
     this.users.push(user);
-    console.log(user);
     return Promise.resolve(user);
   }
 

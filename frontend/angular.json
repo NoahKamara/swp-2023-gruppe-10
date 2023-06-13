@@ -60,6 +60,12 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "present": {
+              "fileReplacements": [{
+                "replace": "src/environments/environment.ts",
+                "with": "src/environments/environment.present.ts"
+              }]
             }
           },
           "defaultConfiguration": "production"
@@ -75,6 +81,9 @@
             },
             "development": {
               "browserTarget": "frontend:build:development"
+            },
+            "present": {
+              "browserTarget": "frontend:build:present"
             }
           },
           "defaultConfiguration": "development"

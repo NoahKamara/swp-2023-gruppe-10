@@ -33,9 +33,13 @@ export class AuthController {
    * Authorize a user by session cookie
    */
   async authorize(request: Request, response: Response, next: NextFunction): Promise<void> {
+    response.locals.session = null;
+    response.locals.user = null;
+
     // get session id from cookies
     const sessionId = request.cookies.sessionId;
     if (!sessionId) {
+      request.logger.warn('authorization: failure - no session id in header');
       next();
       return;
     }
@@ -43,16 +47,21 @@ export class AuthController {
     // get session by id
     const sess = await this.userAdapter.getSession(sessionId);
     if (!sess) {
+      request.logger.warn(`authorization: failure - unknown session sessId='${sessionId}' `);
       next();
       return;
     }
 
     // get user by id
-    const user = this.userAdapter.getUserById(sess.userId);
+    const user = await this.userAdapter.getUserById(sess.userId);
+
     if (!user) {
+      request.logger.warn(`authorization: failure - unknown user sessId='${sessionId}' userID='${sess.userId}'`);
       next();
       return;
     }
+
+    request.logger.info(`authorization: success - sessId='${sess.sessionId}' userID='${user.id}'`);
 
     response.locals.session = sess;
     response.locals.user = user;
@@ -95,7 +104,7 @@ export class AuthController {
       response.send({ code: 200, message: 'Registrierung erfolgreich' });
       return;
     } catch (err) {
-      console.error(err);
+      request.logger.error(err);
       response.send({ code: 500, message: err });
     }
   }
@@ -149,14 +158,14 @@ export class AuthController {
   /**
    *  update user name info
    */
-  updateName(request: Request, response: Response): void {
+  async updateName(request: Request, response: Response): Promise<void> {
     const data = validateBody(request, response, userNameSchema);
     if (!data) return;
 
     const user: User = response.locals.user;
 
     if (!user) {
-      response.status(200);
+      response.status(401);
       response.send({
         code: 401,
         message: 'Unauthorized'
@@ -164,25 +173,32 @@ export class AuthController {
       return;
     }
 
-    const newUser: User = {
-      ...user,
-      ...data
-    };
+    user.firstName = data.firstName;
+    user.lastName = data.lastName;
 
-    this.userAdapter.updateUser(newUser);
+    try {
+      await this.userAdapter.updateUser(user);
 
-    response.status(200);
-    response.send({
-      code: 200,
-      message: 'User Names where Updated'
-    });
-    return;
+      response.status(200);
+      response.send({
+        code: 200,
+        message: 'User Names where Updated'
+      });
+    } catch (err) {
+      request.logger.error(err);
+      response.status(500);
+      response.send({
+        code: 500,
+        error: err,
+        message: 'Internal Server Error'
+      });
+    }
   }
 
   /**
    *  update user address info
    */
-  updateAddress(request: Request, response: Response): void {
+  async updateAddress(request: Request, response: Response): Promise<void> {
     const data = validateBody(request, response, userAddressSchema);
     if (!data) return;
 
@@ -197,25 +213,34 @@ export class AuthController {
       return;
     }
 
-    const newUser: User = {
-      ...user,
-      ...data
-    };
+    user.street = data.street;
+    user.number = data.number;
+    user.city = data.city;
+    user.zipcode = data.zipcode;
 
-    this.userAdapter.updateUser(newUser);
+    try {
+      await this.userAdapter.updateUser(user);
 
-    response.status(200);
-    response.send({
-      code: 200,
-      message: 'User Names where Updated'
-    });
-    return;
+      response.status(200);
+      response.send({
+        code: 200,
+        message: 'User Address was Updated'
+      });
+    } catch (err) {
+      request.logger.error(err);
+      response.status(500);
+      response.send({
+        code: 500,
+        error: err,
+        message: 'Internal Server Error'
+      });
+    }
   }
 
   /**
    *  update user password info
    */
-  updatePassword(request: Request, response: Response): void {
+  async updatePassword(request: Request, response: Response): Promise<void> {
     const data = validateBody(request, response, updatePasswordSchema);
     if (!data) return;
 
@@ -239,37 +264,43 @@ export class AuthController {
       return;
     }
 
-    const pwdHash = bcrypt.hashSync(data.newPassword, this.salt);
-    const newUser: User = {
-      ...user,
-      password: pwdHash
-    };
+    user.password = bcrypt.hashSync(data.newPassword, this.salt);
 
-    this.userAdapter.updateUser(newUser);
+    try {
+      await this.userAdapter.updateUser(user);
 
-    response.status(200);
-    response.send({
-      code: 200,
-      message: 'User Names where Updated'
-    });
-    return;
+      response.status(200);
+      response.send({
+        code: 200,
+        message: 'User Address was Updated'
+      });
+    } catch (err) {
+      request.logger.error(err);
+      response.status(500);
+      response.send({
+        code: 500,
+        error: err,
+        message: 'Internal Server Error'
+      });
+    }
   }
 
   /**
    * Login an existing user
    */
   async login(request: Request, response: Response): Promise<void> {
-    console.log(request.body);
+    request.logger.info(request.body);
     const bodyData = validateBody(request, response, userCredentialsSchema);
     if (!bodyData) return;
 
-    console.log(bodyData);
+    request.logger.info(bodyData);
     const email: string = bodyData.email;
     const password: string = bodyData.password;
 
     // retrieve user
     const user = await this.userAdapter.getUserByEmail(email);
 
+    request.logger.info(email, user);
     if (!user) {
       response.status(401);
       response.send({ code: 401, message: 'Es existiert kein Nutzer zu dieser Email' });
@@ -304,7 +335,7 @@ export class AuthController {
   logout(request: Request, response: Response): void {
     const sessionId = request.cookies.sessionId;
 
-    console.log('session', sessionId);
+    request.logger.info('session', sessionId);
 
     if (!sessionId) {
       response.status(400);

@@ -1,0 +1,15 @@
+
+
+<div>
+  <app-top-bar [showBackBtn]="false" [title]="title"/>
+
+  <!-- Content -->
+  <div class="p-2 m-auto space-y-2">
+    <ng-content/>
+  </div>
+
+  <div class="text-center text-sm space-y-2 absolute bottom-2 left-2 right-2">
+    <button class="btn btn-active btn-accent btn-block text-accent-content" (click)="onSubmit()">Speichern</button>
+    <button class="btn btn-active btn-accent btn-block text-accent-content" mat-dialog-close>Abbrechen</button>
+  </div>
+</div>

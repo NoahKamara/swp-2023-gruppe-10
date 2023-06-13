@@ -1,0 +1,12 @@
+<app-edit-dialog title="Profil Bearbeiten: Name" (didSubmit)="didSubmit()">
+  <div class="grid gap-1 grid-cols-1 grid-rows-1 m-auto ">
+    <!-- Name -->
+    <app-validated-input label="Vorname" [control]="formGroup.controls.firstName">
+      *Pflichtfeld
+    </app-validated-input>
+
+    <app-validated-input label="Nachname" [control]="formGroup.controls.lastName">
+      *Pflichtfeld
+    </app-validated-input>
+  </div>
+</app-edit-dialog>

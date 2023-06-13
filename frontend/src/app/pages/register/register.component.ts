@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/environments/environment';
 
-
-const matchPasswords: ValidatorFn = (controls: AbstractControl) => {
+export const matchPasswords: ValidatorFn = (controls: AbstractControl) => {
   const control = controls.get('password');
   const matchControl = controls.get('passwordConfirm');
 
@@ -38,15 +38,15 @@ interface RegisterFormGroup {
 })
 export class RegisterComponent implements OnInit {
   public formGroup = new FormGroup<RegisterFormGroup>({
-    firstName: new FormControl<string>('Max', [Validators.required]),
-    lastName: new FormControl<string>('Mustermann', [Validators.required]),
-    street: new FormControl<string>('Musterweg', [Validators.required]),
-    number: new FormControl<string>('4', [Validators.required]),
-    city: new FormControl<string>('Musterstadt', [Validators.required]),
-    zipcode: new FormControl<string>('12345', [Validators.required]),
-    email: new FormControl<string>('max.mustermann@email.com', [Validators.required, Validators.email]),
-    password: new FormControl<string>('max.mustermann@email.com', [Validators.required, Validators.minLength(8)]),
-    passwordConfirm: new FormControl<string>('max.mustermann@email.com', [Validators.required])
+    firstName: new FormControl<string>('', [Validators.required]),
+    lastName: new FormControl<string>('', [Validators.required]),
+    street: new FormControl<string>('', [Validators.required]),
+    number: new FormControl<string>('', [Validators.required]),
+    city: new FormControl<string>('', [Validators.required]),
+    zipcode: new FormControl<string>('', [Validators.required]),
+    email: new FormControl<string>('', [Validators.required, Validators.email]),
+    password: new FormControl<string>('', [Validators.required, Validators.minLength(8)]),
+    passwordConfirm: new FormControl<string>('', [Validators.required])
   }, {
     validators: matchPasswords
   });
@@ -55,6 +55,20 @@ export class RegisterComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
+    if (environment.isPresenting) {
+      this.formGroup.setValue({
+        firstName: 'Max',
+        lastName: 'Mustermann',
+        street: 'Musterweg',
+        number: '4',
+        city: 'Musterstadt',
+        zipcode: '12345',
+        email: 'max.mustermann@email.com',
+        password: 'max.mustermann@email.com',
+        passwordConfirm: 'max.mustermann@email.com'
+      });
+    }
+
     this.authService.checkAuth().subscribe(isAuth => {
       if (isAuth) this.router.navigateByUrl('/map');
     });

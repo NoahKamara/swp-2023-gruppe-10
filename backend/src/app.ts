@@ -20,9 +20,9 @@ import { DBUser } from './models/db.user';
 import { DBUserAdapter } from './database/DBUserAdapter';
 import { EventController } from './events';
 import { DBEvent } from './models/db.event';
-import { v4 as uuidv4 } from 'uuid';
 import { LocationController } from './locations';
 import { DBLocation } from './models/db.location';
+import { injectLogging } from './utils/logger';
 
 // Express server instanziieren
 const app = express();
@@ -38,34 +38,9 @@ app.use(express.urlencoded({ extended: true }));
 // erlauben wir alles um eventuelle Fehler zu vermeiden.
 app.use(cors({ origin: '*' }));
 
-// Inject Request ID
-// Logs Request Method + Path at the beginning of every request
-const requestLogger = (request: Request, response: Response, next: NextFunction): void => {
-  const requestID = uuidv4().toUpperCase();
-
-  // Set request id
-  response.set('X-REQUEST-ID', requestID);
-  request.id = requestID;
-
-  // Log request info
-  console.info(`${request.method} ${request.path} - [${request.id}]`);
-
-  // Continue q request
-  next();
-};
-
-// Extend Request with id property
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace Express {
-    export interface Request {
-      id?: string;
-    }
-  }
-}
 
 
-app.use(requestLogger);
+app.use(injectLogging);
 
 
 // Cookies lesen und erstellen
@@ -85,7 +60,6 @@ const sequelize = new Sequelize({
   },
   port: 5432
 });
-console.log(sequelize.models);
 
 /**
  *  API Routen festlegen

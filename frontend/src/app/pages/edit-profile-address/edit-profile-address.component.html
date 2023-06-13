@@ -1,0 +1,19 @@
+<app-edit-dialog title="Profil Bearbeiten: Adresse" (didSubmit)="didSubmit()">
+  <div class="grid gap-1 grid-cols-4 grid-rows-4">
+    <app-validated-input label="Straße" [control]="formGroup.controls.street" class="col-span-3 mt-3">
+      *Pflichtfeld
+    </app-validated-input>
+
+    <app-validated-input label="Nummer" [control]="formGroup.controls.number" class="col-span-1 mt-3">
+      *Pflichtfeld
+    </app-validated-input>
+
+    <app-validated-input label="Ort" [control]="formGroup.controls.city" class="col-span-4">
+      *Pflichtfeld
+    </app-validated-input>
+
+    <app-validated-input label="Postleitzahl" [control]="formGroup.controls.zipcode" class="col-span-4">
+      *Pflichtfeld
+    </app-validated-input>
+  </div>
+</app-edit-dialog>
