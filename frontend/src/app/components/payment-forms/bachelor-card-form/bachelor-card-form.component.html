@@ -1,0 +1,32 @@
+<h2>Bachelorcard</h2>
+
+<div class="grid gap-1 grid-cols-4 grid-rows-4">
+  <!-- Name -->
+  <app-validated-input label="Name" [control]="formGroup.controls.name" class="col-span-4">
+    *Pflichtfeld
+  </app-validated-input>
+  <app-validated-input label="Kartennummer" [control]="formGroup.controls.number" class="col-span-4">
+    *Pflichtfeld
+  </app-validated-input>
+
+  <!-- Address -->
+  <app-validated-input label="Prüfziffer" [control]="formGroup.controls.code" class="col-span-1 mt-3">
+    *Pflichtfeld
+  </app-validated-input>
+
+  <app-validated-input label="Gültig Bis (z.B.: 03/26)" [control]="formGroup.controls.date" class="col-span-3 mt-3">
+    <span *ngIf="formGroup.controls.date.hasError('pattern')">
+      Datum muss im Format MM/JJ angegeben werden
+    </span>
+    <span *ngIf="formGroup.controls.date.hasError('required')">
+      *Pflichtfeld
+    </span>
+  </app-validated-input>
+</div>
+
+<div *ngIf="formGroup.hasError('required')" class="alert bg-transparent alert-error py-2 mb-4">
+  Alle Felder müssen ausgefüllt werden
+</div>
+
+<button class="btn btn-active btn-accent btn-block text-accent-content" (click)="submit()">Kaufen</button>
+

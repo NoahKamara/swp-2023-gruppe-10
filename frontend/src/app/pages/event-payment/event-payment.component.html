@@ -1,0 +1,43 @@
+<div class="page-container">
+  <app-top-bar [title]="event?.title ?? 'Event'" />
+
+  <div *ngIf="event" class="scrollable-container space-y-4">
+    <div class="text-base">
+      {{ event.start_date }} - {{ event.end_date }}
+    </div>
+    <div class="text-base">
+      1x Ticket
+    </div>
+
+    <div class="text-base">
+      Gesamtkosten: {{ event.price }}
+    </div>
+
+
+    <div [ngSwitch]="selectedProvider" class="w-full">
+      <div *ngSwitchCase="providerEnum.bachelorcard">
+        <app-bachelor-card-form (didSubmit)="submit($event)"/>
+      </div>
+      <div *ngSwitchCase="providerEnum.hciPal">
+       <app-hcipal-form (didSubmit)="submit($event)"/>
+      </div>
+      <div *ngSwitchCase="providerEnum.swpsafe">
+        <app-swpsafe-form (didSubmit)="submit($event)"/>
+      </div>
+      <div *ngSwitchDefault providerSelection></div>
+      <div *ngIf="selectedProvider;else providerSelection">
+        <button class="btn btn-active btn-accent btn-block text-accent-content mt-1"
+          (click)="selectedProvider = null">Abbrechen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #providerSelection>
+  <h2>Zahlungsanbieter: </h2>
+  <div class="space-y-2">
+    <div *ngFor="let provider of providers">
+      <app-payment-provider-btn [provider]="provider" (didSelect)="didSelect($event)" />
+    </div>
+  </div>
+</ng-template>

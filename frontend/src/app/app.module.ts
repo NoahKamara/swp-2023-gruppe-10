@@ -43,6 +43,11 @@ import { EditProfilePasswordComponent } from './pages/edit-profile-password/edit
 import { Observable } from 'rxjs';
 import {MatDialogModule} from '@angular/material/dialog';
 import { EditDialogComponent } from './components/edit-dialog/edit-dialog.component';
+import { EventPaymentComponent } from './pages/event-payment/event-payment.component';
+import { PaymentProviderBtnComponent } from './components/payment-provider-btn/payment-provider-btn.component';
+import { BachelorCardFormComponent } from './components/payment-forms/bachelor-card-form/bachelor-card-form.component';
+import { SWPsafeFormComponent } from './components/payment-forms/swpsafe-form/swpsafe-form.component';
+import { HCIPalFormComponent } from './components/payment-forms/hcipal-form/hcipal-form.component';
 
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
@@ -108,7 +113,13 @@ const routes: Routes = [
     canActivate: [loginGuard],
     children: [
       { path: '', component: EventsComponent },
-      { path: ':id', component: EventDetailComponent }
+      {
+        path: ':id',
+        children: [
+          { path: '', component: EventDetailComponent },
+          { path: 'payment', component: EventPaymentComponent }
+        ]
+     }
     ]
   },
   { path: 'tickets', component: TodoComponent, canActivate: [loginGuard] },
@@ -135,7 +146,7 @@ const routes: Routes = [
   // Je nach Konfiguration können wir auf eine andere Route weiterleiten
   // z.B. wollen wir bei Seitenaufruf (wenn keine 'route' festgelegt ist)
   // sofort auf die Login Route weiterleiten
-  { path: '**', redirectTo: '/map' }
+  // { path: '**', redirectTo: '/map' }
 ];
 
 
@@ -174,6 +185,11 @@ const routes: Routes = [
     EditProfileAddressComponent,
     EditProfilePasswordComponent,
     EditDialogComponent,
+    EventPaymentComponent,
+    PaymentProviderBtnComponent,
+    BachelorCardFormComponent,
+    SWPsafeFormComponent,
+    HCIPalFormComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
