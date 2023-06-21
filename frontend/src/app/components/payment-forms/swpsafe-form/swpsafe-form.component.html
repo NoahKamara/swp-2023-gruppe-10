@@ -1,0 +1,15 @@
+<h2>Bachelorcard</h2>
+
+<div class="grid gap-1 grid-cols-4 grid-rows-4">
+  <!-- Name -->
+  <app-validated-input label="Code" [control]="formGroup.controls.code" class="col-span-4">
+    *Pflichtfeld
+  </app-validated-input>
+</div>
+
+<div *ngIf="formGroup.hasError('required')" class="alert bg-transparent alert-error py-2 mb-4">
+  Alle Felder müssen ausgefüllt werden
+</div>
+
+<button class="btn btn-active btn-accent btn-block text-accent-content" (click)="submit()">Kaufen</button>
+
