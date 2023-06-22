@@ -73,8 +73,16 @@ export class AuthController {
    * Create a new user
    */
   async createUser(request: Request, response: Response): Promise<void> {
+    request.logger.info('create user');
+
     const userInfo = validateBody(request, response, createUserSchema);
-    if (!userInfo) return;
+
+    if (!userInfo) {
+      request.logger.error('invalid user info in body');
+      return;
+    }
+
+    request.logger.info('create user');
     const pwdHash = bcrypt.hashSync(userInfo.password, this.salt);
 
     userInfo.password = pwdHash;
@@ -131,7 +139,7 @@ export class AuthController {
     const user: User = response.locals.user;
 
     if (!user || !user.id) {
-      response.status(200);
+      response.status(401);
       response.send({
         code: 401,
         message: 'Unauthorized'
@@ -160,7 +168,11 @@ export class AuthController {
    */
   async updateName(request: Request, response: Response): Promise<void> {
     const data = validateBody(request, response, userNameSchema);
-    if (!data) return;
+    if (!data) {
+      request.logger.error('no user name info provided in body');
+      return;
+    }
+
 
     const user: User = response.locals.user;
 
@@ -182,7 +194,7 @@ export class AuthController {
       response.status(200);
       response.send({
         code: 200,
-        message: 'User Names where Updated'
+        message: 'Name wurde aktualisiert'
       });
     } catch (err) {
       request.logger.error(err);
@@ -205,7 +217,7 @@ export class AuthController {
     const user: User = response.locals.user;
 
     if (!user) {
-      response.status(200);
+      response.status(401);
       response.send({
         code: 401,
         message: 'Unauthorized'
@@ -224,7 +236,7 @@ export class AuthController {
       response.status(200);
       response.send({
         code: 200,
-        message: 'User Address was Updated'
+        message: 'Addresse wurde aktualisiert'
       });
     } catch (err) {
       request.logger.error(err);
@@ -247,7 +259,7 @@ export class AuthController {
     const user: User = response.locals.user;
 
     if (!user) {
-      response.status(200);
+      response.status(401);
       response.send({
         code: 401,
         message: 'Unauthorized'
@@ -261,6 +273,8 @@ export class AuthController {
         code: 401,
         message: 'Passwort inkorrekt'
       });
+
+      request.logger.error('old password doesnt match');
       return;
     }
 
@@ -272,7 +286,7 @@ export class AuthController {
       response.status(200);
       response.send({
         code: 200,
-        message: 'User Address was Updated'
+        message: 'Passwort wurde aktualisiert'
       });
     } catch (err) {
       request.logger.error(err);
@@ -301,16 +315,9 @@ export class AuthController {
     const user = await this.userAdapter.getUserByEmail(email);
 
     request.logger.info(email, user);
-    if (!user) {
+    if (!user || !bcrypt.compareSync(password, user.password)) {
       response.status(401);
-      response.send({ code: 401, message: 'Es existiert kein Nutzer zu dieser Email' });
-      return;
-    }
-
-    // check password
-    if (!bcrypt.compareSync(password, user.password)) {
-      response.status(401);
-      response.send({ code: 401, message: 'Passwort stimmt nicht überein' });
+      response.send({ code: 401, message: 'Falsches Passwort oder Unbekannter Nutzer' });
       return;
     }
 
@@ -339,7 +346,7 @@ export class AuthController {
 
     if (!sessionId) {
       response.status(400);
-      response.send({ code: 400, message: 'Client did not send Session ID' });
+      response.send({ code: 400, message: 'Nutzer ist nicht authentifiziert' });
       return;
     }
 
@@ -348,6 +355,6 @@ export class AuthController {
 
     // invalidate session cookie
     response.cookie('sessionId', null, { httpOnly: true, expires: new Date(0) });
-    response.send({ code: 200, message: 'Logout successful' });
+    response.send({ code: 200, message: 'Abmeldung erfolgreich' });
   }
 }
