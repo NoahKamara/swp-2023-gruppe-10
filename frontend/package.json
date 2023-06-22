@@ -6,7 +6,7 @@
     "start-public": "ng serve --host=192.168.178.173 --disable-host-check",
     "start": "ng serve",
     "present": "npm run start -- --configuration=present",
-    "build": "cd ../common && npm run build; ng build",
+    "build": "cd ../common; npm run build; ng build",
     "lint": "eslint \"src/**/*.{js,ts}\"",
     "lintfix": "eslint \"**/*.{js,ts}\" --fix"
   },

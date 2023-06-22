@@ -48,6 +48,9 @@ import { PaymentProviderBtnComponent } from './components/payment-provider-btn/p
 import { BachelorCardFormComponent } from './components/payment-forms/bachelor-card-form/bachelor-card-form.component';
 import { SWPsafeFormComponent } from './components/payment-forms/swpsafe-form/swpsafe-form.component';
 import { HCIPalFormComponent } from './components/payment-forms/hcipal-form/hcipal-form.component';
+import { TicketsComponent } from './pages/tickets/tickets.component';
+import { TicketListItemComponent } from './components/ticket-list-item/ticket-list-item.component';
+
 
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
@@ -122,7 +125,13 @@ const routes: Routes = [
      }
     ]
   },
-  { path: 'tickets', component: TodoComponent, canActivate: [loginGuard] },
+  {
+    path: 'tickets',
+    canActivate: [loginGuard],
+    children: [
+      { path: '', component: TicketsComponent }
+    ]
+   },
 
   // Routen können auch geschachtelt werden, indem der "Child" Eigenschaft der
   // Route nochmals ein paar Routen übergeben werden.
@@ -190,6 +199,8 @@ const routes: Routes = [
     BachelorCardFormComponent,
     SWPsafeFormComponent,
     HCIPalFormComponent,
+    TicketsComponent,
+    TicketListItemComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
