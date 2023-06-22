@@ -23,6 +23,8 @@ import { DBEvent } from './models/db.event';
 import { LocationController } from './locations';
 import { DBLocation } from './models/db.location';
 import { injectLogging } from './utils/logger';
+import { DBTicket } from './models/db.ticket';
+import { TicketController } from './tickets';
 
 // Express server instanziieren
 const app = express();
@@ -53,7 +55,7 @@ const sequelize = new Sequelize({
   username: 'admin',
   password: 'CHOOSE_A_PASSWORD',
   database: 'postgres',
-  models: [DBUser, DBEvent, DBLocation],
+  models: [DBUser, DBEvent, DBLocation, DBTicket],
   modelMatch: (filename, member): boolean => {
     console.error(filename, member);
     return true;
@@ -116,6 +118,12 @@ const events = new EventController();
 
 app.get('/api/events', events.list);                              // List Events
 app.get('/api/events/:id', events.details);                       // Get Details of Event
+
+
+const tickets = new TicketController();
+
+app.post('/api/tickets/:id', tickets.purchase);                              // List Events
+app.get('/api/tickets', tickets.list);                              // List Events
 
 
 /**

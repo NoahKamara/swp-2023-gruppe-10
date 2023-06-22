@@ -1,8 +1,11 @@
+set lc_monetary="de_DE(at)euro";
+
+
 CREATE TABLE users (
     id serial NOT NULL PRIMARY KEY,
     email character varying(255) NOT NULL UNIQUE,
-    "firstName" character varying(255) NOT NULL UNIQUE,
-    "lastName" character varying(255) NOT NULL UNIQUE,
+    "firstName" character varying(255) NOT NULL,
+    "lastName" character varying(255) NOT NULL,
     password character varying(255) NOT NULL,
     street character varying(255) NOT NULL,
     number character varying(255) NOT NULL,
@@ -28,9 +31,15 @@ CREATE TABLE events (
     end_date date NOT NULL,
     location character varying(255) NOT NULL REFERENCES public.locations (name),
     picture text NOT NULL,
-    price money NOT NULL,
+    price real NOT NULL,
     description text NOT NULL,
     description_html text NOT NULL
+);
+
+CREATE TABLE tickets (
+    id serial NOT NULL PRIMARY KEY,
+    user_id int NOT NULL,
+    event_id int NOT NULL
 );
 
 INSERT INTO locations (name, coordinates_lat, coordinates_lng, picture, description, description_html)
