@@ -19,7 +19,6 @@ export class TicketController {
       return;
     }
 
-
     const tickets = await DBTicket.findAll({
       where: {
         user_id: user.id
