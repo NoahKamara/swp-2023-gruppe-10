@@ -57,6 +57,10 @@ export declare interface CreateUser extends UserCredentials, UserAddress, UserNa
 */
 export declare interface UpdatePassword {
   oldPassword: string
+
+  /**
+   * @minLength 8
+   */
   newPassword: string
 }
 

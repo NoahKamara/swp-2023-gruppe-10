@@ -24,5 +24,5 @@ export const createUserSchema = userCredentialsSchema
 
 export const updatePasswordSchema = z.object({
   oldPassword: z.string(),
-  newPassword: z.string(),
+  newPassword: z.string().min(8),
 });

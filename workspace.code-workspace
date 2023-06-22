@@ -1,7 +1,7 @@
 {
   "folders": [
 	{
-      "path": "common"
+      "path": "common",
     },
 	{
       "path": "database",
@@ -17,8 +17,9 @@
     "git.openRepositoryInParentFolders": "always",
     "files.exclude": {
       "**/node_modules": true,
-	   "**/dist": true,
-	    "**/.vscode": true
-    }
+	   "**/dist": false,
+	    "**/.vscode": true,
+    },
+    "jasmineExplorer.config": "backend/jasmine.json"
   }
 }
