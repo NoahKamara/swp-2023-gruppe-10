@@ -1,7 +1,11 @@
 <div class="page-container">
-  <app-top-bar [title]="event?.title ?? 'Event'" />
+  <app-top-bar title="Bestellen" />
 
   <div *ngIf="event" class="scrollable-container space-y-4">
+    <strong>
+      {{ event.title }}
+    </strong>
+
     <div class="text-base">
       {{ event.start_date }} - {{ event.end_date }}
     </div>
@@ -16,18 +20,18 @@
 
     <div [ngSwitch]="selectedProvider" class="w-full">
       <div *ngSwitchCase="providerEnum.bachelorcard">
-        <app-bachelor-card-form (didSubmit)="submit($event)"/>
+        <app-bachelor-card-form (didSubmit)="submit($event)" />
       </div>
       <div *ngSwitchCase="providerEnum.hciPal">
-       <app-hcipal-form (didSubmit)="submit($event)"/>
+        <app-hcipal-form (didSubmit)="submit($event)" />
       </div>
       <div *ngSwitchCase="providerEnum.swpsafe">
-        <app-swpsafe-form (didSubmit)="submit($event)"/>
+        <app-swpsafe-form (didSubmit)="submit($event)" />
       </div>
       <div *ngSwitchDefault providerSelection></div>
       <div *ngIf="selectedProvider;else providerSelection">
         <button class="btn btn-active btn-accent btn-block text-accent-content mt-1"
-          (click)="selectedProvider = null">Abbrechen</button>
+          (click)="selectedProvider = null">Zurück</button>
       </div>
     </div>
   </div>
@@ -40,4 +44,7 @@
       <app-payment-provider-btn [provider]="provider" (didSelect)="didSelect($event)" />
     </div>
   </div>
+  <button class="btn btn-active btn-accent btn-block text-accent-content mt-1" routerLink="../">
+    Abbrechen
+  </button>
 </ng-template>
