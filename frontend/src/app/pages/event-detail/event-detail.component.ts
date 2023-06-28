@@ -12,6 +12,7 @@ import { LocationService } from 'src/app/services/location.service';
 })
 export class EventDetailComponent implements OnInit {
   public event: Event | null = null;
+  public isFavorite = false ;
 
   constructor(private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
 
@@ -34,4 +35,12 @@ export class EventDetailComponent implements OnInit {
       error: console.error
     });
   }
+  didClickFavButton(): void {
+  if(this.isFavorite === false){
+    this.isFavorite = true;
+  }
+  else{
+    this.isFavorite = false;
+  }
+}
 }

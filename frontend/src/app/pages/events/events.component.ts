@@ -24,6 +24,7 @@ const listAnimation = trigger('listAnimation', [
 })
 export class EventsComponent implements OnInit {
   events: EventListItem[] = [];
+  public isFavorite = false ;
 
   constructor(private eventService: EventService) { }
 
@@ -62,5 +63,13 @@ export class EventsComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchAll();
+  }
+  didClickFavButton(): void {
+    if(this.isFavorite === false){
+      this.isFavorite = true;
+    }
+    else{
+      this.isFavorite = false;
+    }
   }
 }

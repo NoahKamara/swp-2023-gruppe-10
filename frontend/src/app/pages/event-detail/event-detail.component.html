@@ -1,12 +1,15 @@
 <div class="page-container">
   <app-top-bar [title]="event?.title ?? 'Event'"/>
-
+ 
   <div *ngIf="event" class="scrollable-container space-y-8">
     <img src="/img/events/{{ event.picture }}" class="rounded-lg" alt="Event Bild" />
-
+    <div>
+      <mat-icon (click)="didClickFavButton()" class="float-right transform: scale-150">{{isFavorite ? "favorite": "favorite_border"}}</mat-icon>
+    </div>
     <div class="card-title text-base">
       {{ event.title }}
     </div>
+    
 
     <div [innerHTML]="event.description_html"></div>
 
