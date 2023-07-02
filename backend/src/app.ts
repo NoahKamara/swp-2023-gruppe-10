@@ -8,7 +8,7 @@
  */
 
 import errorHandler from 'errorhandler';
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
@@ -17,7 +17,6 @@ import { ApiController } from './api';
 import { AuthController } from './auth';
 import { Sequelize } from 'sequelize-typescript';
 import { DBUser } from './models/db.user';
-import { DBUserAdapter } from './database/DBUserAdapter';
 import { EventController } from './events';
 import { DBEvent } from './models/db.event';
 import { LocationController } from './locations';
@@ -25,6 +24,7 @@ import { DBLocation } from './models/db.location';
 import { injectLogging } from './utils/logger';
 import { DBTicket } from './models/db.ticket';
 import { TicketController } from './tickets';
+import { DBSession } from './models/db.session';
 
 // Express server instanziieren
 const app = express();
@@ -49,19 +49,29 @@ app.use(injectLogging);
 app.use(cookieParser());
 
 // Database
+
 const sequelize = new Sequelize({
   dialect: 'postgres',
   host: 'localhost',
   username: 'admin',
   password: 'CHOOSE_A_PASSWORD',
   database: 'postgres',
-  models: [DBUser, DBEvent, DBLocation, DBTicket],
+  models: [DBUser, DBEvent, DBLocation, DBTicket, DBSession],
   modelMatch: (filename, member): boolean => {
     console.error(filename, member);
     return true;
   },
   port: 5432
 });
+
+const testDB = () => {
+  DBUser.count();
+  DBEvent.count();
+  DBLocation.count();
+  DBTicket.count();
+  DBSession.count();
+};
+
 
 /**
  *  API Routen festlegen
@@ -93,7 +103,7 @@ const api = new ApiController();
 /**
  * AUTHENTICATION
  */
-const auth = new AuthController({ userAdapter: new DBUserAdapter(), salt: 10 });
+const auth = new AuthController({salt: 10 });
 app.post('api/login', auth.login.bind(auth));
 
 
@@ -184,6 +194,6 @@ app.use('/img', express.static('img'));
 
 
 initDatabase(sequelize);
-
+testDB();
 
 export default app;

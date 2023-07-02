@@ -8,7 +8,7 @@ import { DBUser } from './models/db.user';
 
 export class TicketController {
   async list(request: Request, response: Response): Promise<void> {
-    const user: User = response.locals.user;
+    const user: User = response.locals.session?.user;
 
     if (!user || !user.id) {
       response.status(200);
@@ -46,7 +46,7 @@ export class TicketController {
   }
 
   async purchase(request: Request, response: Response): Promise<void> {
-    const user: User = response.locals.user;
+    const user: User = response.locals.session?.user;
 
     if (!user || !user.id) {
       response.status(200);

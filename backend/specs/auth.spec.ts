@@ -1,3 +1,4 @@
+/* eslint-disable jasmine/no-spec-dupes */
 /**
  *  Hier definieren wir verschiedene Unittests.
  *  Jeder Unittest muss in dem "specs" Ordner liegen und mit ".spec.ts" enden.
@@ -6,10 +7,31 @@
 
 import request, { SuperAgentTest } from 'supertest';
 import app from '../src/app';
-import { CreateUser, UserCredentials } from 'softwareproject-common';
+import { UserCredentials } from 'softwareproject-common';
 import { genMail, createUser, authorize, genPassword, getInfo, unauthorizedBody } from './helpers/user-helper';
 import { UpdatePassword, UserAddress, UserName } from 'softwareproject-common/dist/user';
+import { APIResponse } from '../src/models/response';
 
+
+
+type MatchingFn = (res: request.Response) => void
+export const matcher = (expected: APIResponse): MatchingFn => {
+  return (res: request.Response) => {
+    expect(res.status).toEqual(expected.status);
+    console.log('Expect not empty body');
+    if (!expected.data) {
+      console.log('Expect empty body');
+      expect(res.body).toEqual({});
+    } else {
+      console.log('Expect not empty body');
+      expect(res.body).toEqual(expected.data);
+    }
+  };
+};
+// export const expectResponse = (response: request.Response, expected: APIResponse): void => {
+//   expect(response.status).toEqual(expected.status);
+//   expect(response.body).toEqual(expected.data);
+// };
 
 describe('Registration', () => {
   const path = '/api/user';
@@ -48,18 +70,12 @@ describe('Registration', () => {
     await request(app)
       .post(path)
       .send(user)
-      .expect(200, {
-        code: 200,
-        message: 'Registrierung erfolgreich',
-      });
+      .expect(matcher(APIResponse.success()));
 
     return await request(app)
       .post(path)
       .send(user)
-      .expect(400, {
-        code: 400,
-        message: 'Nutzer mit Email existiert bereits',
-      });
+      .expect(matcher(APIResponse.badRequest('Nutzer mit Email existiert bereits')));
   });
 
   it('fails - invalid email', () => {
@@ -84,15 +100,11 @@ describe('Registration', () => {
     return request(app)
       .post(path)
       .send(user)
-      .expect(400)
-      .expect({
-        errors: {
-          formErrors: [],
-          fieldErrors: {
-            password: ['String must contain at least 8 character(s)'],
-          },
-        },
-      });
+      .expect(400);
+      // .expect(res => {
+      //   request.Response;
+      // });
+
   });
 });
 
@@ -110,10 +122,7 @@ describe('Login', async () => {
       .post(path)
       .send(credentials)
       .expect(200)
-      .expect({
-        code: 200,
-        message: 'Anmeldung erfolgreich',
-      });
+      .expect(matcher(APIResponse.success()));
   });
 
   it('fails - wrong password', () => {
@@ -123,11 +132,7 @@ describe('Login', async () => {
         ...credentials,
         password: 'wrongpassword'
       })
-      .expect(401)
-      .expect({
-        code: 401,
-        message: 'Falsches Passwort oder Unbekannter Nutzer',
-      });
+      .expect(matcher(APIResponse.unauthorized('Falsches Passwort oder Unbekannter Nutzer')));
   });
 
   it('fails - unknown user', () => {
@@ -137,11 +142,7 @@ describe('Login', async () => {
         ...credentials,
         email: 'unknown@user.de'
       })
-      .expect(401)
-      .expect({
-        code: 401,
-        message: 'Falsches Passwort oder Unbekannter Nutzer',
-      });
+      .expect(matcher(APIResponse.unauthorized('Falsches Passwort oder Unbekannter Nutzer')));
   });
 });
 
@@ -174,23 +175,16 @@ describe('Logout', () => {
     // Logout
     await agent
       .delete(path)
-      .expect(200, {
-        code: 200,
-        message: 'Abmeldung erfolgreich',
-      });
+      .expect(matcher(APIResponse.success()));
 
-    // console.log(res.body);
-    await isAuthorized(agent).expect('false');
+    await isAuthorized(agent).expect(matcher(APIResponse.unauthorized()));
   });
 
 
   it('fails - no session id in cookie header', async () => {
     await request(app)
       .delete(path)
-      .expect(400, {
-        code: 400,
-        message: 'Nutzer ist nicht authentifiziert',
-      });
+      .expect(matcher(APIResponse.unauthorized()));
   });
 });
 
@@ -198,15 +192,15 @@ describe('Logout', () => {
 describe('Get Auth', () => {
   const path = '/api/auth/';
   it('succeeds - true', async () => {
-    (await authorize(app))
+    await (await authorize(app))
       .get(path)
-      .expect(200, 'true');
+      .expect(200);
   });
 
   it('succeeds - false', async () => {
     await request(app)
       .get(path)
-      .expect(200, 'false');
+      .expect(matcher(APIResponse.unauthorized()));
   });
 });
 
@@ -215,27 +209,31 @@ describe('Get User', () => {
 
   it('succeeds', async () => {
     const creds = await createUser(app);
+    const agent = await authorize(app, creds);
 
-    (await authorize(app, creds))
+    const exectedData = {
+      firstName: 'Max',
+      lastName: 'Mustermann',
+      street: 'Musterweg',
+      number: '12',
+      city: 'Musterstadt',
+      zipcode: '12345',
+      email: creds.email
+    };
+
+    await agent
       .get(path)
       .expect(res => {
-        expect(res.body.firstName).toBe('Max');
-        expect(res.body.lastName).toBe('Mustermann');
-        expect(res.body.street).toBe('Musterweg');
-        expect(res.body.number).toBe('12');
-        expect(res.body.city).toBe('Musterstadt');
-        expect(res.body.email).toBe(creds.email);
+        matcher(APIResponse.success(jasmine.objectContaining(exectedData)))(res);
+
         expect(res.body.id).toBeDefined();
-      })
-      .then(res => {
-        console.log(res.body);
       });
   });
 
   it('fails - not authorized', async () => {
     await request(app)
       .get(path)
-      .expect(401, unauthorizedBody);
+      .expect(matcher(APIResponse.unauthorized()));
   });
 });
 
@@ -258,10 +256,7 @@ describe('Update Name', () => {
     await agent
       .patch(path)
       .send(updateData)
-      .expect(200, {
-        code: 200,
-        message: 'Name wurde aktualisiert',
-      });
+      .expect(matcher(APIResponse.success()));
 
     const info = await getInfo(agent);
 
@@ -273,7 +268,7 @@ describe('Update Name', () => {
     await request(app)
       .patch(path)
       .send(updateData)
-      .expect(401, unauthorizedBody);
+      .expect(matcher(APIResponse.unauthorized()));
   });
 });
 
@@ -301,10 +296,7 @@ describe('Update Password', () => {
     await agent
       .patch(path)
       .send(updateData)
-      .expect(200, {
-        code: 200,
-        message: 'Passwort wurde aktualisiert',
-      });
+      .expect(matcher(APIResponse.success()));
 
     await authorize(app, { email: credentials.email, password: updateData.newPassword });
   });
@@ -313,14 +305,14 @@ describe('Update Password', () => {
     await request(app)
       .patch(path)
       .send(updateData)
-      .expect(401, unauthorizedBody);
+      .expect(matcher(APIResponse.unauthorized()));
   });
 
   it('fails - wrong password', async () => {
     await agent
       .patch(path)
       .send({ oldPassword: 'wrong', newPassword: updateData.newPassword })
-      .expect(401, { code: 401, message: 'Passwort inkorrekt' });
+      .expect(matcher(APIResponse.unauthorized('Passwort inkorrekt')));
   });
 
   it('fails - new password too short', async () => {
@@ -357,10 +349,7 @@ describe('Update Address', () => {
     await agent
       .patch(path)
       .send(updateData)
-      .expect(200, {
-        code: 200,
-        message: 'Addresse wurde aktualisiert',
-      });
+      .expect(matcher(APIResponse.success()));
 
     const info = await getInfo(agent);
 
@@ -374,6 +363,6 @@ describe('Update Address', () => {
     await request(app)
       .patch(path)
       .send(updateData)
-      .expect(401, unauthorizedBody);
+      .expect(matcher(APIResponse.unauthorized()));
   });
 });

@@ -13,6 +13,13 @@ CREATE TABLE users (
     zipcode character  varying(255) NOT NULL
 );
 
+CREATE TABLE sessions (
+    id serial NOT NULL PRIMARY KEY,
+    user_id int NOT NULL,
+    session_id character varying(255) NOT NULL
+);
+
+
 
 CREATE TABLE locations (
     id serial NOT NULL,
