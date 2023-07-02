@@ -30,9 +30,6 @@ export class DBUser extends Model<User, CreateUser> {
 
   @Column
   zipcode!: string;
-
-  @HasMany(() => DBTicket)
-  tickets!: DBTicket[];
 }
 
 
