@@ -1,6 +1,6 @@
 import { DBEvent } from './models/db.event';
 import { Request, Response } from 'express';
-import { FindAttributeOptions, Op } from 'sequelize';
+import { APIResponse } from './models/response';
 
 
 export class EventController {
@@ -16,47 +16,19 @@ export class EventController {
 
     let events: DBEvent[];
 
-    const attribs: FindAttributeOptions = ['id', 'title', 'start_date', 'end_date', 'price', 'picture'];
-
     try {
       if (searchTerm) {
         request.logger.info(`listing events matching: "${searchTerm}"`);
 
-        // Filter title or description like search term
-        events = await DBEvent.findAll({
-          attributes: attribs,
-          where: {
-            start_date: {
-              [Op.gte]: Date.now()
-            },
-            title: {
-              [Op.iLike]: '%' + searchTerm + '%'
-            },
-          }
-        });
+        events = await DBEvent.search(String(searchTerm));
       } else {
         request.logger.info('listing all events');
-
-        // dont filter
-        events = await DBEvent.findAll({
-          attributes: attribs,
-          where: {
-            start_date: {
-              [Op.gte]: Date.now()
-            }
-          },
-          order: [
-            ['start_date', 'ASC'],
-            ['end_date', 'DESC']
-          ]
-        });
+        events = await DBEvent.upcoming();
       }
 
-      response.status(200);
-      response.send(events);
+      APIResponse.success(events).send(response);
     } catch (err) {
-      response.status(500);
-      response.send(err);
+      APIResponse.internal(err).send(response);
     }
   }
 
@@ -66,25 +38,22 @@ export class EventController {
   async details(request: Request, response: Response): Promise<void> {
     const id = request.params.id;
 
+
     if (!id) {
       request.logger.error('client not provide id');
-      response.status(404);
-      response.send();
+      APIResponse.badRequest('missing :id in path').send(response);
+      return;
     }
 
     const event = await DBEvent.findByPk(id);
 
     if (!event) {
       request.logger.error('did not find event for id');
-
-      response.status(404);
-      response.send({ code: 404, message: 'Kein Event zu dieser ID' });
+      APIResponse.notFound('missing :id in path').send(response);
       return;
     }
 
-
-    response.status(200);
-    response.send(event);
+    APIResponse.success(event).send(response);
     return;
   }
 }

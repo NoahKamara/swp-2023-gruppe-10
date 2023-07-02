@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { DBLocation } from './models/db.location';
 import { Op } from 'sequelize';
+import { APIResponse } from './models/response';
 
 export class LocationController {
   /**
@@ -9,11 +10,10 @@ export class LocationController {
   async list(request: Request, response: Response): Promise<void> {
     try {
       const locations = await DBLocation.findAll();
-      response.status(200);
-      response.send(locations);
+      APIResponse.success(locations).send(response);
     } catch (err) {
+      APIResponse.internal(err).send(response);
       response.status(500);
-      response.send(err);
     }
   }
 
@@ -25,29 +25,19 @@ export class LocationController {
 
     if (!name) {
       console.error('client not provide name');
-      response.status(404);
-      response.send();
-    }
-
-    const location = await DBLocation.findOne({
-      where: {
-        name: {
-          [Op.iLike]: name
-        }
-      }
-    });
-
-    if (!location) {
-      console.error('did not find location for id');
-
-      response.status(404);
-      response.send({ code: 404, message: 'Keine Attraktion mit diesem Namen' });
+      APIResponse.badRequest('Missing :name in path').send(response);
       return;
     }
 
+    const location = await DBLocation.lookup(name);
 
-    response.status(200);
-    response.send(location);
+    if (!location) {
+      console.error('did not find location for id');
+      APIResponse.notFound(`No location with name ${name}`).send(response);
+      return;
+    }
+
+    APIResponse.success(location).send(response);
     return;
   }
 }

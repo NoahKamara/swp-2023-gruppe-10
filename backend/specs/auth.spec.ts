@@ -11,27 +11,9 @@ import { UserCredentials } from 'softwareproject-common';
 import { genMail, createUser, authorize, genPassword, getInfo, unauthorizedBody } from './helpers/user-helper';
 import { UpdatePassword, UserAddress, UserName } from 'softwareproject-common/dist/user';
 import { APIResponse } from '../src/models/response';
+import { matcher } from './helpers/responseMatching';
 
 
-
-type MatchingFn = (res: request.Response) => void
-export const matcher = (expected: APIResponse): MatchingFn => {
-  return (res: request.Response) => {
-    expect(res.status).toEqual(expected.status);
-    console.log('Expect not empty body');
-    if (!expected.data) {
-      console.log('Expect empty body');
-      expect(res.body).toEqual({});
-    } else {
-      console.log('Expect not empty body');
-      expect(res.body).toEqual(expected.data);
-    }
-  };
-};
-// export const expectResponse = (response: request.Response, expected: APIResponse): void => {
-//   expect(response.status).toEqual(expected.status);
-//   expect(response.body).toEqual(expected.data);
-// };
 
 describe('Registration', () => {
   const path = '/api/user';

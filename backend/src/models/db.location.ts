@@ -1,4 +1,4 @@
-import { CreationOptional } from 'sequelize';
+import { CreationOptional, Op } from 'sequelize';
 import { Column, Table, Model } from 'sequelize-typescript';
 import { Location } from 'softwareproject-common';
 
@@ -26,4 +26,23 @@ export class DBLocation extends Model<Location> {
 
   @Column
   description_html!: string;
+
+  /**
+    * looks for a location with this name and returns it
+    *
+    * @memberof DBLocation
+    * @static
+    * @method
+    * @param {string} name
+    * @return {DBLocation | null}
+    */
+  static async lookup(name: string): Promise<DBLocation | null> {
+    return await DBLocation.findOne({
+      where: {
+        name: {
+          [Op.iLike]: name
+        }
+      }
+    });
+  }
 }

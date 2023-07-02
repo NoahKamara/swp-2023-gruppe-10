@@ -59,6 +59,10 @@ export class APIResponse {
     return this.failure(400, 'Bad Request', context);
   }
 
+  static notFound(context: unknown | null = null): APIResponse {
+    return this.failure(404, 'Not Found', context);
+  }
+
   static validationError(error: ZodError): APIResponse {
     return this.error(400, {
       code: 400,
