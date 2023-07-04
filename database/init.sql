@@ -32,10 +32,12 @@ CREATE TABLE locations (
 );
 
 CREATE TABLE events (
-    id serial NOT NULL,
-    title character varying(255) PRIMARY KEY,
+    id serial NOT NULL PRIMARY KEY,
+    title character varying(255),
     start_date date NOT NULL,
     end_date date NOT NULL,
+    start_time time,
+    end_time time,
     location character varying(255) NOT NULL REFERENCES public.locations (name),
     picture text NOT NULL,
     price real NOT NULL,
@@ -1151,10 +1153,35 @@ Wie hat es Ihnen bei uns im Restaurant Comturey gefallen? Wir freuen uns auf Ihr
 
 
 
-INSERT INTO events (title, start_date, end_date, location, picture, price, description, description_html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- \('(.*?) \(.*?, \d\d\.\d\d\.\d\d\d\d, (\d\d:\d\d)\)','(\d\d\d\d-\d\d-\d\d)'.'(\d\d\d\d-\d\d-\d\d)',NULL,NULL
+INSERT INTO events (title, start_date, end_date, start_time, end_time, location, picture, price, description, description_html)
 VALUES 
 
-('Ausstellung: Frühlingsträume (03.03.2023–14.05.2023)','2023-03-03','2023-08-14','Barockschloss','ausstellung-fruehlingstraeume-2020.jpg',6.00,'
+('Ausstellung: Frühlingsträume','2023-03-03','2023-08-14',NULL,NULL,'Barockschloss','ausstellung-fruehlingstraeume-2020.jpg',6.00,'
 Die Natur erwacht: Strahlendes Sonnengelb, frisches Frühlingsgrün, intensives Leuchtendrot und reines Blütenweiß verscheuchen das triste Wintergrau und bringen die Wiesen und Beete auf der Insel Mainau leuchten. Auch in den Ausstellungsräumen von Schloss Mainau erwecken wir bunte "Frühlingsträume" zum Leben. Freuen Sie sich auf farbenfrohe Blumenarrangements sowie frühlingshafte Dekorationen, die zum Inspirieren für Zuhause und zum Verweilen einladen.
 U.a. werden auch die Bilder der Konstanzer Kunsttherapeutin Haide Riedle ausgestellt, die sich optimal abgestimmt an den Charme der Ausstellung anpassen. Außerdem werden Upcycling-Möbel der CreAktiv-Werkstatt des Caritas FAIRKAUFs, die von langzeitarbeitslosen Menschen liebevoll zu Unikaten umgestaltet werden, zum Verkauf angeboten.
 Die Ausstellung ist vom 3. März bis 14. Mai 2023 jeweils von 10.00 bis 17.00 Uhr geöffnet.
@@ -1175,7 +1202,7 @@ Stand: Februar 2023, Änderungen vorbehalten
   </em>
  </p>
 </div>
-'),('Blumenjahr 2023: Schlossjuwel &amp; Gartenrausch (17.03.2023–22.10.2023)','2023-03-17','2023-10-22','Italienischer Rosengarten','jahresmotto2016_1080x720.jpg',5.00,'
+'),('Blumenjahr 2023: Schlossjuwel &amp; Gartenrausch','2023-03-17','2023-10-22',NULL,NULL,'Italienischer Rosengarten','jahresmotto2016_1080x720.jpg',5.00,'
 Lebendige Inselgeschichte kunstvoll in Szene gesetztDas Jahresmotto 2023 „Schlossjuwel & Gartenrausch – Grüne Fürsten am Bodensee“ vereint lebendige Inselgeschichte mit schwärmerischer Gartenlust. Dieses Mal wird das Wirken des österreichischen Fürsten Nikolaus II. Esterházy auf der Insel Mainau im Mittelpunkt stehen. Er gestaltete nicht nur die Insel nach der Deutschordenszeit um, sondern prägte zusammen mit Prinz Louis Napoléon, dem späteren französischen Kaiser, die Region des westlichen Bodensees.
 Orchideenschau 2023Entdecker des 18. und 19. Jahrhunderts brachten die exotischen Pflanzenschönheiten erstmals auf dem Seeweg nach Europa. Diese Zeit der Abenteurer und Pflanzenjäger thematisiert die diesjährige Orchideenschau, die ab 17. März im Palmenhaus zu sehen ist. 
 Fotopoint: Barocke BlumenkleiderZwei bunt bepflanzte barocke Kleider stehen unweit von der Schlosskirche und warten nur darauf, von Ihnen „getragen“ zu werden. Also, rein ins Kleid, Foto machen und in den sozialen Medien teilen!
@@ -1220,7 +1247,7 @@ Stand: März 2023, weitere Informationen folgen
   </em>
  </p>
 </div>
-'),('Brunch: Ostermontag (Montag, 10.04.2023, 10:30–14:30)','2023-10-10','2023-10-10','Restaurant Comturey','osterbrunch_1080x720.jpg',5.00,'
+'),('Brunch: Ostermontag','2023-10-10','2023-10-10','10:30','14:30','Restaurant Comturey','osterbrunch_1080x720.jpg',5.00,'
 Information vom 15. März 2023Der Brunch ist online ausgebucht. Restplätze gibt es nur noch bei direkter Reservierung über das Mainau-Bankettbüro.
 Delikate Speisen und süße Leckereien erwarten Sie beim Osterbrunch auf der Insel Mainau: Unser Brunch am Ostermontag im Restaurant Comturey mit Blick auf den Bodensee verwöhnt Sie mit vielfältigen und leckeren Gaumenfreuden – von süß bis herzhaft, fruchtig bis knackig sowie vegetarischen Speisen. Für jeden ist etwas bei unserem reichhaltigen Büffet dabei - Kaffee, Tee und Saft sind inklusive.Nach einem ausgiebigem Brunch empfehlen wir Ihnen einen entschleunigten Spaziergang über die Blumeninsel. Flanieren Sie durch die Frühlingsallee mit ihrem Tulpenmeer oder besuchen Sie die Orchideenschau im Palmenhaus.
 In Verbindung mit einer Reservierung oder Buchung ist der Eintritt auf die Insel Mainau inklusive und Sie können bis zum Parkplatz Schwedenschenke auffahren.
@@ -1250,7 +1277,7 @@ Stand: Februar 2023
   </em>
  </p>
 </div>
-'),('Brunch: Ostersonntag (Sonntag, 09.04.2023, 10:30–14:30)','2023-04-09','2023-04-09','Restaurant Comturey','osterbrunch_1080x720.jpg',5.00,'
+'),('Brunch: Ostersonntag','2023-04-09','2023-04-09','10:30','14:30','Restaurant Comturey','osterbrunch_1080x720.jpg',5.00,'
 Information vom 14. März 2023Der Brunch ist online ausgebucht. Restplätze gibt es nur noch bei direkter Reservierung über das Mainau-Bankettbüro.
 Delikate Speisen und süße Leckereien erwarten Sie beim Osterbrunch auf der Insel Mainau: Unser Brunch am Ostersonntag im Restaurant Comturey mit Blick auf den Bodensee verwöhnt Sie mit vielfältigen und leckeren Gaumenfreuden – von süß bis herzhaft, fruchtig bis knackig sowie vegetarischen Speisen. Für jeden ist etwas bei unserem reichhaltigen Büffet dabei - Kaffee, Tee und Saft sind inklusive.Nach einem ausgiebigem Brunch empfehlen wir Ihnen einen entschleunigten Spaziergang über die Blumeninsel. Flanieren Sie durch die Frühlingsallee mit ihrem Tulpenmeer oder besuchen Sie die Orchideenschau im Palmenhaus.
 In Verbindung mit einer Reservierung oder Buchung ist der Eintritt auf die Insel Mainau inklusive und Sie können bis zum Parkplatz Schwedenschenke auffahren.
@@ -1280,7 +1307,7 @@ Stand: März 2023
   </em>
  </p>
 </div>
-'),('Mainau-Musical-Nights: Die große Schlagernacht (Samstag, 05.08.2023, 19:30)','2023-08-05','2023-08-05','Mediterran-Terrassen','schlagernacht-2023.jpg',50.00,'
+'),('Mainau-Musical-Nights: Die große Schlagernacht','2023-08-05','2023-08-05','19:30',NULL,'Mediterran-Terrassen','schlagernacht-2023.jpg',50.00,'
 „Er gehört zu mir“, „Ein Bett im Kornfeld“ oder „Verlieben, verloren, vergessen, verzeih’n“ – Schlager ist der Gute Laune-Booster schlechthin und steht für pure Lebensfreude und Spaß. Aus diesem Grund ist die „Große Schlagernacht“ auch im Sommer 2023 wieder fester Programmpunkt der Mainau Musical Nights. Ein Konzert, das Jung und Alt begeistert! Passend zum Konzept von musicalpeople werden auch hier Musical-Songs, zum Beispiel aus den Gute-Laune-Musicals „Wahnsinn!“ von Wolfgang Petry und „Ich Will Spaß!“ zu hören sein, sowie Hits von diversen Schlagerlegenden, wie immer begleitet von der fantastischen musicalpeople-Liveband. Für italienisches Flair sorgt außerdem ein Block mit den besten Italo-Hits. Ein Abend voll Leichtigkeit, der alle Sorgen vergessen lässt – und das in einzigartiger Atmosphäre, live und Open Air – lassen Sie sich dieses Konzert-Highlight nicht entgehen!
 Es singen Jessica Kessler, Roberta Valentini, Maximilian Mann und Karim Khawatmi.
 Über die musicalpeople:musicalpeople ist eine hochprofessionelle Truppe von Menschen, die durch Ihre Qualität und Vielseitigkeit, ihre musikalische Bandbreite und nicht zuletzt durch ihre Passion zu den Besten ihrer Branche zählen. Sie erleben hier ausschließlich die aktuell führenden Sänger und Musiker der europäischen Musicalbühnen in lebendigen, mitreißenden Show-Programmen.Weitere Informationen zur Veranstaltung:Konzertgäste erhalten am Veranstaltungstag ab 17.00 Uhr freien Eintritt auf die Insel Mainau. Einlass auf das Konzertgelände ab 17.30 Uhr. Ton- u. Videoaufnahmen sind nicht gestattet. Glasverbot gilt auf dem gesamten Konzertgelände, es gilt die Hausordnung. Karten werden nicht zurückgenommen. Programmänderungen vorbehalten.  Das Mitbringen von Tieren ist nicht erlaubt. Restkarten sind an der Abendkasse erhältlich. Der Aufschlag beträgt 4 € für den Normalpreis.
@@ -1324,7 +1351,7 @@ Stand: März 2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Frontm3n (Sonntag, 20.08.2023, 19:30)','2023-08-20','2023-08-20','Dachgarten','frontman.jpg',49.99,'
+'),('Frontm3n','2023-08-20','2023-08-20','19:30',NULL,'Dachgarten','frontman.jpg',49.99,'
 FRONTM3N! Bekannt wurden die drei fabelhaften Sänger unter anderem als Sänger der Hollies, 10cc, Sweet, Sailor oder Smokie.
 Frontm3n, die wegen ihres fantastischen Harmoniegesangs und ihrer Ohrwurm-Melodien längst als die „britischen Eagles“ gelten, veröffentlichten bereits Ende Oktober 2021 ihr neues Studioalbum „Enjoy The Ride“, das mit zwölf brandneuen, selbstgeschriebenen Songs ein kleines Meisterwerk geworden ist.
 Nun folgt die Tour zum Album. Wie gewohnt „An Exclusive Acoustic Night“, vollgepackt mit Hits und eigenen Songs, die jeder kennt und jeder liebt, neu und auf frische, akustische Art interpretiert. Jeder Song mit seiner eigenen Geschichte aus der musikalischen Reise der drei Musiker.
@@ -1387,7 +1414,7 @@ Stand: März 2023, Änderungen vorbehalten
   </em>
  </p>
 </div>
-'),('German Brass (Freitag, 14.07.2023, 19:30)','2023-07-14','2023-07-14','Dachgarten','germanbrass.jpg',49.99,'
+'),('German Brass','2023-07-14','2023-07-14','19:30',NULL,'Dachgarten','germanbrass.jpg',49.99,'
 Aktuelle Information vom VeranstalterLeider musste die Veranstaltung von GERMAN BRASS vom 13.08.2022 auf den 14.07.2023 verlegt werden - Karten behalten ihre Gültigkeit. 
 Wer kann von sich behaupten aus Blech Gold machen zu können? Die Blechbläserformation von German Brass meistert herausfordernde Musikstücke der Oper und verleiht ihnen einen eigenen, kräftig modernen Glanz. Mit ihren Konzerten füllen sie weltweit große Säle und werden am 13. August mit ihrem Programm „Live in Concert“ auch auf die Open Air Bühne der Insel Mainau für ein einzigartiges Musikerlebnis sorgen. Die Faszination Brass Band verhilft den großen Werken zum Strahlen und überträgt die Themen der Oper in die Gegenwart.  
 Die Musik von German Brass lebt von spannenden Gegensätzen ebenso wie die Kulisse, welche sie bespielen. Das Sonnendach im Schlossgarten transportiert die bespielten Inhalte, während die moderne Bühne und der offen lebendige Rahmen die Klangdimensionen gänzlich entfalten lassen. Die Klangfarbe mag durch die Blechbläser rau erscheinen, erklingt jedoch weich und dafür nicht weniger voluminös. Das Ambiente getaucht in die Farben des blühenden Sommers bietet eine Szenerie für die lebendige Musik von German Brass, welche die Werte eines geselligen Lebens transportiert. Gibt es eine Kulisse mit geeigneteren Synergien? An diesem Abend werden nicht nur den Zuhörer:innen ungeahnte Klangdimensionen eröffnet, der gesamte Schlossgarten wird mit Leben gefüllt.
@@ -1452,7 +1479,7 @@ Stand: März 2023, Änderungen vorbehalten; Copyright Bildmaterial: Gregor-Hohen
   </em>
  </p>
 </div>
-'),('Kinderschatzsuche (17.03.2023–22.10.2023)','2023-03-17','2023-10-22','Mainau Kinderland','kinderschatzsuche.jpg',5.00,'
+'),('Kinderschatzsuche','2023-03-17','2023-10-22',NULL,NULL,'Mainau Kinderland','kinderschatzsuche.jpg',5.00,'
 Knifflige Fragen, spannende Stationen, versteckte Hinweise: Begebt euch mit euren Eltern und Geschwistern, den Großeltern und euren Freunden auf Entdeckungstour. Löst gemeinsam das Rätsel um den Mainau-Schatz und erhaltet am Ende einen Finderlohn.
 Schatzsuche 2023In diesem Jahr muss unser Mainau-Maskottchen Blumi das Zaubern erlernen um die verwunschene Schatztruhe wieder öffnen zu können. Dafür muss er sechs Rätsel lösen. Werdet ihr ihm bei der Suche nach der Lösung helfen?
 Die Schatzsuche dauert ca. 60 Minuten, eignet sich für Kinder ab 6 Jahren und ist kostenfrei. Vergesst nicht, einen Stift mitzubringen, damit ihr euch die Hinweise notieren könnt. Die Schatzkarte wird am Inseleingang und am Hafen ausgegeben.Weitere Informationenwww.mainau.de/kinderschatzsuche.html
@@ -1486,7 +1513,7 @@ Die Schatzsuche dauert ca. 60 Minuten, eignet sich für Kinder ab 6 Jahren und i
   </a>
  </p>
 </div>
-'),('Mainau-Musical-Nights: Lets Rock (Freitag, 04.08.2023, 19:30)','2023-08-04','2023-08-04','Sonja und Lennart Bernadotte Platz','letsrock-2023.jpg',104.98,'
+'),('Mainau-Musical-Nights: Lets Rock','2023-08-04','2023-08-04','19:30',NULL,'Sonja und Lennart Bernadotte Platz','letsrock-2023.jpg',104.98,'
 Von Songs aus dem Queen-Musical „We Will Rock You“ über Hits aus „Rock Of Ages“ bis hin zu Songs legendärer Rockbands – an diesem Abend werden wir die Stimmung auf der Blumeninsel im Bodensee ein weiteres Mal so richtig zum Kochen bringen. Die Solistinnen und Solisten gehören allesamt zu den Original-Besetzungen der Musicals, und dass sie den Rock im Blut haben, das haben sie mit den erfolgreichen Konzerten der letzten Jahren mehrfach bewiesen. Für den richtigen Rock-Sound sorgen die Vollblut-Musiker der musicalpeople-Liveband. Machen Sie sich bereit für ein Rock-Erlebnis der Extraklasse – live und Open Air.
 Es singen Linda Holmgren, Jessica Kessler und John Vooijs.
 Über die musicalpeople:musicalpeople ist eine hochprofessionelle Truppe von Menschen, die durch Ihre Qualität und Vielseitigkeit, ihre musikalische Bandbreite und nicht zuletzt durch ihre Passion zu den Besten ihrer Branche zählen. Sie erleben hier ausschließlich die aktuell führenden Sänger und Musiker der europäischen Musicalbühnen in lebendigen, mitreißenden Show-Programmen.Weitere Informationen zur Veranstaltung:Konzertgäste erhalten am Veranstaltungstag ab 17.00 Uhr freien Eintritt auf die Insel Mainau. Einlass auf das Konzertgelände ab 17.30 Uhr. Ton- u. Videoaufnahmen sind nicht gestattet. Glasverbot gilt auf dem gesamten Konzertgelände, es gilt die Hausordnung. Karten werden nicht zurückgenommen. Programmänderungen vorbehalten.  Das Mitbringen von Tieren ist nicht erlaubt. Restkarten sind an der Abendkasse erhältlich. Der Aufschlag beträgt 4 € für den Normalpreis.
@@ -1530,7 +1557,7 @@ Stand: März 2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Mainau-Musical-Nights: Mamma Mia meets Udo Jürgens (Donnerstag, 03.08.2023, 19:30)','2023-08-03','2023-08-03','Ufergarten','mammamia-2023.jpg',150.00,'
+'),('Mainau-Musical-Nights: Mamma Mia meets Udo Jürgens','2023-08-03','2023-08-03','19:30',NULL,'Ufergarten','mammamia-2023.jpg',150.00,'
 „Thank You For The Music!, „Super Trouper“ oder „Griechischer Wein“ – ob Jung oder Alt, nahezu jeder kennt die weltbekannten, mitreißenden Songs von ABBA und Udo Jürgens. Bereits in den vergangenen Jahren sorgte dieses Erfolgs-Programm für Begeisterungsstürme und Standing-Ovations und gehört mittlerweile zum festen Bestandteil der Mainau Musical Nights. Grandiose Stimmung und gute Laune sind an diesem Abend vorprogrammiert.
 Es singen Roberta Valentini, Ana Milva Gomes und Karim Khawatmi.
 Über die musicalpeople:musicalpeople ist eine hochprofessionelle Truppe von Menschen, die durch Ihre Qualität und Vielseitigkeit, ihre musikalische Bandbreite und nicht zuletzt durch ihre Passion zu den Besten ihrer Branche zählen. Sie erleben hier ausschließlich die aktuell führenden Sänger und Musiker der europäischen Musicalbühnen in lebendigen, mitreißenden Show-Programmen.Weitere Informationen zur Veranstaltung:Konzertgäste erhalten am Veranstaltungstag ab 17.00 Uhr freien Eintritt auf die Insel Mainau. Einlass auf das Konzertgelände ab 17.30 Uhr. Ton- u. Videoaufnahmen sind nicht gestattet. Glasverbot gilt auf dem gesamten Konzertgelände, es gilt die Hausordnung. Karten werden nicht zurückgenommen. Programmänderungen vorbehalten.  Das Mitbringen von Tieren ist nicht erlaubt. Restkarten sind an der Abendkasse erhältlich. Der Aufschlag beträgt 4 € für den Normalpreis.
@@ -1574,7 +1601,7 @@ Stand: März 2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Musicalpeople Symphonic (Mittwoch, 02.08.2023, 19:30)','2023-08-02','2023-08-02','Großherzog-Friedrich-Terrasse','Symphonic.png',80.00,'
+'),('Musicalpeople Symphonic','2023-08-02','2023-08-02','19:30',NULL,'Großherzog-Friedrich-Terrasse','Symphonic.png',80.00,'
 Ein Feuerwerk der bekanntesten Musicalsongs, namhafte Musicalstars, begleitet von der einzigartigen musicalpeople-Band und den rund 50 Musikerinnen und Musikern der Südwestdeutschen Philharmonie Konstanz – das verspricht einen unvergesslichen Abend mit Gänsehaut-Momenten und das in einzigartiger Atmosphäre!
 Es singen Ana Milva Gomes, Roberta Valentini, John Vooijs und Karim Khawatmi, die musikalische Leitung hat Bernd Steixner.
 Über die musicalpeople:musicalpeople ist eine hochprofessionelle Truppe von Menschen, die durch Ihre Qualität und Vielseitigkeit, ihre musikalische Bandbreite und nicht zuletzt durch ihre Passion zu den Besten ihrer Branche zählen. Sie erleben hier ausschließlich die aktuell führenden Sänger und Musiker der europäischen Musicalbühnen in lebendigen, mitreißenden Show-Programmen.Weitere Informationen zur Veranstaltung:Konzertgäste erhalten am Veranstaltungstag ab 17.00 Uhr freien Eintritt auf die Insel Mainau. Einlass auf das Konzertgelände ab 17.30 Uhr. Ton- u. Videoaufnahmen sind nicht gestattet. Glasverbot gilt auf dem gesamten Konzertgelände, es gilt die Hausordnung. Karten werden nicht zurückgenommen. Programmänderungen vorbehalten.  Das Mitbringen von Tieren ist nicht erlaubt. Restkarten sind an der Abendkasse erhältlich. Der Aufschlag beträgt 4 € für den Normalpreis.
@@ -1618,7 +1645,7 @@ Stand: März 2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Muttertagsbrunch (Sonntag, 14.05.2023, 10:30–14:30)','2023-05-14','2023-05-14','Restaurant Comturey','muttertagsbrunch-2021.jpg',5.00,'
+'),('Muttertagsbrunch','2023-05-14','2023-05-14','10:30','14:30','Restaurant Comturey','muttertagsbrunch-2021.jpg',5.00,'
 Schlemmen Sie am 14. Mai 2023 nach Herzenslust und genießen Sie vielfältige Gaumenfreuden – von süß bis herzhaft, fruchtig bis knackig oder vegetarische Speisen. Für jeden ist etwas dabei. Ein geselliges Erlebnis für die ganze Familie & Freunde.
 Unser Tipp: Nach einem ausgiebigem Brunch empfehlen wir einen Spaziergang im frühlingshaften Mainau-Park. Die ersten Fliederbüsche und Rhododendren blühen und die Italienische Blumen-Wassertreppe schmückt sich mit spätblühenden Narzissen und Tulpen.
 In Verbindung mit einer Reservierung oder Buchung ist der Eintritt auf die Insel Mainau inklusive und Sie können bis zum Parkplatz Schwedenschenke auffahren.
@@ -1639,7 +1666,7 @@ Stand: März 2023
   </em>
  </p>
 </div>
-'),('Offene Führung in der Orchideenschau (Donnerstag, 13.04.2023, 11:30–12:30)','2023-04-13','2023-04-13','Palmenhaus','fuehrung-orchideenschau.jpg',12.00,'
+'),('Offene Führung in der Orchideenschau','2023-04-13','2023-04-13','11:30','12:30','Palmenhaus','fuehrung-orchideenschau.jpg',12.00,'
 Bei einem Rundgang durch unsere Orchideenschau laden wir Sie herzlich ein, Wissenswertes und Informatives über die Welt der Orchideen zu erfahren. Wie sieht der natürliche Lebensraum aus? Woher stammen Orchideen und wie pflegt man Orchideen am besten im heimischen Wohnzimmer?
 Unsere Orchideen-Experten erklären Ihnen, wie die traditionelle Orchideenschau auf der Insel Mainau entsteht und beantworten gerne Ihre Fragen über die eleganten Zimmerpflanzen.
 Treffpunkt: PalmenhausDauer: ca. 60 MinutenPreis: 10 € pro Person zzgl. InseleintrittMaximale Teilnehmerzahl: 20
@@ -1674,7 +1701,7 @@ Stand: März 2023
   </em>
  </p>
 </div>
-'),('Offene Führung in der Orchideenschau (Dienstag, 25.04.2023, 15:00–16:00)','2023-04-25','2023-04-25','Palmenhaus','fuehrung-orchideenschau.jpg',12.00,'
+'),('Offene Führung in der Orchideenschau','2023-04-25','2023-04-25','15:00','16:00','Palmenhaus','fuehrung-orchideenschau.jpg',12.00,'
 Bei einem Rundgang durch unsere Orchideenschau laden wir Sie herzlich ein, Wissenswertes und Informatives über die Welt der Orchideen zu erfahren. Wie sieht der natürliche Lebensraum aus? Woher stammen Orchideen und wie pflegt man Orchideen am besten im heimischen Wohnzimmer?
 Unsere Orchideen-Experten erklären Ihnen, wie die traditionelle Orchideenschau auf der Insel Mainau entsteht und beantworten gerne Ihre Fragen über die eleganten Zimmerpflanzen.
 Treffpunkt: PalmenhausDauer: ca. 60 MinutenPreis: 10 € pro Person zzgl. InseleintrittMaximale Teilnehmerzahl: 20
@@ -1701,7 +1728,7 @@ Stand: März 2023
   </em>
  </p>
 </div>
-'),('Offene Parkführung: Treffpunkt Schlosshof (Donnerstag, 06.04.2023, 13:30)','2023-04-06','2023-10-08','Arboretum','das-beste-der-mainau_1080x720.jpg',12.00,'
+'),('Offene Parkführung: Treffpunkt Schlosshof','2023-04-06','2023-10-08','13:30',NULL,'Arboretum','das-beste-der-mainau_1080x720.jpg',12.00,'
 Bis 8. Oktober 2023 bietet die Blumeninsel täglich um 13.30 Uhr eine besondere Führung an. Haben Sie Lust und Zeit mit uns die Mainau zu erkunden? Dann kommen Sie zum Vorplatz vom Schmetterlingshaus, denn dort wartet einer unserer Guides. Gemeinsam spazieren Sie durch den Park und erfahren Wissenswertes aus erster Hand.
 In kurzweiligen 60 Minuten erfahren Sie Interessantes über die Geschichte der Insel Mainau, das Wirken der Familie Bernadotte und über den ein oder anderen Pflanzenschatz auf der Insel. Natürlich beantwortet unser Guide auch Ihre Fragen, z. B. zu gärtnerischen Themen, Botanik sowie Veranstaltungen.
 Treffpunkt für die Führung: SchlosshofBeginn: 13.30 UhrMaximale Teilnehmerzahl: 20
@@ -1735,7 +1762,7 @@ Stand: März 2023, Änderungen vorbehalten
   </em>
  </p>
 </div>
-'),('Offene Parkführung: Treffpunkt Vorplatz Schmetterlingshaus (Donnerstag, 06.04.2023, 11:30)','2023-04-06','2023-10-08','Schmetterlingshaus','das-beste-der-mainau_1080x720.jpg',12.00,'
+'),('Offene Parkführung: Treffpunkt Vorplatz Schmetterlingshaus','2023-04-06','2023-10-08','11:30',NULL,'Schmetterlingshaus','das-beste-der-mainau_1080x720.jpg',12.00,'
 Bis 8. Oktober 2023 bietet die Blumeninsel täglich um 11.30 Uhr eine besondere Führung an. Haben Sie Lust und Zeit mit uns die Mainau zu erkunden? Dann kommen Sie zum Vorplatz beim Schmetterlingshaus, denn dort wartet einer unserer Guides. Gemeinsam besuchen Sie dann das Arboretum, den Italienischen Rosengarten, das Palmenhaus und die Schlosskirche St. Marien und erfahren Wissenswertes aus erster Hand.
 In kurzweiligen 60 Minuten erfahren Sie Interessantes über die Geschichte der Insel Mainau, das Wirken der Familie Bernadotte und über den ein oder anderen Pflanzenschatz auf der Insel. Natürlich beantwortet unser Guide auch Ihre Fragen, z. B. zu gärtnerischen Themen, Botanik sowie Veranstaltungen.
 Treffpunkt für die Führung: Vorplatz SchmetterlingshausBeginn: 11.30 UhrMaximale Teilnehmerzahl: 20
@@ -1769,7 +1796,7 @@ Stand: März 2023, Änderungen vorbehalten
   </em>
  </p>
 </div>
-'),('Orchideen-Dinner 2023 (Samstag, 29.04.2023, 18:00)','2023-04-29','2023-04-29','Palmenhaus','orchideensoiree-2020.jpg',12.00,'
+'),('Orchideen-Dinner 2023','2023-04-29','2023-04-29','18:00',NULL,'Palmenhaus','orchideensoiree-2020.jpg',12.00,'
 Inmitten rund 3.000 faszinierender Schönheiten der diesjährigen Orchideenschau erleben Sie im Palmenhaus einen für Augen, Ohren und Gaumen unvergesslichen Abend. Für musikalische Begleitung sorgt die Band Key & Strings.
 Amuse gueule
 Pikant gefüllte Reisblätter
@@ -1875,7 +1902,7 @@ Kandierte Lotuswurzel/ Yuzu Mousse/ Grünteesorbet
  <p style="text-align: center;">
  </p>
 </div>
-'),('Orchideenschau 2023 (17.03.2023–07.05.2023)','2023-03-17','2023-08-07','Palmenhaus','orchideenschau-2018.jpg',5.00,'
+'),('Orchideenschau 2023','2023-03-17','2023-08-07',NULL,NULL,'Palmenhaus','orchideenschau-2018.jpg',5.00,'
 Über 3 000 Exemplare faszinierender Orchideen-Schönheiten eröffnen mit ihrem Blütenreichtum das Mainau-Jahr 2023: Vom 17. März bis 7. Mai 2023 nehmen wir Sie mit auf eine Reise in die bunte Welt der Orchideen. Für 6 Wochen verwandelt sich das Palmenhaus in eine opulente Kulisse für die edlen Pflanzen. Dabei werden u.a. verschiedene Phalaeonopsis-Sorten in leuchtenden Rosa- und Weißtönen, Vanda-Orchideen, Cattleyen und exotische Raritäten kunstvoll von uns in Szene gesetzt.
 Offene Führungen in der Orchideenschau13. April 2023, 11.30 bis 12.30 Uhr25. April 2023, 15.00 bis 16.00 Uhr
 Orchideenverkaufsstand Im Rahmen der Orchideenschau findet täglich von 11.00 bis 15.00 Uhr ein Orchideenverkauf statt.
@@ -1914,7 +1941,7 @@ Stand: März 2023, weitere Informationen folgen
   </em>
  </p>
 </div>
-'),('Brunch: Karfreitag (Freitag, 07.04.2023, 10:30–14:30)','2023-04-07','2023-04-07','Restaurant Comturey','osterbrunch_1080x720.jpg',5.00,'
+'),('Brunch: Karfreitag','2023-04-07','2023-04-07','10:30','14:30','Restaurant Comturey','osterbrunch_1080x720.jpg',5.00,'
 Delikate Speisen und süße Leckereien erwarten Sie beim Osterbrunch auf der Insel Mainau: Unser Brunch am Karfreitag im Restaurant Comturey mit Blick auf den Bodensee verwöhnt Sie mit vielfältigen und leckeren Gaumenfreuden – von süß bis herzhaft, fruchtig bis knackig sowie vegetarischen Speisen. Für jeden ist etwas bei unserem reichhaltigen Büffet dabei - Kaffee, Tee und Saft sind inklusive.Nach einem ausgiebigem Brunch empfehlen wir Ihnen einen entschleunigten Spaziergang über die Blumeninsel. Flanieren Sie durch die Frühlingsallee mit ihrem Tulpenmeer oder besuchen Sie die Orchideenschau im Palmenhaus.
 In Verbindung mit einer Reservierung oder Buchung ist der Eintritt auf die Insel Mainau inklusive und Sie können bis zum Parkplatz Schwedenschenke auffahren.
 Stand: Februar 2023
@@ -1934,7 +1961,7 @@ Stand: Februar 2023
   </em>
  </p>
 </div>
-'),('Osterprogramm 2023 (07.04.2023–10.04.2023)','2023-04-07','2023-04-10','Staudengarten','osterprogramm-2018.jpg',5.00,'
+'),('Osterprogramm 2023','2023-04-07','2023-04-10',NULL,NULL,'Staudengarten','osterprogramm-2018.jpg',5.00,'
 Neben Attraktionen wie die Orchideenschau im Palmenhaus oder die Verkaufsausstellung "Frühlingsträume" im Wappensaal von Schloss Mainau, eine bunte Frühlingsblüte im Park sowie ein vielfältiges Osterangebot für die ganze Familie auf der Blumeninsel Mainau:
 Kulinarische Programmpunkte:
 Offene WeinprobeTreffpunkt Torbogenkeller, 7 € pro Person7., 9. und 10. April 2023: 12.00 & 15.00 Uhr, Dauer: ca. 30 Minuten8. April nur 12.00 UhrBrunch am Karfreitag (Restplätze vorhanden), Ostersonntag & Ostermontag - AUSGEBUCHTRestaurant Comturey & Torkelkeller
@@ -2034,7 +2061,7 @@ Stand: März 2023, Änderungen vorbehalten
   </em>
  </p>
 </div>
-'),('Pop-Up-Restaurant im Schloss (Freitag, 01.09.2023, 18:00)','2023-09-01','2023-09-01','Barockschloss','zu-gast-im-hause-bernadotte.jpg',5.00,'
+'),('Pop-Up-Restaurant im Schloss','2023-09-01','2023-09-01','18:00',NULL,'Barockschloss','zu-gast-im-hause-bernadotte.jpg',5.00,'
 Am 1. September 2023 gibt es in unserem Barockschloss für einen Abend ein exklusives Pop-Up-Restaurant. Es erwartet Sie ein 4-Gänge-Überraschungsmenü sowie kurzweilige und humorvolle Unterhaltung zwischen den Gängen! Bitte entscheiden Sie sich bei der Buchung im Webshop für eine Menüvariante.
 Beginn: 18.00 UhrMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 79,00 € zzgl. GetränkeDresscode-Vorschlag: Festlich elegant
 Außerdem:Bei Buchung der Veranstaltung erhalten Sie ab 17.00 Uhr freien Eintritt auf die Insel Mainau und dürfen bis zum Parkplatz Schwedenschenke auffahren.
@@ -2074,7 +2101,7 @@ Stand: 31.03.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Pop-Up-Restaurant im Schloss (Samstag, 02.09.2023, 18:00)','2023-09-02','2023-09-02','Barockschloss','zu-gast-im-hause-bernadotte.jpg',6.00,'
+'),('Pop-Up-Restaurant im Schloss','2023-09-02','2023-09-02','18:00',NULL,'Barockschloss','zu-gast-im-hause-bernadotte.jpg',6.00,'
 Am 2. September 2023 gibt es in unserem Barockschloss für einen Abend ein exklusives Pop-Up-Restaurant. Es erwartet Sie ein 4-Gänge-Überraschungsmenü sowie kurzweilige und humorvolle Unterhaltung zwischen den Gängen! Bitte entscheiden Sie sich bei der Buchung im Webshop für eine Menüvariante.
 Beginn: 18.00 UhrMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 79,00 € zzgl. GetränkeDresscode-Vorschlag: Festlich elegant
 Außerdem:Bei Buchung der Veranstaltung erhalten Sie ab 17.00 Uhr freien Eintritt auf die Insel Mainau und dürfen bis zum Parkplatz Schwedenschenke auffahren.
@@ -2114,7 +2141,7 @@ Stand: 31.03.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Pop-Up-Restaurant im Schloss (Freitag, 04.08.2023, 18:00)','2023-08-04','2023-08-04','Barockschloss','zu-gast-im-hause-bernadotte.jpg',6.00,'
+'),('Pop-Up-Restaurant im Schloss','2023-08-04','2023-08-04','18:00',NULL,'Barockschloss','zu-gast-im-hause-bernadotte.jpg',6.00,'
 Am 4. August 2023 gibt es in unserem Barockschloss für einen Abend ein exklusives Pop-Up-Restaurant. Es erwartet Sie ein 4-Gänge-Überraschungsmenü sowie kurzweilige und humorvolle Unterhaltung zwischen den Gängen! Bitte entscheiden Sie sich bei der Buchung im Webshop für eine Menüvariante.
 Beginn: 18.00 UhrMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 79,00 € zzgl. GetränkeDresscode-Vorschlag: Festlich elegant
 Außerdem:Bei Buchung der Veranstaltung erhalten Sie ab 17.00 Uhr freien Eintritt auf die Insel Mainau und dürfen bis zum Parkplatz Schwedenschenke auffahren.
@@ -2154,7 +2181,7 @@ Stand: 31.03.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Pop-Up-Restaurant im Schloss (Samstag, 05.08.2023, 18:00)','2023-08-05','2023-08-05','Barockschloss','zu-gast-im-hause-bernadotte.jpg',6.00,'
+'),('Pop-Up-Restaurant im Schloss','2023-08-05','2023-08-05','18:00',NULL,'Barockschloss','zu-gast-im-hause-bernadotte.jpg',6.00,'
 Am 5. August 2023 gibt es in unserem Barockschloss für einen Abend ein exklusives Pop-Up-Restaurant. Es erwartet Sie ein 4-Gänge-Überraschungsmenü sowie kurzweilige und humorvolle Unterhaltung zwischen den Gängen! Bitte entscheiden Sie sich bei der Buchung im Webshop für eine Menüvariante.
 Beginn: 18.00 UhrMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 79,00 € zzgl. GetränkeDresscode-Vorschlag: Festlich elegant
 Außerdem:Bei Buchung der Veranstaltung erhalten Sie ab 17.00 Uhr freien Eintritt auf die Insel Mainau und dürfen bis zum Parkplatz Schwedenschenke auffahren.
@@ -2194,7 +2221,7 @@ Stand: 31.03.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Pop-Up-Restaurant im Schloss (Freitag, 26.05.2023, 18:00)','2023-05-26','2023-05-26','Barockschloss','zu-gast-im-hause-bernadotte.jpg',6.00,'
+'),('Pop-Up-Restaurant im Schloss','2023-05-26','2023-05-26','18:00',NULL,'Barockschloss','zu-gast-im-hause-bernadotte.jpg',6.00,'
 Information vom 31. März 2023Die Veranstaltung ist ausgebucht.
 Am 26. Mai 2023 gibt es in unserem Barockschloss für einen Abend ein exklusives Pop-Up-Restaurant. Es erwartet Sie ein 4-Gänge-Überraschungsmenü sowie kurzweilige und humorvolle Unterhaltung zwischen den Gängen! Bitte entscheiden Sie sich bei der Buchung im Webshop für eine Menüvariante.
 Beginn: 18.00 UhrMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 79,00 € zzgl. GetränkeDresscode-Vorschlag: Festlich elegant
@@ -2244,7 +2271,7 @@ Stand: 31.03.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Pop-Up-Restaurant im Schloss (Samstag, 27.05.2023, 18:00)','2023-05-27','2023-05-27','Barockschloss','zu-gast-im-hause-bernadotte.jpg',6.00,'
+'),('Pop-Up-Restaurant im Schloss','2023-05-27','2023-05-27','18:00',NULL,'Barockschloss','zu-gast-im-hause-bernadotte.jpg',6.00,'
 Am 27. Mai 2023 gibt es in unserem Barockschloss für einen Abend ein exklusives Pop-Up-Restaurant. Es erwartet Sie ein 4-Gänge-Überraschungsmenü sowie kurzweilige und humorvolle Unterhaltung zwischen den Gängen! Bitte entscheiden Sie sich bei der Buchung im Webshop für eine Menüvariante.
 Beginn: 18.00 UhrMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 79,00 € zzgl. GetränkeDresscode-Vorschlag: Festlich elegant
 Außerdem:Bei Buchung der Veranstaltung erhalten Sie ab 17.00 Uhr freien Eintritt auf die Insel Mainau und dürfen bis zum Parkplatz Schwedenschenke auffahren.
@@ -2284,7 +2311,7 @@ Stand: 31.03.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Teatime im Schloss (Sonntag, 01.10.2023, 14:30–17:00)','2023-10-01','2023-10-01','Barockschloss','teatime-2022.jpg',6.00,'
+'),('Teatime im Schloss','2023-10-01','2023-10-01','14:30','17:00','Barockschloss','teatime-2022.jpg',6.00,'
 Freuen Sie sich auf eine klassische Teatime im Barockschloss Mainau. Wir servieren Ihnen exklusiv im stilvollen Ambiente feinen Tee sowie verschiedene süße und herzhafte Snacks auf einer Etagere. Damit Sie sich auf einen gemütlichen Nachmittag einstimmen können, verwöhnen wir Sie außerdem mit einem Glas Prosecco.
 Beginn: 14.30 Uhr, Treffpunkt: Eingang SchlosskircheMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 28,00 €  zzgl. Inseleintritt / alle weiteren Getränke nach Verbrauch
 Stand: 20.02.2023, Änderungen vorbehalten. 
@@ -2313,7 +2340,7 @@ Stand: 20.02.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Teatime im Schloss (Montag, 02.10.2023, 14:30–17:00)','2023-10-02','2023-10-02','Barockschloss','teatime-2022.jpg',6.00,'
+'),('Teatime im Schloss','2023-10-02','2023-10-02','14:30','17:00','Barockschloss','teatime-2022.jpg',6.00,'
 Freuen Sie sich auf eine klassische Teatime im Barockschloss Mainau. Wir servieren Ihnen exklusiv im stilvollen Ambiente feinen Tee sowie verschiedene süße und herzhafte Snacks auf einer Etagere. Damit Sie sich auf einen gemütlichen Nachmittag einstimmen können, verwöhnen wir Sie außerdem mit einem Glas Prosecco.
 Beginn: 14.30 Uhr, Treffpunkt: Eingang SchlosskircheMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 28,00 €  zzgl. Inseleintritt / alle weiteren Getränke nach Verbrauch
 Stand: 20.02.2023, Änderungen vorbehalten. 
@@ -2342,7 +2369,7 @@ Stand: 20.02.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Teatime im Schloss (Dienstag, 03.10.2023, 14:30–17:00)','2023-10-03','2023-10-03','Barockschloss','teatime-2022.jpg',6.00,'
+'),('Teatime im Schloss','2023-10-03','2023-10-03','14:30','17:00','Barockschloss','teatime-2022.jpg',6.00,'
 Freuen Sie sich auf eine klassische Teatime im Barockschloss Mainau. Wir servieren Ihnen exklusiv im stilvollen Ambiente feinen Tee sowie verschiedene süße und herzhafte Snacks auf einer Etagere. Damit Sie sich auf einen gemütlichen Nachmittag einstimmen können, verwöhnen wir Sie außerdem mit einem Glas Prosecco.
 Beginn: 14.30 Uhr, Treffpunkt: Eingang SchlosskircheMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 28,00 €  zzgl. Inseleintritt / alle weiteren Getränke nach Verbrauch
 Stand: 20.02.2023, Änderungen vorbehalten. 
@@ -2371,7 +2398,7 @@ Stand: 20.02.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Teatime im Schloss (Donnerstag, 08.06.2023, 14:30–17:00)','2023-06-08','2023-06-08','Barockschloss','teatime-2022.jpg',6.00,'
+'),('Teatime im Schloss','2023-06-08','2023-06-08','14:30','17:00','Barockschloss','teatime-2022.jpg',6.00,'
 Freuen Sie sich auf eine klassische Teatime im Barockschloss Mainau. Wir servieren Ihnen exklusiv im stilvollen Ambiente feinen Tee sowie verschiedene süße und herzhafte Snacks auf einer Etagere. Damit Sie sich auf einen gemütlichen Nachmittag einstimmen können, verwöhnen wir Sie außerdem mit einem Glas Prosecco.
 Beginn: 14.30 Uhr, Treffpunkt: Eingang SchlosskircheMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 28,00 €  zzgl. Inseleintritt / alle weiteren Getränke nach Verbrauch
 Stand: 20.02.2023, Änderungen vorbehalten. 
@@ -2400,7 +2427,7 @@ Stand: 20.02.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Teatime im Schloss (Freitag, 09.06.2023, 14:30–17:00)','2023-06-09','2023-06-09','Barockschloss','teatime-2022.jpg',6.00,'
+'),('Teatime im Schloss','2023-06-09','2023-06-09','14:30','17:00','Barockschloss','teatime-2022.jpg',6.00,'
 Freuen Sie sich auf eine klassische Teatime im Barockschloss Mainau. Wir servieren Ihnen exklusiv im stilvollen Ambiente feinen Tee sowie verschiedene süße und herzhafte Snacks auf einer Etagere. Damit Sie sich auf einen gemütlichen Nachmittag einstimmen können, verwöhnen wir Sie außerdem mit einem Glas Prosecco.
 Beginn: 14.30 Uhr, Treffpunkt: Eingang SchlosskircheMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 28,00 €  zzgl. Inseleintritt / alle weiteren Getränke nach Verbrauch
 Stand: 20.02.2023, Änderungen vorbehalten. 
@@ -2429,7 +2456,7 @@ Stand: 20.02.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Teatime im Schloss (Samstag, 10.06.2023, 14:30–17:00)','2023-06-10','2023-06-10','Barockschloss','teatime-2022.jpg',6.00,'
+'),('Teatime im Schloss','2023-06-10','2023-06-10','14:30','17:00','Barockschloss','teatime-2022.jpg',6.00,'
 Freuen Sie sich auf eine klassische Teatime im Barockschloss Mainau. Wir servieren Ihnen exklusiv im stilvollen Ambiente feinen Tee sowie verschiedene süße und herzhafte Snacks auf einer Etagere. Damit Sie sich auf einen gemütlichen Nachmittag einstimmen können, verwöhnen wir Sie außerdem mit einem Glas Prosecco.
 Beginn: 14.30 Uhr, Treffpunkt: Eingang SchlosskircheMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 28,00 €  zzgl. Inseleintritt / alle weiteren Getränke nach Verbrauch
 Stand: 20.02.2023, Änderungen vorbehalten. 
@@ -2458,7 +2485,7 @@ Stand: 20.02.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Teatime im Schloss (Sonntag, 11.06.2023, 14:30–17:00)','2023-06-11','2023-06-11','Barockschloss','teatime-2022.jpg',6.00,'
+'),('Teatime im Schloss','2023-06-11','2023-06-11','14:30','17:00','Barockschloss','teatime-2022.jpg',6.00,'
 Freuen Sie sich auf eine klassische Teatime im Barockschloss Mainau. Wir servieren Ihnen exklusiv im stilvollen Ambiente feinen Tee sowie verschiedene süße und herzhafte Snacks auf einer Etagere. Damit Sie sich auf einen gemütlichen Nachmittag einstimmen können, verwöhnen wir Sie außerdem mit einem Glas Prosecco.
 Beginn: 14.30 Uhr, Treffpunkt: Eingang SchlosskircheMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 28,00 €  zzgl. Inseleintritt / alle weiteren Getränke nach Verbrauch
 Stand: 20.02.2023, Änderungen vorbehalten. 
@@ -2487,7 +2514,7 @@ Stand: 20.02.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Teatime im Schloss (Freitag, 29.09.2023, 14:30–17:00)','2023-09-29','2023-09-29','Barockschloss','teatime-2022.jpg',6.00,'
+'),('Teatime im Schloss','2023-09-29','2023-09-29','14:30','17:00','Barockschloss','teatime-2022.jpg',6.00,'
 Freuen Sie sich auf eine klassische Teatime im Barockschloss Mainau. Wir servieren Ihnen exklusiv im stilvollen Ambiente feinen Tee sowie verschiedene süße und herzhafte Snacks auf einer Etagere. Damit Sie sich auf einen gemütlichen Nachmittag einstimmen können, verwöhnen wir Sie außerdem mit einem Glas Prosecco.
 Beginn: 14.30 Uhr, Treffpunkt: Eingang SchlosskircheMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 28,00 €  zzgl. Inseleintritt / alle weiteren Getränke nach Verbrauch
 Stand: 20.02.2023, Änderungen vorbehalten. 
@@ -2516,7 +2543,7 @@ Stand: 20.02.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Teatime im Schloss (Samstag, 30.09.2023, 14:30–17:00)','2023-09-30','2023-09-30','Barockschloss','teatime-2022.jpg',6.00,'
+'),('Teatime im Schloss','2023-09-30','2023-09-30','14:30','17:00','Barockschloss','teatime-2022.jpg',6.00,'
 Freuen Sie sich auf eine klassische Teatime im Barockschloss Mainau. Wir servieren Ihnen exklusiv im stilvollen Ambiente feinen Tee sowie verschiedene süße und herzhafte Snacks auf einer Etagere. Damit Sie sich auf einen gemütlichen Nachmittag einstimmen können, verwöhnen wir Sie außerdem mit einem Glas Prosecco.
 Beginn: 14.30 Uhr, Treffpunkt: Eingang SchlosskircheMindestteilnehmerzahl: 10 Personen Max. 20 PersonenPreis pro Person: 28,00 €  zzgl. Inseleintritt / alle weiteren Getränke nach Verbrauch
 Stand: 20.02.2023, Änderungen vorbehalten. 
@@ -2545,7 +2572,7 @@ Stand: 20.02.2023, Änderungen vorbehalten.
   </em>
  </p>
 </div>
-'),('Tomatenrondell (14.08.2023–20.08.2023)','2023-08-14','2023-08-20','Platanenweg 5','tomatenrondell.jpg',12.50,'
+'),('Tomatenrondell','2023-08-14','2023-08-20',NULL,NULL,'Platanenweg 5','tomatenrondell.jpg',12.50,'
 Vom 14. August bis 20. August 2023 dreht sich im Platanenweg 5 wieder alles um die Tomate. Auf einem Rondell wird die schmackhafte Frucht in ihren vielfältigen Variationen zur Schau gestellt. Tomaten-Experte Michael Schick beantwortet vor Ort (ca. 10.00 Uhr bis 16.00 Uhr) Fragen rund um die aus Südamerika stammende Pflanze und gibt Tipps zum Schutz gegen die Kraut- und Braunfäule. Außerdem können die ausgestellten Tomatenpflanzen in Form von Saatgut käuflich erworben werden.
 Stand: Januar 2023
 ','<div class="ce_text col-xs-12 col-sm-12 col-md-12 col-lg-12 block">

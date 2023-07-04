@@ -13,7 +13,6 @@ type PaymentResult = {
 }
 
 
-
 export abstract class PaymentProvider<AccountData> {
   abstract verifyAccountCountry(data: AccountData): Promise<boolean>
   abstract validatePayment(data: AccountData, amount: number): Promise<string>

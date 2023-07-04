@@ -1,18 +1,6 @@
 import { Response } from 'express';
 import { ZodError } from 'zod';
-
-type ResponseError = ErrorWithContext | ErrorWithoutContext;
-
-type ErrorWithoutContext = {
-  code: number,
-  error: unknown,
-}
-
-type ErrorWithContext = {
-  code: number,
-  error: unknown,
-  context: unknown | undefined
-}
+import { APIError } from 'softwareproject-common';
 
 
 export class APIResponse {
@@ -32,12 +20,12 @@ export class APIResponse {
     return new APIResponse(200, data);
   }
 
-  private static error(status: number, data: ResponseError): APIResponse {
+  private static error(status: number, data: APIError): APIResponse {
     return new APIResponse(status, data);
   }
 
   static failure(status: number, error: string, context: unknown | null = null): APIResponse {
-    let data: ResponseError;
+    let data: APIError;
 
     if (!context) {
       data = {

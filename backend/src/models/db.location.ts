@@ -3,8 +3,6 @@ import { Column, Table, Model } from 'sequelize-typescript';
 import { Location } from 'softwareproject-common';
 
 
-
-
 @Table({ modelName: 'locations', timestamps: false })
 export class DBLocation extends Model<Location> {
   declare id: CreationOptional<number>;

@@ -1,5 +1,6 @@
-import axios, { Axios, AxiosError, AxiosResponse } from 'axios';
 import { PaymentProvider, PaymentProviderErrors } from './PaymentProvider';
+import { handleErrorResponse } from './util';
+import axios, { AxiosError } from 'axios';
 
 export type HCIPalData = {
   name: string;
@@ -22,15 +23,10 @@ type HCIPalPaymentValidationResponse = {
   status?: number;
   error?: string;
 }
+
 type HCIPalPaymentValidationSuccess = {
   token: string
 }
-
-const handleErrorResponse = (err: unknown, handler: (response: AxiosResponse) => void): void => {
-  if (err instanceof AxiosError && err.response) {
-    handler(err.response);
-  }
-};
 
 export class HCIPalProvider extends PaymentProvider<HCIPalData> {
   private options = {
@@ -63,29 +59,17 @@ export class HCIPalProvider extends PaymentProvider<HCIPalData> {
     } catch (err) {
       // Check if error is AxiosError (e.g. Status 400 - not enough money)
       handleErrorResponse(err, (response) => {
-        const data: HCIPalError= JSON.parse('{}');
+        const data: HCIPalError = response.data;
 
         // Throw Specific error for balance
         if (data.error === 'Not enough balance on account') {
           console.log(data.error);
           throw Error(PaymentProviderErrors.notEnoughBalance);
         }
+
         console.log('unhandled', data.error);
       });
-      if (err instanceof AxiosError) {
-        const data: HCIPalError = err.response?.data;
-        console.log(data);
-        // Throw Specific error for balance
-        if (data.error === 'Not enough balance on account') {
-          console.log(data.error);
-          throw Error(PaymentProviderErrors.notEnoughBalance);
-        }
-        console.log('unhandled', data.error);
 
-        throw err;
-      }
-
-      console.error(err);
       throw Error(PaymentProviderErrors.internalError);
     }
   }

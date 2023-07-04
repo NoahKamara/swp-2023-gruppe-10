@@ -4,9 +4,8 @@ import { Session } from './session';
 import { DBUser } from './db.user';
 
 
-
 @Table({ modelName: 'sessions', timestamps: false })
-export class DBSession extends Model {
+export class DBSession extends Model<Session> {
   declare id: CreationOptional<number>;
 
   @ForeignKey(() => DBUser)
@@ -18,13 +17,6 @@ export class DBSession extends Model {
 
   @Column({ references: 'session_id' })
   session_id!: string;
-
-  public get sessionId(): string {
-    return this.session_id;
-  }
-  public set sessionId(value: string) {
-    this.session_id = value;
-  }
 
   /**
   * Returns a DBSession from an id

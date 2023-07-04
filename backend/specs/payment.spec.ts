@@ -1,3 +1,4 @@
+/* eslint-disable jasmine/no-spec-dupes */
 import { PaymentProviderErrors } from '../src/payment/PaymentProvider';
 import { HCIPalProvider, HCIPalData } from '../src/payment/HCIPalProvider';
 import { SWPSafeProvider, SWPSafeData } from '../src/payment/SWPSafeProvider';
@@ -59,7 +60,7 @@ describe('HCIPal', () => {
   it('succeeds - just enough money in account', async () => {
     const data = HCIPalDataExamples.poor;
     const amount = 1;
-  await hcipal.pay(data, amount);
+    await hcipal.pay(data, amount);
     expectAsync(hcipal.pay(data, amount)).toBeResolved();
   });
 
@@ -97,7 +98,7 @@ describe('SWPsafe', () => {
     const data = SWPSafeExamples.normal;
     const amount = 1;
 
-    expectAsync(provider.pay(data, amount))
+    await expectAsync(provider.pay(data, amount))
       .toBeResolved();
   });
 
@@ -113,22 +114,22 @@ describe('SWPsafe', () => {
     const data = SWPSafeExamples.broke;
     const amount = 1;
 
-    expectAsync(provider.pay(data, amount))
+    await expectAsync(provider.pay(data, amount))
       .toBeRejectedWithError(PaymentProviderErrors.notEnoughBalance);
   });
 
   it('succeeds - just enough money in account', async () => {
-    const data = SWPSafeExamples.poor;
-    const amount = 1;
-  await provider.pay(data, amount);
-    expectAsync(provider.pay(data, amount)).toBeResolved();
+    const data = SWPSafeExamples.normal;
+    const amount = 10000;
+    await provider.pay(data, amount);
+    await expectAsync(provider.pay(data, amount)).toBeResolved();
   });
 
   it('fails - not enough money in account', async () => {
     const data = SWPSafeExamples.poor;
     const amount = 10;
 
-    expectAsync(provider.pay(data, amount))
+    await expectAsync(provider.pay(data, amount))
       .toBeRejectedWithError(PaymentProviderErrors.notEnoughBalance);
   });
 });

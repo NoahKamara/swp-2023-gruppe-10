@@ -4,18 +4,14 @@ import { DBTicket } from './models/db.ticket';
 import { DBEvent } from './models/db.event';
 import { Ticket } from 'softwareproject-common';
 import { DBUser } from './models/db.user';
-
+import { APIResponse } from './models/response';
 
 export class TicketController {
   async list(request: Request, response: Response): Promise<void> {
     const user: User = response.locals.session?.user;
 
     if (!user || !user.id) {
-      response.status(200);
-      response.send({
-        code: 401,
-        message: 'Unauthorized'
-      });
+      APIResponse.unauthorized().send(response);
       return;
     }
 
@@ -55,21 +51,15 @@ export class TicketController {
   async purchase(request: Request, response: Response): Promise<void> {
     const user: User = response.locals.session?.user;
 
-    if (!user || !user.id) {
-      response.status(200);
-      response.send({
-        code: 401,
-        message: 'Unauthorized'
-      });
+    if (!user) {
+      APIResponse.unauthorized().send(response);
       return;
     }
 
     const id = request.params.id;
 
     if (!id) {
-      request.logger.error('client did not provide event id');
-      response.status(400);
-      response.send();
+      APIResponse.badRequest('client did not provide event-id').send(response);
       return;
     }
 

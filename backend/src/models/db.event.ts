@@ -3,8 +3,6 @@ import { Column, Table, Model } from 'sequelize-typescript';
 import { Event, EventListItem } from 'softwareproject-common';
 
 
-
-
 @Table({ modelName: 'events', timestamps: false })
 export class DBEvent extends Model<Event> {
   declare id: CreationOptional<number>;
