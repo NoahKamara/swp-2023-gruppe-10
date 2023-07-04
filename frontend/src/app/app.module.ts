@@ -155,7 +155,7 @@ const routes: Routes = [
   // Je nach Konfiguration können wir auf eine andere Route weiterleiten
   // z.B. wollen wir bei Seitenaufruf (wenn keine 'route' festgelegt ist)
   // sofort auf die Login Route weiterleiten
-  // { path: '**', redirectTo: '/map' }
+  { path: '**', redirectTo: '/map' }
 ];
 
 

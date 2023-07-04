@@ -16,6 +16,10 @@
 - **Kunde:** Maximilian Dürr | [E-Mail](mailto:maximilian.duerr@uni-konstanz.de) | [Mattermost](https://hci2.uni-konstanz.de/mattermost/softwareprojekt-2023/messages/@mduerr)
 - Bei technischen Fragen / Problemen bitte Cedric Wiese ([Mail](mailto:cedric.wiese@uni-konstanz.de) / [Mattermost](https://hci2.uni-konstanz.de/mattermost/softwareprojekt-2023/messages/@cedricw)) kontaktieren
 
+## Modelle
+
+
+
 ## Resourcen
 **Bitte auch die Resourcen im [Software Projekt Wiki](https://gitlab.inf.uni-konstanz.de/ag-hci/lectures/2023-software-projekt/swp-2023-beispiele/-/wikis/home) sowie die Abgaben im [Projekt Wiki](/%2E%2E/wikis/Home) beachten!**
 

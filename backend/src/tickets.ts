@@ -19,30 +19,37 @@ export class TicketController {
       return;
     }
 
-    const tickets = await DBTicket.findAll({
-      where: {
-        user_id: user.id
-      },
-      include: [DBUser, DBEvent]
-    });
+    try {
+      const tickets = await DBTicket.findAll({
+        where: {
+          user_id: user.id
+        },
+        include: [DBUser, DBEvent]
+      });
 
-    const publicTickets = tickets.map( (ticket) => {
-      return {
-        id: ticket.id,
-        user: ticket.user,
-        event: {
-          id: ticket.event.id,
-          title: ticket.event.title,
-          start_date: ticket.event.start_date,
-          end_date: ticket.event.end_date,
-          price: ticket.event.price,
-          picture: ticket.event.picture
-        }
-      };
-    });
+      const publicTickets = tickets.map((ticket) => {
+        return {
+          id: ticket.id,
+          user: ticket.user,
+          event: {
+            id: ticket.event.id,
+            title: ticket.event.title,
+            start_date: ticket.event.start_date,
+            end_date: ticket.event.end_date,
+            price: ticket.event.price,
+            picture: ticket.event.picture
+          }
+        };
+      });
 
-    response.status(200);
-    response.send(publicTickets);
+      response.status(200);
+      response.send(publicTickets);
+
+    } catch (err) {
+      request.logger.error(err);
+      response.status(500);
+      response.send({ error: err });
+    }
   }
 
   async purchase(request: Request, response: Response): Promise<void> {
