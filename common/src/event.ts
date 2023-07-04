@@ -13,6 +13,8 @@ export declare interface Event extends EventListItem {
   title: string
   start_date: Date
   end_date: Date
+  start_time: string
+  end_time: string
   location: string
   picture: string
   price: number

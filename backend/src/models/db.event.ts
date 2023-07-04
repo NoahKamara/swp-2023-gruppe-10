@@ -17,6 +17,12 @@ export class DBEvent extends Model<Event> {
   end_date!: Date;
 
   @Column
+  start_time!: string;
+
+  @Column
+  end_time!: string;
+
+  @Column
   location!: Date;
 
   @Column
@@ -39,6 +45,8 @@ export class DBEvent extends Model<Event> {
       picture: this.picture,
       start_date: this.start_date,
       end_date: this.end_date,
+      start_time: this.start_time,
+      end_time: this.end_time,
       price: this.price
     };
   }

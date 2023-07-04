@@ -72,7 +72,7 @@ export class DBUser extends Model<User, CreateUser> {
   * @return {DBUser}
   */
   static async byEmail(email: string): Promise<DBUser> {
-    const user = await await DBUser.findOne({
+    const user = await DBUser.findOne({
       where: {
         email: email
       }
@@ -149,6 +149,7 @@ export class DBUser extends Model<User, CreateUser> {
     if (!this.id) {
       throw Error('user must be saved to database before session can be created');
     }
+
     const session = await DBSession.create({
       user_id: this.id,
       session_id: uid.sync(24)

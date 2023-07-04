@@ -84,7 +84,7 @@ export class AuthController {
       // create session
       const session = await user.createSession();
 
-      response.cookie('sessionId', session.sessionId, { httpOnly: true });
+      response.cookie('sessionId', session.session_id, { httpOnly: true });
       APIResponse.success().send(response);
       return;
     } catch (err) {
@@ -224,7 +224,7 @@ export class AuthController {
     try {
       request.logger.info('creating session');
       const session = await user.createSession();
-      response.cookie('sessionId', session.sessionId, { httpOnly: true });
+      response.cookie('sessionId', session.session_id, { httpOnly: true });
       APIResponse.success().send(response);
     } catch (err) {
       request.logger.error(err);
