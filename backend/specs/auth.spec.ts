@@ -8,46 +8,46 @@
 import request, { SuperAgentTest } from 'supertest';
 import app from '../src/app';
 import { UserCredentials } from 'softwareproject-common';
-import { genMail, createUser, authorize, genPassword, getInfo, unauthorizedBody } from './helpers/user-helper';
+import { genMail, createUser, authorize, genPassword, getInfo } from './helpers/user-helper';
 import { UpdatePassword, UserAddress, UserName } from 'softwareproject-common/dist/user';
 import { APIResponse } from '../src/models/response';
 import { matcher } from './helpers/responseMatching';
 
 
 
-// describe('Registration', () => {
-//   const path = '/api/user';
-//   const baseUser = {
-//     password: '12345678',
-//     firstName: 'Max',
-//     lastName: 'Mustermann',
-//     street: 'Musterweg',
-//     number: '12',
-//     city: 'Musterstadt',
-//     zipcode: '12345'
-//   };
+describe('Registration', () => {
+  const path = '/api/user';
+  const baseUser = {
+    password: '12345678',
+    firstName: 'Max',
+    lastName: 'Mustermann',
+    street: 'Musterweg',
+    number: '12',
+    city: 'Musterstadt',
+    zipcode: '12345'
+  };
 
-//   it('succeeds', () => {
-//     const user = {
-//       ...baseUser,
-//       email: genMail()
-//     };
+  it('succeeds', () => {
+    const user = {
+      ...baseUser,
+      email: genMail()
+    };
 
-//     return request(app)
-//       .post(path)
-//       .send(user)
-//       .then(res => {
-//         expect(res.status).toBe(200);
-//         console.log(res.body);
-//       });
-//   });
+    return request(app)
+      .post(path)
+      .send(user)
+      .then(res => {
+        expect(res.status).toBe(200);
+        console.log(res.body);
+      });
+  });
 
 
-//   it('fails - duplicate email', async () => {
-//     const user = {
-//       ...baseUser,
-//       email: genMail()
-//     };
+  it('fails - duplicate email', async () => {
+    const user = {
+      ...baseUser,
+      email: genMail()
+    };
 
     await request(app)
       .post(path)
@@ -60,44 +60,40 @@ import { matcher } from './helpers/responseMatching';
       .expect(matcher(APIResponse.badRequest('Nutzer mit Email existiert bereits')));
   });
 
-//   it('fails - invalid email', () => {
-//     const user = {
-//       ...baseUser,
-//       email: 'notamail'
-//     };
-
-//     return request(app)
-//       .post(path)
-//       .send(user)
-//       .expect(400);
-//   });
-
-//   it('fails - short password', () => {
-//     const user = {
-//       ...baseUser,
-//       email: genMail(),
-//       password: '1234567',
-//     };
+  it('fails - invalid email', () => {
+    const user = {
+      ...baseUser,
+      email: 'notamail'
+    };
 
     return request(app)
       .post(path)
       .send(user)
       .expect(400);
-      // .expect(res => {
-      //   request.Response;
-      // });
+  });
 
+  it('fails - short password', () => {
+    const user = {
+      ...baseUser,
+      email: genMail(),
+      password: '1234567',
+    };
+
+    return request(app)
+      .post(path)
+      .send(user)
+      .expect(400);
   });
 });
 
-// describe('Login', async () => {
-//   const path = '/api/session';
-//   let credentials!: UserCredentials;
+describe('Login', async () => {
+  const path = '/api/session';
+  let credentials!: UserCredentials;
 
-//   // Create User
-//   beforeEach(async () => {
-//     credentials = await createUser(app);
-//   });
+  // Create User
+  beforeEach(async () => {
+    credentials = await createUser(app);
+  });
 
   it('succeeds', () => {
     return request(app)
@@ -128,31 +124,31 @@ import { matcher } from './helpers/responseMatching';
   });
 });
 
-// describe('Logout', () => {
-//   const path = '/api/session';
+describe('Logout', () => {
+  const path = '/api/session';
 
-//   let credentials!: UserCredentials;
+  let credentials!: UserCredentials;
 
-//   // Create User
-//   beforeEach(async () => {
-//     credentials = await createUser(app);
-//   });
+  // Create User
+  beforeEach(async () => {
+    credentials = await createUser(app);
+  });
 
-//   // Helper function for determining login status
-//   const isAuthorized = (agent: request.SuperAgentTest): request.Test => {
-//     return agent
-//       .get('/api/auth')
-//       .send();
-//   };
+  // Helper function for determining login status
+  const isAuthorized = (agent: request.SuperAgentTest): request.Test => {
+    return agent
+      .get('/api/auth')
+      .send();
+  };
 
-//   it('succeeds', async () => {
-//     const agent = request.agent(app);
+  it('succeeds', async () => {
+    const agent = request.agent(app);
 
-//     // Login
-//     await agent
-//       .post(path)
-//       .send(credentials)
-//       .expect(200);
+    // Login
+    await agent
+      .post(path)
+      .send(credentials)
+      .expect(200);
 
     // Logout
     await agent
@@ -186,8 +182,8 @@ describe('Get Auth', () => {
   });
 });
 
-// describe('Get User', () => {
-//   const path = '/api/user';
+describe('Get User', () => {
+  const path = '/api/user';
 
   it('succeeds', async () => {
     const creds = await createUser(app);
@@ -220,19 +216,19 @@ describe('Get Auth', () => {
 });
 
 
-// describe('Update Name', () => {
-//   const path = '/api/user/name';
-//   let agent!: SuperAgentTest;
+describe('Update Name', () => {
+  const path = '/api/user/name';
+  let agent!: SuperAgentTest;
 
-//   const updateData: UserName = {
-//     firstName: genPassword(),
-//     lastName: genPassword()
-//   };
+  const updateData: UserName = {
+    firstName: genPassword(),
+    lastName: genPassword()
+  };
 
-//   // Create User
-//   beforeEach(async () => {
-//     agent = await authorize(app);
-//   });
+  // Create User
+  beforeEach(async () => {
+    agent = await authorize(app);
+  });
 
   it('succeeds', async () => {
     await agent
@@ -240,11 +236,11 @@ describe('Get Auth', () => {
       .send(updateData)
       .expect(matcher(APIResponse.success()));
 
-//     const info = await getInfo(agent);
+    const info = await getInfo(agent);
 
-//     expect(info.firstName).toBe(updateData.firstName);
-//     expect(info.lastName).toBe(updateData.lastName);
-//   });
+    expect(info.firstName).toBe(updateData.firstName);
+    expect(info.lastName).toBe(updateData.lastName);
+  });
 
   it('fails - unauthorized', async () => {
     await request(app)
@@ -255,24 +251,24 @@ describe('Get Auth', () => {
 });
 
 
-// describe('Update Password', () => {
-//   const path = '/api/user/password';
-//   let agent!: SuperAgentTest;
+describe('Update Password', () => {
+  const path = '/api/user/password';
+  let agent!: SuperAgentTest;
 
-//   let credentials!: UserCredentials;
+  let credentials!: UserCredentials;
 
-//   let updateData!: UpdatePassword;
+  let updateData!: UpdatePassword;
 
-//   // Create User
-//   beforeEach(async () => {
-//     credentials = await createUser(app);
-//     updateData = {
-//       oldPassword: credentials.password,
-//       newPassword: genPassword()
-//     };
+  // Create User
+  beforeEach(async () => {
+    credentials = await createUser(app);
+    updateData = {
+      oldPassword: credentials.password,
+      newPassword: genPassword()
+    };
 
-//     agent = await authorize(app, credentials);
-//   });
+    agent = await authorize(app, credentials);
+  });
 
   it('succeeds', async () => {
     await agent
@@ -280,8 +276,8 @@ describe('Get Auth', () => {
       .send(updateData)
       .expect(matcher(APIResponse.success()));
 
-//     await authorize(app, { email: credentials.email, password: updateData.newPassword });
-//   });
+    await authorize(app, { email: credentials.email, password: updateData.newPassword });
+  });
 
   it('fails - unauthorized', async () => {
     await request(app)
@@ -297,35 +293,35 @@ describe('Get Auth', () => {
       .expect(matcher(APIResponse.unauthorized('Passwort inkorrekt')));
   });
 
-//   it('fails - new password too short', async () => {
-//     await agent
-//       .patch(path)
-//       .send({ oldPassword: updateData.oldPassword, newPassword: 'short' })
-//       .expect(400);
-//   });
-// });
+  it('fails - new password too short', async () => {
+    await agent
+      .patch(path)
+      .send({ oldPassword: updateData.oldPassword, newPassword: 'short' })
+      .expect(400);
+  });
+});
 
 
-// describe('Update Address', () => {
-//   const path = '/api/user/address';
-//   let agent!: SuperAgentTest;
+describe('Update Address', () => {
+  const path = '/api/user/address';
+  let agent!: SuperAgentTest;
 
-//   let credentials!: UserCredentials;
+  let credentials!: UserCredentials;
 
-//   let updateData!: UserAddress;
+  let updateData!: UserAddress;
 
-//   // Create User
-//   beforeEach(async () => {
-//     credentials = await createUser(app);
-//     updateData = {
-//       street: 'Straße Update',
-//       number: '1234',
-//       city: 'Konstanz',
-//       zipcode: '54321'
-//     };
+  // Create User
+  beforeEach(async () => {
+    credentials = await createUser(app);
+    updateData = {
+      street: 'Straße Update',
+      number: '1234',
+      city: 'Konstanz',
+      zipcode: '54321'
+    };
 
-//     agent = await authorize(app, credentials);
-//   });
+    agent = await authorize(app, credentials);
+  });
 
   it('succeeds', async () => {
     await agent
@@ -333,13 +329,13 @@ describe('Get Auth', () => {
       .send(updateData)
       .expect(matcher(APIResponse.success()));
 
-//     const info = await getInfo(agent);
+    const info = await getInfo(agent);
 
-//     expect(info.street).toBe(updateData.street);
-//     expect(info.number).toBe(updateData.number);
-//     expect(info.city).toBe(updateData.city);
-//     expect(info.zipcode).toBe(updateData.zipcode);
-//   });
+    expect(info.street).toBe(updateData.street);
+    expect(info.number).toBe(updateData.number);
+    expect(info.city).toBe(updateData.city);
+    expect(info.zipcode).toBe(updateData.zipcode);
+  });
 
   it('fails - unauthorized', async () => {
     await request(app)
