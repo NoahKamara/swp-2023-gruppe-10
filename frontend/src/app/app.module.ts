@@ -40,7 +40,7 @@ import { LocationDetailComponent } from './pages/location-detail/location-detail
 import { EditProfileNameComponent } from './pages/edit-profile-name/edit-profile-name.component';
 import { EditProfileAddressComponent } from './pages/edit-profile-address/edit-profile-address.component';
 import { EditProfilePasswordComponent } from './pages/edit-profile-password/edit-profile-password.component';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import {MatDialogModule} from '@angular/material/dialog';
 import { EditDialogComponent } from './components/edit-dialog/edit-dialog.component';
 import { EventPaymentComponent } from './pages/event-payment/event-payment.component';
@@ -65,23 +65,33 @@ import { TicketListItemComponent } from './components/ticket-list-item/ticket-li
  */
 const loginGuard = (): Observable<boolean> => {
   const authObservable = inject(AuthService).checkAuth();
-
   const router = inject(Router);
 
   authObservable.subscribe({
-    next: success => {
-      if (!success) {
+    next: value => {
+      if (value === true) return;
 
-        router.navigate(['/login']);
-      }
-    },
-    error: err => {
-      console.error(err);
+      console.warn('loginGuard: failure - redirecting to login');
       router.navigate(['/login']);
-    }
+    },
   });
 
   return authObservable;
+};
+
+const antiLoginGuard = (): Observable<boolean> => {
+  const authObservable = inject(AuthService).checkAuth();
+  const router = inject(Router);
+
+  authObservable.subscribe({
+    next: value => {
+      if (value === false) return;
+      console.info('antiLoginGuard: user already authenticated - redirecting to map');
+      router.navigate(['/map']);
+    }
+  });
+
+  return authObservable.pipe(map(val => !val));
 };
 
 /**
@@ -93,8 +103,8 @@ const loginGuard = (): Observable<boolean> => {
  */
 const routes: Routes = [
   // Authentication
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent, canActivate: [antiLoginGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [antiLoginGuard] },
 
   // About
   { path: 'about', component: AboutComponent },

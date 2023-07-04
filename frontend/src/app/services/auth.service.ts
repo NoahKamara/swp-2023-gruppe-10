@@ -1,40 +1,37 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { shareReplay } from 'rxjs';
-import { PublicUser } from 'softwareproject-common';
+import { APIError } from 'softwareproject-common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   public loggedIn = false;
-  public authChecked = false;
 
-
-  constructor(private http: HttpClient) {
-    this.http = http;
-    this.checkAuth();
-  }
+  constructor(private http: HttpClient) {}
 
   public isLoggedIn(): boolean {
     return this.loggedIn;
   }
 
   public checkAuth(): Observable<boolean> {
-    const authObservable: Observable<boolean> = this.http.get<boolean>('/api/auth').pipe(shareReplay());
+    const authObservable: Observable<boolean> = this.http.get<boolean>('/api/auth')
+      .pipe(shareReplay())
+      .pipe(map(() => true))
+      .pipe(catchError(async () => {
+        console.log('ERROR');
+        return false;
+      }));
+
     authObservable.subscribe({
-      next: (val) => {
-        console.info('getAuth', val);
-        this.loggedIn = val;
-        this.authChecked = true;
-      },
-      error: (err) => {
-        console.error('getAuth failed', err);
-        this.loggedIn = false;
-        console.error(err);
+      next: isAuthenticated => {
+        console.info('auth:', isAuthenticated);
+        this.loggedIn = isAuthenticated;
       }
     });
+
     return authObservable;
   }
 
@@ -74,12 +71,12 @@ export class AuthService {
       password: password
     }).pipe(shareReplay());
     authObservable.subscribe({
-      next: (response) => {
-        console.info('login succeeded', response);
+      next: () => {
+        console.info('login succeeded');
         this.loggedIn = true;
       },
-      error: (err: HttpErrorResponse) => {
-        console.error(`login failed: (${err.error.code}) ${err.error.message}`);
+      error: (err: APIError) => {
+        console.error(`login failed: (${err.code}) ${err.error}`);
         this.loggedIn = false;
       }
     });
@@ -94,7 +91,6 @@ export class AuthService {
     authObservable.subscribe({
       next: (response) => {
         console.info('logout succeeded', response);
-        this.authChecked = false;
         this.loggedIn = false;
       },
       error: (err: HttpErrorResponse) => {
@@ -103,7 +99,6 @@ export class AuthService {
     });
     return authObservable;
   }
-
 }
 
 type ResponseMessage = {
