@@ -1,20 +1,45 @@
 <div class="page-container">
-  <app-top-bar [title]="event?.title ?? 'Event'"/>
+  <app-top-bar title="Event"/>
 
   <div *ngIf="event" class="scrollable-container space-y-8">
     <img src="/img/events/{{ event.picture }}" class="rounded-lg" alt="Event Bild" />
 
-    <div class="card-title text-base">
-      {{ event.title }}
+    <div class="space-y-2">
+      <div class="text-xl">
+        {{ event.title }}
+      </div>
+
+      <div class="text-sm flex flex-row gap-1">
+        <div  class="grow">
+            {{ dateFormat(event.start_date) }}
+          <span *ngIf="event.start_date !== event.end_date">
+            – {{ dateFormat(event.end_date) }}
+          </span>
+
+          <span *ngIf="event.start_time">
+            {{ event.start_time }}
+
+            <span *ngIf="event.end_time">
+              - {{ event.end_time }}
+            </span>
+          </span>
+        </div>
+
+        <div class="px-2">
+          {{ event.price }} €
+        </div>
+      </div>
+
+      <button class="btn btn-accent btn-block text-base-content space-x-4" routerLink="/events/{{ event.id }}/payment">
+        <mat-icon fontIcon="local_activity"></mat-icon>
+        Tickets Buchen
+      </button>
     </div>
+
+
 
     <div [innerHTML]="event.description_html"></div>
 
     <app-location-map [locationName]="event.location"/>
-
-    <button class="btn btn-accent btn-block text-base-content space-x-4" routerLink="/events/{{ event.id }}/payment">
-      <mat-icon fontIcon="local_activity"></mat-icon>
-      Tickets Buchen
-    </button>
   </div>
 </div>
