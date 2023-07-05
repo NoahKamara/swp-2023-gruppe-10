@@ -1,0 +1,37 @@
+<div class="page-container">
+    <app-top-bar title="Rating" [showBackBtn]="true"/>
+
+    <div class="flex place-content-center">
+        <div class="grid grid-cols-6 w-3/5 place-content-center">
+        <div *ngFor="let n of [1,2,3,4,5]">
+            <button mat-icon-button (click)="getStars(n)">
+                <mat-icon>{{getIcon(n)}} </mat-icon>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="(clicked)">
+    <form class="example-form">
+        <mat-form-field class="example-full-width">
+            <mat-label>Titel</mat-label>
+            <input matInput placeholder="Titel der Rezension" value="">
+          </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>(Optional)</mat-label>
+          <textarea matInput placeholder="Verfassen Sie eine Rezension."></textarea>
+        </mat-form-field>
+    </form>
+
+
+<div class="flex example-button-row place-content-end">
+    <button mat-button color="primary">Senden</button>
+  </div>
+</div>
+
+<div class="flex place-content-center space-y-12">  <h2>Alle Rezensionen</h2></div>
+
+
+
+</div>
