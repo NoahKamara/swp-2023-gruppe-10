@@ -36,6 +36,11 @@ CREATE TABLE events (
     description_html text NOT NULL
 );
 
+CREATE TABLE favorites (
+    user_id int NOT NULL PRIMARY KEY ,
+    event_id int NOT NULL PRIMARY KEY 
+);
+
 CREATE TABLE tickets (
     id serial NOT NULL PRIMARY KEY,
     user_id int NOT NULL,

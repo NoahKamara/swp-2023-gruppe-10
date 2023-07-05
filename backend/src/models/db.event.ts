@@ -34,6 +34,7 @@ export class DBEvent extends Model<Event> {
   description_html!: string;
 
 
+
   makeListItem(): EventListItem {
     return {
       id: this.id,
