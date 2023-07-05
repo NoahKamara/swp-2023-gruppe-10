@@ -4,10 +4,10 @@
 ### Gruppenmitglieder
 
 - [Emanuel Moell](mailto:emanuel.moell@uni-konstanz.de)
-- [Noah Kamara](mailto:noah.kamara@uni-konstanz.de)
+- [Noah Kamara](mailto:noah.kamara@uni-konstanz.de) Scrum Master (sollte nach jedem Sprint wechseln)
 - [Niklas Gröne](mailto:niklas.groene@uni-konstanz.de)
 - [Michael Ruckstuhl](mailto:michael.ruckstuhl@uni-konstanz.de)
-- [Marius Berner](mailto:marius.berner@uni-konstanz.de): Scrum Master (sollte nach jedem Sprint wechseln)
+- [Marius Berner](mailto:marius.berner@uni-konstanz.de): 
 
 
 ### Betreuer
