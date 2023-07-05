@@ -12,17 +12,21 @@
 </div>
 
 <div *ngIf="(clicked)">
-    <form class="example-form">
-        <mat-form-field class="example-full-width">
-            <mat-label>Titel</mat-label>
-            <input matInput placeholder="Titel der Rezension" value="">
-          </mat-form-field>
+    <div class="flex place-content-center">
+        <form class="example-form place-content-center">
+            <mat-form-field class="example-full-width">
+                <mat-label>Titel</mat-label>
+                <input matInput placeholder="Titel der Rezension" value="">
+              </mat-form-field>
+    
+            <mat-form-field class="example-full-width">
+              <mat-label>(Optional)</mat-label>
+              <textarea matInput placeholder="Verfassen Sie eine Rezension."></textarea>
+            </mat-form-field>
+        </form>
 
-        <mat-form-field class="example-full-width">
-          <mat-label>(Optional)</mat-label>
-          <textarea matInput placeholder="Verfassen Sie eine Rezension."></textarea>
-        </mat-form-field>
-    </form>
+    </div>
+    
 
 
 <div class="flex example-button-row place-content-end">
