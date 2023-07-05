@@ -25,6 +25,9 @@ import { injectLogging } from './utils/logger';
 import { DBTicket } from './models/db.ticket';
 import { TicketController } from './tickets';
 import { DBSession } from './models/db.session';
+import { HCIPalProvider } from './payment/HCIPalProvider';
+import { PaymentProviderInterface } from './payment/PaymentProvider';
+import { PaymentController } from './payment';
 
 // Express server instanziieren
 const app = express();
@@ -135,6 +138,8 @@ const tickets = new TicketController();
 app.post('/api/tickets/:id', tickets.purchase);                              // List Events
 app.get('/api/tickets', tickets.list);                              // List Events
 
+const purchase = new PaymentController();
+app.post('/api/purchase', purchase.purchase.bind(purchase));
 
 /**
  * Locations

@@ -15,7 +15,7 @@ export type SWPsafeData = {
 }
 
 export type HCIPalData = {
-  email: string
+  name: string
   password: string
 }
 

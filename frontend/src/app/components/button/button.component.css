@@ -1,0 +1,10 @@
+
+.level-0 {
+  background-color: var(--mainau-gold);
+  color: var(--foreground);
+}
+
+.level-1 {
+  background-color: var(--foreground);
+  color: var(--background);
+}

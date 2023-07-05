@@ -1,4 +1,4 @@
-import { PaymentProvider, PaymentProviderErrors } from './PaymentProvider';
+import { PaymentProviderInterface, PaymentProviderErrors } from './PaymentProvider';
 import { handleErrorResponse } from './util';
 import axios, { AxiosError } from 'axios';
 
@@ -28,7 +28,7 @@ type HCIPalPaymentValidationSuccess = {
   token: string
 }
 
-export class HCIPalProvider extends PaymentProvider<HCIPalData> {
+export class HCIPalProvider extends PaymentProviderInterface<HCIPalData> {
   private options = {
     hostname: 'pass.hci.uni-konstanz.de',
     port: 443,
@@ -58,28 +58,31 @@ export class HCIPalProvider extends PaymentProvider<HCIPalData> {
       return res.data.token;
     } catch (err) {
       // Check if error is AxiosError (e.g. Status 400 - not enough money)
-      handleErrorResponse(err, (response) => {
+      throw handleErrorResponse(err, (response) => {
         const data: HCIPalError = response.data;
 
         // Throw Specific error for balance
         if (data.error === 'Not enough balance on account') {
-          console.log(data.error);
-          throw Error(PaymentProviderErrors.notEnoughBalance);
+          console.log('Not enough balance');
+          return Error(PaymentProviderErrors.notEnoughBalance);
         }
 
         console.log('unhandled', data.error);
-      });
 
-      throw Error(PaymentProviderErrors.internalError);
+        return err;
+      });
     }
   }
 
   async executePayment(token: string): Promise<void> {
     try {
-      await axios.post(this.baseURI + '/check', {token: token});
+      console.log('token', token);
+      await axios.post(this.baseURI + '/payment', {token: token});
     } catch (err) {
-      console.log(err);
-      throw err;
+      throw handleErrorResponse(err, res => {
+        console.log(res);
+        return;
+      });
     }
   }
 }

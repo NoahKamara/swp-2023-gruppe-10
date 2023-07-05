@@ -1,5 +1,6 @@
 
 import https, { RequestOptions } from 'https';
+import { RequestLogger } from '../utils/logger';
 
 export enum PaymentProviderErrors {
   foreignAccount = 'cannot process foreign account',
@@ -12,29 +13,38 @@ type PaymentResult = {
   error?: string;
 }
 
+export enum PaymentProvider {
+  bachelorcard = 'bachelorcard',
+  hciPal = 'hciPal',
+  swpsafe = 'swpsafe'
+}
 
-export abstract class PaymentProvider<AccountData> {
+
+export abstract class PaymentProviderInterface<AccountData> {
   abstract verifyAccountCountry(data: AccountData): Promise<boolean>
   abstract validatePayment(data: AccountData, amount: number): Promise<string>
   abstract executePayment(token: string): Promise<void>
 
-  async pay(data: AccountData, amount: number): Promise<void> {
+  async pay(data: AccountData, amount: number, logger: RequestLogger): Promise<void> {
     // 1: Validate Country is Germany
     const isGermanAccount = await this.verifyAccountCountry(data);
 
     if (!isGermanAccount) {
+      logger.error('account is foreign');
       throw Error(PaymentProviderErrors.foreignAccount);
     }
-    console.info('account is german');
+    logger.info('account is german');
 
     // 2: Validate Payment (Get Token)
+    logger.info('validate');
     const token = await this.validatePayment(data, amount);
-    console.info('payment was verified', token);
+    logger.info('validation token', token);
 
     // 3: Execute Payment
-    // 2: Validate Payment (Get Token)
+    logger.info('execute');
     await this.executePayment(token);
-    console.info('payment was executed');
+
+    logger.info('payment was executed');
     return;
   }
 

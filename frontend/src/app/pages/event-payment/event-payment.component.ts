@@ -1,10 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Event } from 'softwareproject-common';
+import { Event, Ticket } from 'softwareproject-common';
 import { EventService } from 'src/app/services/event.service';
 import { PaymentProvider } from 'src/app/components/payment-provider-btn/payment-provider-btn.component';
 import { AnyPaymentData, TicketsService } from 'src/app/services/tickets.service';
 import { tick } from '@angular/core/testing';
+import { formatDate } from '@angular/common';
 
 
 
@@ -23,13 +24,23 @@ export class EventPaymentComponent implements OnInit {
 
   providerEnum: typeof PaymentProvider = PaymentProvider;
 
-  constructor(private route: ActivatedRoute, private router: Router, private eventService: EventService, private ticketService: TicketsService) { }
+  constructor(@Inject(LOCALE_ID) public locale: string, private route: ActivatedRoute, private router: Router, private eventService: EventService, private ticketService: TicketsService) { }
 
   public selectedProvider: PaymentProvider | null = null;
+
+  public purchasedTicketID: number | null = null;
+
+  didClick(): void {
+    console.log('HELLO');
+  }
 
   didSelect(provider: PaymentProvider): void {
     console.log('select', provider);
     this.selectedProvider = provider;
+  }
+
+  onPurchase(ticket: Ticket): void {
+    this.purchasedTicketID = ticket.id;
   }
 
   submit(data: AnyPaymentData): void {
@@ -66,5 +77,9 @@ export class EventPaymentComponent implements OnInit {
       },
       error: console.error
     });
+  }
+
+  dateFormat(date: Date): string {
+    return formatDate(date, 'dd.MM.yyyy', this.locale);
   }
 }

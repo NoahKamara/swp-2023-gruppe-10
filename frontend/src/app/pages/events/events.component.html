@@ -2,7 +2,7 @@
   <app-top-bar title="Events" [showBackBtn]="false"/>
 
   <div class="scrollable-container space-y-8">
-    <input type="text" placeholder="Events Suchen" class="input input-bordered w-full" [(ngModel)]="searchTerm" (ngModelChange)="onSearchTermChange()"/>
+    <input type="text" placeholder="Events Suchen" class="input input-bordered w-full bg-primary text-red-400" [(ngModel)]="searchTerm" (ngModelChange)="onSearchTermChange()"/>
 
     <div class="space-y-4">
       <div @listAnimation *ngFor="let item of events">

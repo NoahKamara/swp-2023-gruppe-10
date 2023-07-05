@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PaymentProvider } from './PaymentProvider';
+import { PaymentProviderInterface } from './PaymentProvider';
 import { parse } from 'csv-parse';
 import { handleErrorResponse } from './util';
 
@@ -30,7 +30,7 @@ type SWPSafeProcessingResponse = {
 //   message: string
 // }
 
-export class SWPSafeProvider extends PaymentProvider<SWPSafeData> {
+export class SWPSafeProvider extends PaymentProviderInterface<SWPSafeData> {
   private baseURI = 'https://pass.hci.uni-konstanz.de/swpsafe';
 
   async verifyAccountCountry(data: SWPSafeData): Promise<boolean> {

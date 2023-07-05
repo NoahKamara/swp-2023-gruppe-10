@@ -159,6 +159,29 @@ export class DBUser extends Model<User, CreateUser> {
   }
 
   /**
+  * Creates Tickets for an event for this user
+  *
+  * @memberof DBUser
+  * @instance
+  * @method
+  * @param {number} event
+  * @return {Promise<DBSession>}
+  */
+  public async addTicket({ event, amount }: { event: number; amount: number; }): Promise<DBTicket> {
+    if (!this.id) {
+      throw Error('user must be saved to database before session can be created');
+    }
+
+    const ticket = await DBTicket.create({
+      user_id: this.id,
+      event_id: event,
+      amount: amount
+    });
+
+    return ticket;
+  }
+
+  /**
   * Returns an object suitable for using as a public user
   *
   * @memberof DBUser

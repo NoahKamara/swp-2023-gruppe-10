@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
@@ -50,6 +51,7 @@ import { SWPsafeFormComponent } from './components/payment-forms/swpsafe-form/sw
 import { HCIPalFormComponent } from './components/payment-forms/hcipal-form/hcipal-form.component';
 import { TicketsComponent } from './pages/tickets/tickets.component';
 import { TicketListItemComponent } from './components/ticket-list-item/ticket-list-item.component';
+import { ButtonComponent } from './components/button/button.component';
 
 
 /**
@@ -130,7 +132,11 @@ const routes: Routes = [
         path: ':id',
         children: [
           { path: '', component: EventDetailComponent },
-          { path: 'payment', component: EventPaymentComponent }
+          { path: 'payment', children: [
+            { path: '', component: EventPaymentComponent },
+            { path: 'success', component: EventPaymentComponent }
+          ]
+        }
         ]
      }
     ]
@@ -139,7 +145,8 @@ const routes: Routes = [
     path: 'tickets',
     canActivate: [loginGuard],
     children: [
-      { path: '', component: TicketsComponent }
+      { path: '', component: TicketsComponent },
+      { path: ':id', component: TicketsComponent }
     ]
    },
 
@@ -165,7 +172,7 @@ const routes: Routes = [
   // Je nach Konfiguration können wir auf eine andere Route weiterleiten
   // z.B. wollen wir bei Seitenaufruf (wenn keine 'route' festgelegt ist)
   // sofort auf die Login Route weiterleiten
-  { path: '**', redirectTo: '/map' }
+  // { path: '**', redirectTo: '/map' }
 ];
 
 
@@ -211,6 +218,7 @@ const routes: Routes = [
     HCIPalFormComponent,
     TicketsComponent,
     TicketListItemComponent,
+    ButtonComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -220,6 +228,7 @@ const routes: Routes = [
     BrowserAnimationsModule,
     LeafletModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
     MatIconModule,
     ReactiveFormsModule,
     MatFormFieldModule,
