@@ -11,6 +11,7 @@ import {MDCTextField} from '@material/textfield';
 export class ReviewComponent {
 
   public rating = 0;
+  public ratingUser = 3.5;
   public clicked = false;
 
 
@@ -20,6 +21,16 @@ export class ReviewComponent {
     if(star <= this.rating){
         return 'star';
     } else if(star <= this.rating +0.5){
+      return 'star_half';
+    } else{
+      return 'grade';
+    }
+  }
+  getIconUser(star:number): string{
+
+    if(star <= this.ratingUser){
+        return 'star';
+    } else if(star <= this.ratingUser +0.5){
       return 'star_half';
     } else{
       return 'grade';
