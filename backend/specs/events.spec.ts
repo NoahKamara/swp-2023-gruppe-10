@@ -51,7 +51,7 @@ describe('Details', () => {
 
   const expectedData = {
     id: 1,
-    title: 'Ausstellung: Frühlingsträume (03.03.2023–14.05.2023)',
+    title: 'Ausstellung: Frühlingsträume',
     start_date: '2023-03-03',
     end_date: '2023-08-14',
     location: 'Barockschloss',

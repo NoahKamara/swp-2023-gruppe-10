@@ -6,17 +6,16 @@
  */
 
 import request, { SuperAgentTest } from 'supertest';
-import app from '../src/app';
+import app, { authCtrl } from '../src/app';
 import { UserCredentials } from 'softwareproject-common';
 import { genMail, createUser, authorize, genPassword, getInfo } from './helpers/user-helper';
 import { UpdatePassword, UserAddress, UserName } from 'softwareproject-common/dist/user';
 import { APIResponse } from '../src/models/response';
 import { matcher } from './helpers/responseMatching';
-
-
+import { DBController } from '../src/database/DBController';
+import { MockDBController } from '../src/database/mock-controller';
 
 describe('Registration', () => {
-  const path = '/api/user';
   const baseUser = {
     password: '12345678',
     firstName: 'Max',
@@ -27,16 +26,34 @@ describe('Registration', () => {
     zipcode: '12345'
   };
 
+  let db: MockDBController;
+
+  beforeEach(() => {
+    db = new MockDBController();
+    authCtrl.db = db;
+  });
+
+  afterAll(async () => {
+    // Reset Controller to default
+    authCtrl.db = DBController.default;
+  });
+
+  const path = '/api/user';
+
+
   it('succeeds', () => {
+    db.db;
     const user = {
       ...baseUser,
-      email: genMail()
+      email: 'test@test.de'
     };
 
     return request(app)
       .post(path)
       .send(user)
       .then(res => {
+        console.log(db.db.users);
+
         expect(res.status).toBe(200);
         console.log(res.body);
       });
@@ -46,13 +63,10 @@ describe('Registration', () => {
   it('fails - duplicate email', async () => {
     const user = {
       ...baseUser,
-      email: genMail()
+      email: 'test@test.de'
     };
 
-    await request(app)
-      .post(path)
-      .send(user)
-      .expect(matcher(APIResponse.success()));
+    db.users.insert(user);
 
     return await request(app)
       .post(path)

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { User } from 'softwareproject-common';
 import { DBTicket } from './models/db.ticket';
-import { DBEvent } from './models/db.event';
+import { DBEvent } from './models/event/event.db';
 import { Ticket } from 'softwareproject-common';
-import { DBUser } from './models/db.user';
+import { DBUser } from './models/user/user.db';
 import { APIResponse } from './models/response';
 
 export class TicketController {

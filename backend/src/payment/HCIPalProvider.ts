@@ -1,4 +1,5 @@
-import { PaymentProviderInterface, PaymentProviderErrors } from './PaymentProvider';
+import { PaymentProviderInterface } from './PaymentProvider';
+import { PaymentError } from 'softwareproject-common';
 import { handleErrorResponse } from './util';
 import axios, { AxiosError } from 'axios';
 
@@ -15,6 +16,7 @@ type HCIPalError = {
 type HCIPalCountryResponse = {
   success: boolean;
   country: string;
+  error?: string
 }
 
 type HCIPalPaymentValidationResponse = {
@@ -40,10 +42,15 @@ export class HCIPalProvider extends PaymentProviderInterface<HCIPalData> {
     const body = { accountName: data.name };
 
     const res = await axios.post(this.baseURI + '/country', body);
-
     const result: HCIPalCountryResponse = res.data;
 
-    return Promise.resolve(result.country === 'germany');
+    if (result.success === true) {
+      return Promise.resolve(result.country === 'germany');
+    } else if (result.error === 'Unknown payment account') {
+      throw PaymentError.unknownAccount;
+    } else {
+      throw Error(result.error ?? 'Unknown Error');
+    }
   }
 
   async validatePayment(data: HCIPalData, amount: number): Promise<string> {
@@ -63,8 +70,9 @@ export class HCIPalProvider extends PaymentProviderInterface<HCIPalData> {
 
         // Throw Specific error for balance
         if (data.error === 'Not enough balance on account') {
-          console.log('Not enough balance');
-          return Error(PaymentProviderErrors.notEnoughBalance);
+          return PaymentError.notEnoughBalance;
+        } else if (data.error === 'Invalid data') {
+          return PaymentError.invalidData;
         }
 
         console.log('unhandled', data.error);
@@ -76,12 +84,11 @@ export class HCIPalProvider extends PaymentProviderInterface<HCIPalData> {
 
   async executePayment(token: string): Promise<void> {
     try {
-      console.log('token', token);
       await axios.post(this.baseURI + '/payment', {token: token});
     } catch (err) {
       throw handleErrorResponse(err, res => {
         console.log(res);
-        return;
+        return err;
       });
     }
   }

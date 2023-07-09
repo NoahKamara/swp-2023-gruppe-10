@@ -3,24 +3,25 @@
 <div class="grid gap-1 grid-cols-4 grid-rows-4">
   <!-- Name -->
   <app-validated-input label="Name" [control]="formGroup.controls.name" class="col-span-4">
-    *Pflichtfeld
+    <app-payment-error-message [control]="formGroup.controls.name"/>
   </app-validated-input>
   <app-validated-input label="Kartennummer" [control]="formGroup.controls.number" class="col-span-4">
-    *Pflichtfeld
+    <app-payment-error-message [control]="formGroup.controls.number"/>
   </app-validated-input>
 
   <!-- Address -->
   <app-validated-input label="Prüfziffer" [control]="formGroup.controls.code" class="col-span-1 mt-3">
-    *Pflichtfeld
+    <app-payment-error-message [control]="formGroup.controls.code"/>
   </app-validated-input>
 
   <app-validated-input label="Gültig Bis (z.B.: 03/26)" [control]="formGroup.controls.date" class="col-span-3 mt-3">
     <span *ngIf="formGroup.controls.date.hasError('pattern')">
       Datum muss im Format MM/JJ angegeben werden
     </span>
-    <span *ngIf="formGroup.controls.date.hasError('required')">
-      *Pflichtfeld
+    <span *ngIf="formGroup.controls.date.hasError('expired')">
+      Die BachelorCard ist abgelaufen
     </span>
+    <app-payment-error-message [control]="formGroup.controls.date"/>
   </app-validated-input>
 </div>
 

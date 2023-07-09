@@ -1,9 +1,13 @@
-import { DBEvent } from './models/db.event';
+import { DBEvent } from './models/event/event.db';
 import { Request, Response } from 'express';
 import { APIResponse } from './models/response';
+import { DBControllerInterface } from './database/DBController';
+import { EventFilter } from './models/event/event.factory';
 
 
 export class EventController {
+  constructor(private controller: DBControllerInterface) {}
+
   /**
   * Returns a list of _upcoming_ events
   *
@@ -12,22 +16,18 @@ export class EventController {
   * - search: GET /events?term='blumen'
   */
   async list(request: Request, response: Response): Promise<void> {
-    const searchTerm = request.query.term;
-
-    let events: DBEvent[];
-
     try {
-      if (searchTerm) {
-        request.logger.info(`listing events matching: "${searchTerm}"`);
+      const filter: EventFilter = {};
 
-        events = await DBEvent.search(String(searchTerm));
-      } else {
-        request.logger.info('listing all events');
-        events = await DBEvent.upcoming();
+      if (request.query.term) {
+        filter.term = String(request.query.term);
       }
+
+      const events = await this.controller.events.filterUpcoming(filter);
 
       APIResponse.success(events).send(response);
     } catch (err) {
+      console.error(err);
       APIResponse.internal(err).send(response);
     }
   }

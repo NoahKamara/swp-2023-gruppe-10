@@ -3,11 +3,12 @@ import bcrypt from 'bcrypt';
 import { validateBody } from './validation/requestValidation';
 import { createUserSchema, updatePasswordSchema, userAddressSchema, userCredentialsSchema, userNameSchema } from './validation/user';
 import { APIResponse } from './models/response';
-import { DBUser } from './models/db.user';
-import { DBSession } from './models/db.session';
-
+import { UserInterface } from './models/user/user.interface';
+import { DBControllerInterface } from './database/DBController';
+import { SessionInterface } from './models/session/session.interface';
 
 export class AuthController {
+  public db: DBControllerInterface;
   private salt: number | string = 10;
 
   /**
@@ -17,11 +18,13 @@ export class AuthController {
    * @param {UserAdapter} userAdapter - Brief description of the parameter here.
    */
   constructor({
-    salt,
+    salt, db
   }: {
-    salt: number | string;
+    salt: number | string,
+    db: DBControllerInterface
   }) {
     this.salt = salt;
+    this.db = db;
   }
 
   /**
@@ -42,7 +45,7 @@ export class AuthController {
     request.logger.info(`authorization: trying with id ${sessionId}`);
 
     try {
-      response.locals.session = await DBSession.byID(sessionId);
+      response.locals.session = await this.db.sessions.byID(sessionId);
       request.logger.info('authorization: succeeded');
     } catch (err) {
       request.logger.warn('authorization: failure - session could not be found', err);
@@ -66,7 +69,7 @@ export class AuthController {
     data.password = bcrypt.hashSync(data.password, this.salt);
 
     try {
-      await DBUser.byEmail(data.email);
+      await this.db.users.byEmail(data.email);
       APIResponse.badRequest('Nutzer mit Email existiert bereits').send(response);
       return;
     } catch {
@@ -74,12 +77,7 @@ export class AuthController {
     }
 
     try {
-      const user = await DBUser.create(data);
-
-      if (!user.id) {
-        APIResponse.internal('Nutzer hat keine ID').send(response);
-        return;
-      }
+      const user = await this.db.users.insert(data);
 
       // create session
       const session = await user.createSession();
@@ -97,7 +95,7 @@ export class AuthController {
    *  returns true if the user is authorized, otherwise false
    */
   async getAuth(request: Request, response: Response): Promise<void> {
-    const user: DBUser = response.locals.session?.user;
+    const user: UserInterface = response.locals.session?.user;
 
     if (!user) {
       request.logger.error('endpoint requires authorization');
@@ -112,7 +110,7 @@ export class AuthController {
    *  returns user info if they are authorized
    */
   async getUser(request: Request, response: Response): Promise<void> {
-    const user: DBUser = response.locals.session?.user;
+    const user: UserInterface = response.locals.session?.user;
 
     if (!user) {
       APIResponse.unauthorized().send(response);
@@ -130,7 +128,7 @@ export class AuthController {
     const data = validateBody(request, response, userNameSchema);
     if (!data) return;
 
-    const user: DBUser = response.locals.session?.user;
+    const user: UserInterface = response.locals.session?.user;
     if (!user) {
       APIResponse.unauthorized().send(response);
       return;
@@ -153,7 +151,7 @@ export class AuthController {
     const data = validateBody(request, response, userAddressSchema);
     if (!data) return;
 
-    const user: DBUser = response.locals.session?.user;
+    const user: UserInterface = response.locals.session?.user;
     if (!user) {
       APIResponse.unauthorized().send(response);
       return;
@@ -175,7 +173,7 @@ export class AuthController {
     const data = validateBody(request, response, updatePasswordSchema);
     if (!data) return;
 
-    const user: DBUser = response.locals.session?.user;
+    const user: UserInterface = response.locals.session?.user;
     if (!user) {
       APIResponse.unauthorized().send(response);
       return;
@@ -205,9 +203,9 @@ export class AuthController {
     const body = validateBody(request, response, userCredentialsSchema);
     if (!body) return;
 
-    let user: DBUser;
+    let user: UserInterface;
     try {
-      user = await DBUser.byEmail(body.email);
+      user = await this.db.users.byEmail(body.email);
     } catch {
       request.logger.info('could not lookup user by mail');
       APIResponse.unauthorized('Falsches Passwort oder Unbekannter Nutzer').send(response);
@@ -238,14 +236,14 @@ export class AuthController {
    * logout a currently logged in user
    */
   async logout(request: Request, response: Response): Promise<void> {
-    const session: DBUser = response.locals.session;
+    const session: SessionInterface = response.locals.session;
     if (!session) {
       APIResponse.unauthorized().send(response);
       return;
     }
 
 
-    await session.destroy();
+    await this.db.sessions.destroy(session);
 
     // invalidate session cookie
     response.cookie('sessionId', null, { httpOnly: true, expires: new Date(0) });

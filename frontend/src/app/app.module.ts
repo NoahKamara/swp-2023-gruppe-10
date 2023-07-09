@@ -52,6 +52,7 @@ import { HCIPalFormComponent } from './components/payment-forms/hcipal-form/hcip
 import { TicketsComponent } from './pages/tickets/tickets.component';
 import { TicketListItemComponent } from './components/ticket-list-item/ticket-list-item.component';
 import { ButtonComponent } from './components/button/button.component';
+import { PaymentErrorMessageComponent } from './components/payment-forms/payment-error-message/payment-error-message.component';
 
 
 /**
@@ -219,6 +220,7 @@ const routes: Routes = [
     TicketsComponent,
     TicketListItemComponent,
     ButtonComponent,
+    PaymentErrorMessageComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),

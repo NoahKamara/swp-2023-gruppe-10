@@ -7,9 +7,9 @@ export interface PaymentProviderPurchaseInterface {
 }
 
 export interface PaymentProviderPurchaseInterfaceNew {
-  didPurchase: EventEmitter<Ticket>
-
   eventID: number;
   amount: number;
+
+  didPurchase: EventEmitter<Ticket>
 }
 

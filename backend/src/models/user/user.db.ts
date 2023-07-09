@@ -1,13 +1,30 @@
 import { CreationOptional } from 'sequelize';
 import { Table, Column, Model, HasMany } from 'sequelize-typescript';
 import { CreateUser, PublicUser, User } from 'softwareproject-common';
-import { DBTicket } from './db.ticket';
+import { DBTicket } from '../db.ticket';
 import { Response } from 'express';
-import { DBSession } from './db.session';
+import { DBSession } from '../session/session.db';
 import uid from 'uid-safe';
+import { UserFactory } from './user.factory';
+import { UserInterface } from './user';
+
 
 @Table({ modelName: 'users', timestamps: false })
-export class DBUser extends Model<User, CreateUser> {
+export class DBUser extends Model<User, CreateUser> implements UserInterface {
+
+  /**
+  * The Factory DBUser
+  *
+  * @static
+  * @type {UserFactory}
+  */
+  static get factory(): UserFactory<DBUser> {
+    return {
+      insert: DBUser.insert,
+      byID: DBUser.byID,
+      byEmail: DBUser.byEmail
+    };
+  }
   declare id: CreationOptional<number>;
 
   @Column
@@ -38,17 +55,16 @@ export class DBUser extends Model<User, CreateUser> {
   tickets!: DBTicket[];
 
   /**
-  * Returns a new DBUser from an id
-  * - tries to find user in db with user.id == id
-  *
-  * -> if found, returns new DBUser for user
-  * -> otherwise throws error
-  *
-  * @memberof DBUser
-  * @static
-  * @method
-  * @param {number} id - database id
-  * @return {DBUser}
+  * Implementation of UserFactory.insert for DBUSer
+  * @see UserFactory.byID
+  */
+  static async insert(data: CreateUser): Promise<DBUser> {
+    return await DBUser.create(data);
+  }
+
+  /**
+  * Implementation of UserFactory.byID for DBUSer
+  * @see UserFactory.byID
   */
   static async byID(id: number): Promise<DBUser> {
     const user = await DBUser.findByPk(id);
@@ -59,17 +75,8 @@ export class DBUser extends Model<User, CreateUser> {
   }
 
   /**
-  * Returns a new DBUser from an email
-  * - tries to find user in db with user.email == email
-  *
-  * -> if found, returns DBUser for user
-  * -> otherwise throws error
-  *
-  * @memberof DBUser
-  * @static
-  * @method
-  * @param {string} email
-  * @return {DBUser}
+  * Implementation of UserFactory.byEmail for DBUSer
+  * @see UserFactory.byID
   */
   static async byEmail(email: string): Promise<DBUser> {
     const user = await DBUser.findOne({

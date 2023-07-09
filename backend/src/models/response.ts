@@ -2,7 +2,6 @@ import { Response } from 'express';
 import { ZodError } from 'zod';
 import { APIError } from 'softwareproject-common';
 
-
 export class APIResponse {
 
   constructor(public status: number, public data: unknown | null) {}

@@ -16,18 +16,19 @@ import { initDatabase } from './database/sequelize';
 import { ApiController } from './api';
 import { AuthController } from './auth';
 import { Sequelize } from 'sequelize-typescript';
-import { DBUser } from './models/db.user';
+import { DBUser } from './models/user/user.db';
 import { EventController } from './events';
-import { DBEvent } from './models/db.event';
+import { DBEvent } from './models/event/event.db';
 import { LocationController } from './locations';
 import { DBLocation } from './models/db.location';
 import { injectLogging } from './utils/logger';
 import { DBTicket } from './models/db.ticket';
 import { TicketController } from './tickets';
-import { DBSession } from './models/db.session';
+import { DBSession } from './models/session/session.db';
 import { HCIPalProvider } from './payment/HCIPalProvider';
 import { PaymentProviderInterface } from './payment/PaymentProvider';
 import { PaymentController } from './payment';
+import { DBController } from './database/DBController';
 
 // Express server instanziieren
 const app = express();
@@ -76,6 +77,8 @@ const testDB = () => {
 };
 
 
+const db = DBController.default;
+
 /**
  *  API Routen festlegen
  *  Hier legen wir in dem "Express" Server neue Routen fest. Wir übergeben die Methoden
@@ -106,7 +109,7 @@ const api = new ApiController();
 /**
  * AUTHENTICATION
  */
-const auth = new AuthController({salt: 10 });
+const auth = new AuthController({salt: 10 , db: db});
 app.post('api/login', auth.login.bind(auth));
 
 
@@ -127,15 +130,15 @@ app.delete('/api/session', auth.logout.bind(auth));               // Invalidate 
  * Events
  */
 
-const events = new EventController();
+const events = new EventController(db);
 
-app.get('/api/events', events.list);                              // List Events
-app.get('/api/events/:id', events.details);                       // Get Details of Event
+app.get('/api/events', events.list.bind(events));                              // List Events
+app.get('/api/events/:id', events.details.bind(events));                       // Get Details of Event
 
 
 const tickets = new TicketController();
 
-app.post('/api/tickets/:id', tickets.purchase);                              // List Events
+app.post('/api/tickets/:id', tickets.purchase.bind(events));                              // List Events
 app.get('/api/tickets', tickets.list);                              // List Events
 
 const purchase = new PaymentController();
@@ -201,4 +204,5 @@ app.use('/img', express.static('img'));
 initDatabase(sequelize);
 testDB();
 
+export { auth as authCtrl, events as eventCtrl, locations as locationCtrl, tickets as ticketCtrl, purchase as purchaseCtrl };
 export default app;

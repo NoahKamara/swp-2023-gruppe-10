@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { Ticket } from 'softwareproject-common';
-import { PaymentProvider } from '../components/payment-provider-btn/payment-provider-btn.component';
-import { AnyPaymentData } from './tickets.service';
+import { AnyPaymentData, SWPsafeData } from './tickets.service';
+import { PaymentProvider } from 'softwareproject-common';
 
 export type HCIPalData = {
   name: string
@@ -36,5 +36,9 @@ export class PaymentService {
 
   hcipal(data: { eventID: number; amount: number; data: HCIPalData; }): Observable<Ticket> {
     return this.payment({ provider: PaymentProvider.hciPal, ...data });
+  }
+
+  swpsafe(data: { eventID: number; amount: number; data: SWPsafeData; }): Observable<Ticket> {
+    return this.payment({ provider: PaymentProvider.swpsafe, ...data });
   }
 }

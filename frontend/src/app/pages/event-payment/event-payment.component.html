@@ -47,7 +47,7 @@
           <app-hcipal-form [amount]="1" [eventID]="event.id" (didPurchase)="onPurchase($event)" />
         </div>
         <div *ngSwitchCase="providerEnum.swpsafe">
-          <app-swpsafe-form (didSubmit)="submit($event)" />
+          <app-swpsafe-form [amount]="1" [eventID]="event.id" (didPurchase)="onPurchase($event)" />
         </div>
         <div *ngSwitchDefault providerSelection></div>
         <div *ngIf="selectedProvider;else providerSelection">
