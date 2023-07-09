@@ -6,7 +6,6 @@ import {MDCTextField} from '@material/textfield';
 @Component({
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.css']
-})
 
 export class ReviewComponent {
 
