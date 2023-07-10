@@ -4,10 +4,10 @@
 ### Gruppenmitglieder
 
 - [Emanuel Moell](mailto:emanuel.moell@uni-konstanz.de)
-- [Noah Kamara](mailto:noah.kamara@uni-konstanz.de)
+- [Noah Kamara](mailto:noah.kamara@uni-konstanz.de) Scrum Master (sollte nach jedem Sprint wechseln)
 - [Niklas Gröne](mailto:niklas.groene@uni-konstanz.de)
 - [Michael Ruckstuhl](mailto:michael.ruckstuhl@uni-konstanz.de)
-- [Marius Berner](mailto:marius.berner@uni-konstanz.de): Scrum Master (sollte nach jedem Sprint wechseln)
+- [Marius Berner](mailto:marius.berner@uni-konstanz.de): 
 
 
 ### Betreuer
@@ -15,10 +15,6 @@
 - **Product Owner:** Jonas Bachmann | [E-Mail](mailto:jonas.bachmann@uni-konstanz.de) | [Mattermost](https://hci2.uni-konstanz.de/mattermost/softwareprojekt-2023/messages/@jonas.bachmann)
 - **Kunde:** Maximilian Dürr | [E-Mail](mailto:maximilian.duerr@uni-konstanz.de) | [Mattermost](https://hci2.uni-konstanz.de/mattermost/softwareprojekt-2023/messages/@mduerr)
 - Bei technischen Fragen / Problemen bitte Cedric Wiese ([Mail](mailto:cedric.wiese@uni-konstanz.de) / [Mattermost](https://hci2.uni-konstanz.de/mattermost/softwareprojekt-2023/messages/@cedricw)) kontaktieren
-
-## Modelle
-
-
 
 ## Resourcen
 **Bitte auch die Resourcen im [Software Projekt Wiki](https://gitlab.inf.uni-konstanz.de/ag-hci/lectures/2023-software-projekt/swp-2023-beispiele/-/wikis/home) sowie die Abgaben im [Projekt Wiki](/%2E%2E/wikis/Home) beachten!**
