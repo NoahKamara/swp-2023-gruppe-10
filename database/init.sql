@@ -46,8 +46,9 @@ CREATE TABLE events (
 );
 
 CREATE TABLE favorites (
-    user_id int NOT NULL PRIMARY KEY ,
-    event_id int NOT NULL PRIMARY KEY 
+    user_id int NOT NULL,
+    event_id int NOT NULL,
+    CONSTRAINT id PRIMARY KEY (user_id, event_id)
 );
 
 CREATE TABLE tickets (
@@ -175,7 +176,7 @@ Ein Höhepunkt des Mainau-Tages ist sicherlich ein Besuch im zweitgrößten Schm
   Im Shop finden Sie ein großes Angebot an Mainau-Souvenirs. Im Bistrobereich gibt es ganzjährig Kaffee, Eis und Getränke. Während der Saison erhalten Sie auch einen kleinen Imbiss.
   <br/>
   <br/>
-  Am 24. &amp; 31. Dezember ist das Schmetterlingshaus von 10.00 bis 14.00 Uhr geöffnet.
+  Am 24. & 31. Dezember ist das Schmetterlingshaus von 10.00 bis 14.00 Uhr geöffnet.
  </p>
 </div>
 '),('Barockschloss',47.704973490505225, 9.200019295279935,'attraktion_schloss_1080x720.jpg','
@@ -775,7 +776,7 @@ Wie hat es Ihnen bei uns in der Schwedenschenke gefallen? Wir freuen uns auf Ihr
     Öffnungszeiten Restaurant Schwedenschenke
    </strong>
    <br/>
-   Mittwoch bis Sonntag 11.00 bis 17.00 Uhr, Montag &amp; Dienstag Ruhetage
+   Mittwoch bis Sonntag 11.00 bis 17.00 Uhr, Montag & Dienstag Ruhetage
   </span>
  </p>
  <p style="text-align: center;">
@@ -831,7 +832,7 @@ Wie hat es Ihnen bei uns im Täglich Brot gefallen? Wir freuen uns auf Ihre Rüc
    <br/>
    2. bis 22. Oktober: 11.00 bis 16.00 Uhr
    <br/>
-   Mittwoch &amp; Donnerstag Ruhetag
+   Mittwoch & Donnerstag Ruhetag
   </span>
  </p>
  <p style="text-align: left;">
@@ -969,7 +970,7 @@ Wie hat es Ihnen bei uns im Mainau Träff gefallen? Wir freuen uns auf Ihre Rü
    <br/>
    1. April bis 1. Oktober: 10.00 bis 17.00 Uhr
    <br/>
-   Montag &amp; Dienstag Ruhetag
+   Montag & Dienstag Ruhetag
   </span>
  </p>
  <p class="bodytext">
@@ -1046,7 +1047,7 @@ Informationen & ReservierungenTelefon +49 / (0) 7531 / 303-156Telefax +49 / (0) 
  </p>
  <p class="bodytext">
   <strong>
-   Informationen &amp; Reservierungen
+   Informationen & Reservierungen
   </strong>
   <br/>
   Telefon +49 / (0) 7531 / 303-156
@@ -1071,7 +1072,7 @@ Wie hat es Ihnen bei uns im Biergarten am Hafen gefallen? Wir freuen uns auf I
    <br/>
    1. April bis 1. Oktober: 11.00 bis 17.00 Uhr
    <br/>
-   Montag &amp; Dienstag Ruhetag
+   Montag & Dienstag Ruhetag
   </span>
  </p>
  <p style="text-align: left;">
@@ -1207,7 +1208,7 @@ Stand: Februar 2023, Änderungen vorbehalten
   </em>
  </p>
 </div>
-'),('Blumenjahr 2023: Schlossjuwel &amp; Gartenrausch','2023-03-17','2023-10-22',NULL,NULL,'Italienischer Rosengarten','jahresmotto2016_1080x720.jpg',5.00,'
+'),('Blumenjahr 2023: Schlossjuwel & Gartenrausch','2023-03-17','2023-10-22',NULL,NULL,'Italienischer Rosengarten','jahresmotto2016_1080x720.jpg',5.00,'
 Lebendige Inselgeschichte kunstvoll in Szene gesetztDas Jahresmotto 2023 „Schlossjuwel & Gartenrausch – Grüne Fürsten am Bodensee“ vereint lebendige Inselgeschichte mit schwärmerischer Gartenlust. Dieses Mal wird das Wirken des österreichischen Fürsten Nikolaus II. Esterházy auf der Insel Mainau im Mittelpunkt stehen. Er gestaltete nicht nur die Insel nach der Deutschordenszeit um, sondern prägte zusammen mit Prinz Louis Napoléon, dem späteren französischen Kaiser, die Region des westlichen Bodensees.
 Orchideenschau 2023Entdecker des 18. und 19. Jahrhunderts brachten die exotischen Pflanzenschönheiten erstmals auf dem Seeweg nach Europa. Diese Zeit der Abenteurer und Pflanzenjäger thematisiert die diesjährige Orchideenschau, die ab 17. März im Palmenhaus zu sehen ist. 
 Fotopoint: Barocke BlumenkleiderZwei bunt bepflanzte barocke Kleider stehen unweit von der Schlosskirche und warten nur darauf, von Ihnen „getragen“ zu werden. Also, rein ins Kleid, Foto machen und in den sozialen Medien teilen!
@@ -1219,7 +1220,7 @@ Stand: März 2023, weitere Informationen folgen
    Lebendige Inselgeschichte kunstvoll in Szene gesetzt
   </strong>
   <br/>
-  Das Jahresmotto 2023 „Schlossjuwel &amp; Gartenrausch – Grüne Fürsten am Bodensee“ vereint lebendige Inselgeschichte mit schwärmerischer Gartenlust. Dieses Mal wird das Wirken des österreichischen Fürsten Nikolaus II. Esterházy auf der Insel Mainau im Mittelpunkt stehen. Er gestaltete nicht nur die Insel nach der Deutschordenszeit um, sondern prägte zusammen mit Prinz Louis Napoléon, dem späteren französischen Kaiser, die Region des westlichen Bodensees.
+  Das Jahresmotto 2023 „Schlossjuwel & Gartenrausch – Grüne Fürsten am Bodensee“ vereint lebendige Inselgeschichte mit schwärmerischer Gartenlust. Dieses Mal wird das Wirken des österreichischen Fürsten Nikolaus II. Esterházy auf der Insel Mainau im Mittelpunkt stehen. Er gestaltete nicht nur die Insel nach der Deutschordenszeit um, sondern prägte zusammen mit Prinz Louis Napoléon, dem späteren französischen Kaiser, die Region des westlichen Bodensees.
  </p>
  <p>
   <strong>
@@ -1657,7 +1658,7 @@ In Verbindung mit einer Reservierung oder Buchung ist der Eintritt auf die Insel
 Stand: März 2023
 ','<div class="ce_text col-xs-12 col-sm-12 col-md-12 col-lg-12 block">
  <p style="text-align: left;">
-  Schlemmen Sie am 14. Mai 2023 nach Herzenslust und genießen Sie vielfältige Gaumenfreuden – von süß bis herzhaft, fruchtig bis knackig oder vegetarische Speisen. Für jeden ist etwas dabei. Ein geselliges Erlebnis für die ganze Familie &amp; Freunde.
+  Schlemmen Sie am 14. Mai 2023 nach Herzenslust und genießen Sie vielfältige Gaumenfreuden – von süß bis herzhaft, fruchtig bis knackig oder vegetarische Speisen. Für jeden ist etwas dabei. Ein geselliges Erlebnis für die ganze Familie & Freunde.
  </p>
  <p style="text-align: left;">
   Unser Tipp: Nach einem ausgiebigem Brunch empfehlen wir einen Spaziergang im frühlingshaften Mainau-Park. Die ersten Fliederbüsche und Rhododendren blühen und die Italienische Blumen-Wassertreppe schmückt sich mit spätblühenden Narzissen und Tulpen.
@@ -1829,7 +1830,7 @@ Kandierte Lotuswurzel/ Yuzu Mousse/ Grünteesorbet
  
 ','<div class="ce_text text-center col-xs-12 col-sm-12 col-md-12 col-lg-12 block">
  <p style="text-align: left;">
-  Inmitten rund 3.000 faszinierender Schönheiten der diesjährigen Orchideenschau erleben Sie im Palmenhaus einen für Augen, Ohren und Gaumen unvergesslichen Abend. Für musikalische Begleitung sorgt die Band Key &amp; Strings.
+  Inmitten rund 3.000 faszinierender Schönheiten der diesjährigen Orchideenschau erleben Sie im Palmenhaus einen für Augen, Ohren und Gaumen unvergesslichen Abend. Für musikalische Begleitung sorgt die Band Key & Strings.
  </p>
  <p style="text-align: center;">
   <em>
@@ -2000,17 +2001,17 @@ Stand: März 2023, Änderungen vorbehalten
   Treffpunkt Torbogenkeller, 7 € pro Person
   <br/>
   <em>
-   7., 9. und 10. April 2023: 12.00 &amp; 15.00 Uhr, Dauer: ca. 30 Minuten
+   7., 9. und 10. April 2023: 12.00 & 15.00 Uhr, Dauer: ca. 30 Minuten
    <br/>
    8. April nur 12.00 Uhr
   </em>
   <strong>
    <br/>
    <br/>
-   Brunch am Karfreitag (Restplätze vorhanden), Ostersonntag &amp; Ostermontag - AUSGEBUCHT
+   Brunch am Karfreitag (Restplätze vorhanden), Ostersonntag & Ostermontag - AUSGEBUCHT
   </strong>
   <br/>
-  Restaurant Comturey &amp; Torkelkeller
+  Restaurant Comturey & Torkelkeller
  </p>
  <h5>
   Ostern im Park:
