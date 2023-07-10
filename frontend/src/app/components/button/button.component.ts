@@ -13,7 +13,7 @@ export class ButtonComponent {
   class = '';
 
   @Input()
-  disabled: boolean = false;
+  disabled = false;
 
   @Input()
   level = 0;

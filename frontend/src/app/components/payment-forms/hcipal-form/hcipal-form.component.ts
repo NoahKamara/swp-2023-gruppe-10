@@ -86,23 +86,26 @@ export class HCIPalFormComponent implements PaymentProviderPurchaseInterfaceNew,
             });
             break;
           case PaymentErrorMessage.invalidData:
-            this.formGroup.setErrors({
+            this.formGroup.controls.email.setErrors({
+              'invalid': true
+            });
+            this.formGroup.controls.password.setErrors({
               'invalid': true
             });
             break;
           case PaymentErrorMessage.frozen:
-            this.formGroup.setErrors({
+            this.formGroup.controls.email.setErrors({
               'frozen': true
             });
             break;
           case PaymentErrorMessage.expired:
-            this.formGroup.setErrors({
+            this.formGroup.controls.email.setErrors({
               'expired': true
             });
             break;
 
           case PaymentErrorMessage.notEnoughBalance:
-            this.formGroup.setErrors({
+            this.formGroup.controls.email.setErrors({
               'balance': true
             });
             break;

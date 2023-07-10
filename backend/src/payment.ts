@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import { DBUser } from './models/user/user.db';
 import { APIResponse } from './models/response';
-import { PaymentProvider, PaymentError } from 'softwareproject-common';
+import { PaymentProvider, PaymentError, BachelorcardData } from 'softwareproject-common';
 import { RequestLogger } from './utils/logger';
 import { HCIPalData, HCIPalProvider } from './payment/HCIPalProvider';
 import { SWPSafeData, SWPSafeProvider } from './payment/SWPSafeProvider';
-import { BachelorCardData, BachelorCardProvider } from './payment/BachelorCardProvider';
+import { BachelorCardProvider } from './payment/BachelorCardProvider';
 import { DBEvent } from './models/event/event.db';
 
 import { z } from 'zod';
@@ -107,7 +107,7 @@ export class PaymentController {
     logger.info('purchaseBachelorCard', eventID, amount, JSON.stringify(data));
     const provider = new BachelorCardProvider();
 
-    const validatedData = data as BachelorCardData;
+    const validatedData = data as BachelorcardData;
 
     console.log(data);
 

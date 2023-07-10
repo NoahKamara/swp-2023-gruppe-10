@@ -25,7 +25,7 @@ export class EventController {
 
       const events = await this.controller.events.filterUpcoming(filter);
 
-      APIResponse.success(events).send(response);
+      APIResponse.success(events.map(e => e.listItem())).send(response);
     } catch (err) {
       console.error(err);
       APIResponse.internal(err).send(response);
