@@ -1,0 +1,134 @@
+<div class="page-container">
+    <app-top-bar title="Rating" [showBackBtn]="true" />
+
+    <div *ngIf="(!reviewed)">
+        <div class="flex place-content-center">
+            <div class="grid grid-cols-6 w-3/5 place-content-center">
+                <div *ngFor="let n of [1,2,3,4,5]">
+                    <button mat-icon-button (click)="getStars(n)">
+                        <mat-icon>{{getIcon(n)}} </mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="(clicked)">
+            <div class="flex place-content-center">
+                <form class="example-form place-content-center">
+                    <mat-form-field class="example-full-width">
+                        <mat-label>Titel</mat-label>
+                        <input matInput type="text" (keyup)="getTitelU(input1.value)" placeholder="Titel der Renzension"
+                            #input1 value="{{titleThisUser}}">
+                    </mat-form-field>
+                    <mat-form-field class="example-full-width">
+                        <mat-label>(Optional)</mat-label>
+                        <textarea #input2 matInput (keyup)="getTextU(input2.value)"
+                            placeholder="Verfassen Sie eine Rezension."></textarea>
+                    </mat-form-field>
+                </form>
+            </div>
+            <div class="flex example-button-row place-content-end ">
+                <button mat-button color="primary" (click)="setReviewed()">Senden</button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="(reviewed)">
+        <div class="flex place-content-center space-y-12">
+            <h2>Meine Rezension</h2>
+        </div>
+        <div class="flex space-y-5 place-content-center text-primary-content">
+
+            <div class="box-border h-50 w-80 p-4 border-1 bg-base-content  shadow-lg rounded-md">
+                <div class="relative h-12 w-40">
+                    <div class="absolute left-0 top-0 h-12 w-30">
+                        <div class="grid grid-cols-5 ">
+                            <div *ngFor="let n of [1,2,3,4,5]">
+                                <button mat-icon-button>
+                                    <mat-icon>{{getIcon(n)}} </mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative h-12 w-80 ...">
+                        <div class="absolute top-4 right-12 h-16 w-16 ...">{{nameThisUser}}</div>
+                    </div>
+                </div>
+                <p class="font-semibold">Titel: {{titleThisUser}}</p>
+                <div class="pt-6 md:p-8 text-center md:text-left">
+                    <p class="text-lg font-medium">
+                        {{textThisUser}}
+                    </p>
+                </div>
+
+                <div class="flex place-content-start">
+
+                    <mat-icon> recommend</mat-icon>
+
+                    <div>{{helpfulThis}}</div>
+
+                </div>
+
+                <!-- ... -->
+            </div>
+            <!-- ... -->
+        </div>
+
+    </div>
+
+
+
+    <div class="flex place-content-center py-5">
+        <h2>Alle Rezensionen</h2>
+    </div>
+
+    <div class="flex space-y-5 place-content-center ">
+
+        <div class="box-border h-50 w-80 p-4 border-1 bg-base-content  text-primary-content shadow-lg rounded-md">
+            <div class="relative h-12 w-40">
+                <div class="absolute left-0 top-0 h-12 w-30">
+                    <div class="grid grid-cols-5 ">
+                        <div *ngFor="let n of [1,2,3,4,5]">
+                            <button mat-icon-button>
+                                <mat-icon>{{getIconUser(n)}} </mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative h-12 w-80 ...">
+                    <div class="absolute top-4 right-12 h-16 w-16 ...">Max M.</div>
+                </div>
+            </div>
+            <p class="font-semibold">Titel: Empfehlenswert</p>
+            <div class="pt-6 md:p-8 text-center md:text-left">
+                <p class="text-lg font-medium">
+                    “Die Attraktion war super!”
+                </p>
+            </div>
+
+
+
+            <div class="flex place-content-start">
+                <button (click)="setHelpful()" mat-icon-button>
+                    <mat-icon> recommend {{helpful}}</mat-icon>
+                </button>
+                <div>{{helpful}}</div>
+
+            </div>
+
+
+
+            <!-- ... -->
+        </div>
+        <!-- ... -->
+    </div>
+
+
+
+    <div>
+
+
+
+
+
+    </div>

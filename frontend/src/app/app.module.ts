@@ -50,6 +50,8 @@ import { SWPsafeFormComponent } from './components/payment-forms/swpsafe-form/sw
 import { HCIPalFormComponent } from './components/payment-forms/hcipal-form/hcipal-form.component';
 import { TicketsComponent } from './pages/tickets/tickets.component';
 import { TicketListItemComponent } from './components/ticket-list-item/ticket-list-item.component';
+import { ReviewComponent } from './pages/review/review.component';
+import { ReviewDataComponent } from './components/review-data/review-data/review-data.component';
 
 
 /**
@@ -108,6 +110,8 @@ const routes: Routes = [
       { path: ':name', component: LocationDetailComponent },
     ]
   },
+
+  {path: 'reviews', component:ReviewComponent},
 
 
   // Events
@@ -201,6 +205,8 @@ const routes: Routes = [
     HCIPalFormComponent,
     TicketsComponent,
     TicketListItemComponent,
+    ReviewComponent,
+    ReviewDataComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),

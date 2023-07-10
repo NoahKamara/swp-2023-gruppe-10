@@ -25,6 +25,8 @@ import { DBLocation } from './models/db.location';
 import { injectLogging } from './utils/logger';
 import { DBTicket } from './models/db.ticket';
 import { TicketController } from './tickets';
+import { DBReview } from './models/db.review';
+import { RatingController, ReviewController } from './review';
 
 // Express server instanziieren
 const app = express();
@@ -55,7 +57,7 @@ const sequelize = new Sequelize({
   username: 'admin',
   password: 'CHOOSE_A_PASSWORD',
   database: 'postgres',
-  models: [DBUser, DBEvent, DBLocation, DBTicket],
+  models: [DBUser, DBEvent, DBLocation, DBTicket,DBReview],
   modelMatch: (filename, member): boolean => {
     console.error(filename, member);
     return true;
@@ -135,6 +137,13 @@ const locations = new LocationController();
 app.get('/api/locations', locations.list);                          // List locations
 app.get('/api/locations/:name', locations.lookup);                 // lookup location by name
 
+
+/**
+ * Reviews
+ */
+const review = new ReviewController();
+ app.get('/api/locations/:name/review', review.lookup);         //lookup review by locationname
+ app.post('/api/locations/:name/review', review.postReview);         //post review by locationname
 
 /**
  * Other Routes

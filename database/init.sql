@@ -47,6 +47,17 @@ CREATE TABLE tickets (
     event_id int NOT NULL
 );
 
+CREATE TABLE reviews (
+    id serial NOT NULL PRIMARY KEY,
+    user_id int NOT NULL,
+    location_id int NOT NULL,
+    location_name text NOT NULL,
+    titel text NOT NULL,
+    comment text NOT NULL,
+    helpful int NOT NULL,
+    stars int NOT NULL
+);
+
 INSERT INTO locations (name, coordinates_lat, coordinates_lng, picture, description, description_html)
 VALUES
 

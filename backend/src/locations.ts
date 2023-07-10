@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { DBLocation } from './models/db.location';
+import { Sequelize } from 'sequelize-typescript';
+import { DBReview } from './models/db.review';
 import { Op } from 'sequelize';
 
 export class LocationController {
@@ -28,13 +30,28 @@ export class LocationController {
       response.status(404);
       response.send();
     }
-
+try {
     const location = await DBLocation.findOne({
+      subQuery : false,
+      include: [
+        {
+          model: DBReview,
+          as: 'reviews',
+          attributes: [],
+        },
+      ],
+      attributes: {
+        include: [[Sequelize.fn('avg', Sequelize.col('reviews.stars')), 'average_rating']],
+      },
       where: {
         name: {
           [Op.iLike]: name
         }
-      }
+      },
+      
+      group:['locations.name']
+
+
     });
 
     if (!location) {
@@ -48,6 +65,10 @@ export class LocationController {
 
     response.status(200);
     response.send(location);
+  } catch (err) {
+    response.send(err);
+    console.log(err);    
+  }
     return;
   }
 }

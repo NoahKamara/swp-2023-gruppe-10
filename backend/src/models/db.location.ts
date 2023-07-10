@@ -1,6 +1,7 @@
 import { CreationOptional } from 'sequelize';
-import { Column, Table, Model } from 'sequelize-typescript';
+import { Column, Table, Model, HasMany } from 'sequelize-typescript';
 import { Location } from 'softwareproject-common';
+import { DBReview } from './db.review';
 
 
 
@@ -26,4 +27,7 @@ export class DBLocation extends Model<Location> {
 
   @Column
   description_html!: string;
+
+  @HasMany(() => DBReview)
+  reviews!: DBReview[] | null;
 }
