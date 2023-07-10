@@ -51,6 +51,7 @@ import { HCIPalFormComponent } from './components/payment-forms/hcipal-form/hcip
 import { TicketsComponent } from './pages/tickets/tickets.component';
 import { TicketListItemComponent } from './components/ticket-list-item/ticket-list-item.component';
 import { ReviewComponent } from './pages/review/review.component';
+import { ReviewDataComponent } from './components/review-data/review-data/review-data.component';
 
 
 /**
@@ -205,6 +206,7 @@ const routes: Routes = [
     TicketsComponent,
     TicketListItemComponent,
     ReviewComponent,
+    ReviewDataComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
