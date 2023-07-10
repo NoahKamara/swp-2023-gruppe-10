@@ -1,0 +1,12 @@
+.card {
+  background: var(--foreground);
+}
+
+.card-body {
+  color: var(--background);
+}
+
+.card-body a {
+  color: var(--background);
+  text-decoration: underline;
+}
