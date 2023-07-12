@@ -230,16 +230,11 @@ const routes: Routes = [
     HCIPalFormComponent,
     TicketsComponent,
     TicketListItemComponent,
-<<<<<<< HEAD
     ReviewComponent,
-    ReviewComponent,
-=======
     ButtonComponent,
     PaymentErrorMessageComponent,
     TicketComponent,
-    ReviewComponent,
     ReviewCardComponent
->>>>>>> 2cc9d8ce493ea1943275964cb195de5d9c2317b5
   ],
   imports: [
     RouterModule.forRoot(routes),
