@@ -1,4 +1,19 @@
 
+// export declare type Range<T> = {
+//   lowerBound: T
+//   upperBound: T
+// }
+export declare type EventFilter = {
+  term?: string
+  locations?: string[]
+
+  startDate?: Date
+  endDate?: Date
+
+  minPrice?: number
+  maxPrice?: number
+}
+
 export declare type EventListItem = {
   id: number,
   title: string,

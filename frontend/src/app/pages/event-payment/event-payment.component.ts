@@ -30,6 +30,8 @@ export class EventPaymentComponent implements OnInit {
 
   public purchasedTicketID: number | null = null;
 
+  public amount: number = 1;
+
   didClick(): void {
     console.log('HELLO');
   }

@@ -2,12 +2,34 @@ import { DBEvent } from './models/event/event.db';
 import { Request, Response } from 'express';
 import { APIResponse } from './models/response';
 import { DBControllerInterface } from './database/DBController';
-import { EventFilter } from './models/event/event.factory';
+import { EventFilter } from 'softwareproject-common';
+import { z } from 'zod';
+import { validateBody } from './validation/requestValidation';
 
+
+const filterSchema = z.object({
+  term: z.string().optional(),
+  locations: z.array(z.string()).optional(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  minPrice: z.number().min(0).optional(),
+  maxPrice: z.number().min(0).optional()
+});
 
 export class EventController {
   constructor(private controller: DBControllerInterface) {}
 
+  async filterUpcoming(request: Request, response: Response): Promise<void> {
+    try {
+      const filter = validateBody(request,response,filterSchema);
+      const events = await this.controller.events.filterUpcoming(filter ?? {});
+
+      APIResponse.success(events.map(e => e.listItem())).send(response);
+    } catch (err) {
+      console.error(err);
+      APIResponse.internal(err).send(response);
+    }
+  }
   /**
   * Returns a list of _upcoming_ events
   *
@@ -17,8 +39,14 @@ export class EventController {
   */
   async list(request: Request, response: Response): Promise<void> {
     try {
-      const filter: EventFilter = {};
+      const filter = filterSchema.parse(request.query);
 
+      console.log('FILTER', filter);
+      console.log('FILTER', request.query);
+
+      if (filter.locations) {
+        console.log('LOCATIONS', filter.locations.length);
+      }
       if (request.query.term) {
         filter.term = String(request.query.term);
       }

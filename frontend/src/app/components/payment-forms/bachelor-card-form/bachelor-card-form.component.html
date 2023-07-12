@@ -16,7 +16,7 @@
 
   <app-validated-input label="Gültig Bis (z.B.: 03/26)" [control]="formGroup.controls.date" class="col-span-3 mt-3">
     <span *ngIf="formGroup.controls.date.hasError('pattern')">
-      Datum muss im Format MM/JJ angegeben werden
+      Format MM/JJ oder M/JJ
     </span>
     <span *ngIf="formGroup.controls.date.hasError('expired')">
       Die BachelorCard ist abgelaufen

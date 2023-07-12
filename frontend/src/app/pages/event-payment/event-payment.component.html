@@ -16,10 +16,15 @@
         </div>
 
         <div>
-          1x Ticket
+          {{amount}}x Ticket
         </div>
-
       </div>
+      <div class="w-full">
+        <mat-slider style="width: 90%; align-self: center;">
+          <input matSliderThumb [(ngModel)]="amount" [min]="0" [max]="20">
+        </mat-slider>
+      </div>
+
       <div class="flex flex-row gap-1">
         <div class="grow">
           <div *ngIf="event.start_time">
@@ -41,13 +46,13 @@
     <div *ngIf="!purchasedTicketID;else successView" class="w-full  space-y-2">
       <div [ngSwitch]="selectedProvider">
         <div *ngSwitchCase="providerEnum.bachelorcard">
-          <app-bachelor-card-form (didSubmit)="submit($event)" />
+          <app-bachelor-card-form [amount]="amount" [eventID]="event.id" (didPurchase)="onPurchase($event)" />
         </div>
         <div *ngSwitchCase="providerEnum.hciPal">
-          <app-hcipal-form [amount]="1" [eventID]="event.id" (didPurchase)="onPurchase($event)" />
+          <app-hcipal-form [amount]="amount" [eventID]="event.id" (didPurchase)="onPurchase($event)" />
         </div>
         <div *ngSwitchCase="providerEnum.swpsafe">
-          <app-swpsafe-form [amount]="1" [eventID]="event.id" (didPurchase)="onPurchase($event)" />
+          <app-swpsafe-form [amount]="amount" [eventID]="event.id" (didPurchase)="onPurchase($event)" />
         </div>
         <div *ngSwitchDefault providerSelection></div>
         <div *ngIf="selectedProvider;else providerSelection">

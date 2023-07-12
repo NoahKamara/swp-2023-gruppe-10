@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
-import { Ticket } from 'softwareproject-common';
+import { BachelorcardData, Ticket } from 'softwareproject-common';
 import { AnyPaymentData, SWPsafeData } from './tickets.service';
 import { PaymentProvider } from 'softwareproject-common';
 
@@ -40,5 +40,9 @@ export class PaymentService {
 
   swpsafe(data: { eventID: number; amount: number; data: SWPsafeData; }): Observable<Ticket> {
     return this.payment({ provider: PaymentProvider.swpsafe, ...data });
+  }
+
+  bachelorCard(data: { eventID: number; amount: number; data: BachelorcardData; }): Observable<Ticket> {
+    return this.payment({ provider: PaymentProvider.bachelorcard, ...data });
   }
 }

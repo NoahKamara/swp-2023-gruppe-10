@@ -53,8 +53,8 @@ import { TicketsComponent } from './pages/tickets/tickets.component';
 import { TicketListItemComponent } from './components/ticket-list-item/ticket-list-item.component';
 import { ButtonComponent } from './components/button/button.component';
 import { PaymentErrorMessageComponent } from './components/payment-forms/payment-error-message/payment-error-message.component';
-
-
+import {MatSliderModule} from '@angular/material/slider';
+import { TicketComponent } from './pages/ticket/ticket.component';
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
  *  Damit fangen wir ab, falls ein Benutzer nicht eingeloggt ist,
@@ -147,7 +147,7 @@ const routes: Routes = [
     canActivate: [loginGuard],
     children: [
       { path: '', component: TicketsComponent },
-      { path: ':id', component: TicketsComponent }
+      { path: ':id', component: TicketComponent }
     ]
    },
 
@@ -221,6 +221,7 @@ const routes: Routes = [
     TicketListItemComponent,
     ButtonComponent,
     PaymentErrorMessageComponent,
+    TicketComponent,
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -237,6 +238,7 @@ const routes: Routes = [
     MatInputModule,
     MatGridListModule,
     MatDialogModule,
+    MatSliderModule
   ],
   providers: [
     HttpClientModule

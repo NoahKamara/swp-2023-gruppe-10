@@ -54,6 +54,7 @@ CREATE TABLE favorites (
 CREATE TABLE tickets (
     id serial NOT NULL PRIMARY KEY,
     user_id int NOT NULL,
+    amount int NOT NULL,
     event_id int NOT NULL
 );
 

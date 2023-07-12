@@ -1,9 +1,8 @@
 import { CreationOptional, Op, WhereOptions } from 'sequelize';
 import { Column, Table, Model } from 'sequelize-typescript';
-import { Event, EventListItem } from 'softwareproject-common';
-import { EventFactory, EventFilter } from './event.factory';
+import { Event, EventListItem, EventFilter } from 'softwareproject-common';
+import { EventFactory } from './event.factory';
 import { EventInterface } from './event.interface';
-
 
 @Table({ modelName: 'events', timestamps: false })
 export class DBEvent extends Model<Event> implements EventInterface {
@@ -74,6 +73,12 @@ export class DBEvent extends Model<Event> implements EventInterface {
     if (filter.term) {
       where.title = {
         [Op.iLike]: '%' + filter.term + '%'
+      };
+    }
+
+    if (filter.locations && filter.locations.length > 0) {
+      where.location = {
+        [Op.in]: filter.locations
       };
     }
 

@@ -1,0 +1,41 @@
+<div class="page-container">
+  <app-top-bar title="Ticket" />
+
+  <div *ngIf="ticket" class="scrollable-container space-y-8">
+    <img src="/img/events/{{ ticket.event.picture }}" class="rounded-lg" alt="Event Bild" />
+
+
+    <div class="space-y-3">
+      <div class="flex flex-row">
+        <div class="text-xl grow">
+          {{ ticket.event.title }}
+        </div>
+      </div>
+
+
+      <div class="text-sm flex flex-row gap-1">
+        <div class="grow">
+          {{ dateFormat(ticket.event.start_date) }}
+          <span *ngIf="ticket.event.start_date !== ticket.event.end_date">
+            – {{ dateFormat(ticket.event.end_date) }}
+          </span>
+
+          <span *ngIf="ticket.event.start_time">
+            {{ ticket.event.start_time }}
+
+            <span *ngIf="ticket.event.end_time">
+              - {{ ticket.event.end_time }}
+            </span>
+          </span>
+        </div>
+
+        <div class="px-2">
+          {{ ticket.amount }}x Ticket(s) {{ ticket.event.price }} €
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- <app-location-map [locationName]="ticket.event.location" /> -->
+  </div>

@@ -25,6 +25,6 @@ export class DBTicket extends Model {
   @BelongsTo(() => DBUser, 'user_id')
   user!: DBUser;
 
-  // @Column
-  // amount!: number;
+  @Column
+  amount!: number;
 }

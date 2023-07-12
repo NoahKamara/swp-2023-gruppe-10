@@ -26,7 +26,7 @@ import { DBTicket } from './models/db.ticket';
 import { TicketController } from './tickets';
 import { DBSession } from './models/session/session.db';
 import { HCIPalProvider } from './payment/HCIPalProvider';
-import { PaymentProviderInterface } from './payment/PaymentProvider';
+import { PaymentProviderInterface } from './payment/PaymentProviderInterface';
 import { PaymentController } from './payment';
 import { DBController } from './database/DBController';
 
@@ -133,12 +133,13 @@ app.delete('/api/session', auth.logout.bind(auth));               // Invalidate 
 const events = new EventController(db);
 
 app.get('/api/events', events.list.bind(events));                              // List Events
+app.post('/api/events', events.filterUpcoming.bind(events));
 app.get('/api/events/:id', events.details.bind(events));                       // Get Details of Event
 
 
 const tickets = new TicketController();
 
-app.post('/api/tickets/:id', tickets.purchase.bind(events));                              // List Events
+app.get('/api/tickets/:id', tickets.detail);                              // List Events
 app.get('/api/tickets', tickets.list);                              // List Events
 
 const purchase = new PaymentController();

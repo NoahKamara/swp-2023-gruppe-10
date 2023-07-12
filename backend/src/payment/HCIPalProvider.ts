@@ -1,4 +1,4 @@
-import { PaymentProviderInterface } from './PaymentProvider';
+import { PaymentProviderInterface } from './PaymentProviderInterface';
 import { PaymentError } from 'softwareproject-common';
 import { handleErrorResponse } from './util';
 import axios, { AxiosError } from 'axios';

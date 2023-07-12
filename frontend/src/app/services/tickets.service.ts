@@ -34,4 +34,8 @@ export class TicketsService {
   public listTickets(): Observable<Ticket[]> {
     return this.http.get<Ticket[]>('/api/tickets');
   }
+
+  public details(id: number): Observable<Ticket> {
+    return this.http.get<Ticket>('/api/tickets/'+id);
+  }
 }

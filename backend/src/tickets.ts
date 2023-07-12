@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { User } from 'softwareproject-common';
+import { PublicTicket, User } from 'softwareproject-common';
 import { DBTicket } from './models/db.ticket';
 import { DBEvent } from './models/event/event.db';
 import { Ticket } from 'softwareproject-common';
@@ -23,18 +23,12 @@ export class TicketController {
         include: [DBUser, DBEvent]
       });
 
-      const publicTickets = tickets.map((ticket) => {
-        return {
+      const publicTickets: PublicTicket[] = tickets.map((ticket) => {
+        return  {
           id: ticket.id,
           user: ticket.user,
-          event: {
-            id: ticket.event.id,
-            title: ticket.event.title,
-            start_date: ticket.event.start_date,
-            end_date: ticket.event.end_date,
-            price: ticket.event.price,
-            picture: ticket.event.picture
-          }
+          amount: ticket.amount,
+          event: ticket.event.listItem()
         };
       });
 
@@ -48,66 +42,42 @@ export class TicketController {
     }
   }
 
-  async purchase(request: Request, response: Response): Promise<void> {
+  async detail(request: Request, response: Response): Promise<void> {
     const user: User = response.locals.session?.user;
 
-    if (!user) {
+    if (!user || !user.id) {
       APIResponse.unauthorized().send(response);
       return;
     }
 
     const id = request.params.id;
-
     if (!id) {
-      APIResponse.badRequest('client did not provide event-id').send(response);
+      APIResponse.badRequest('Missing "ID" in path').send(response);
       return;
     }
-
-    // const userInfo = validateBody(request, response, purchaseTicketSchema);
-    // if (!userInfo) return;
-
-
-    const event = await DBEvent.findByPk(id);
-
-    if (!event) {
-      request.logger.error('event id was invalid');
-      response.status(400);
-      response.send();
-      return;
-    }
-
-    console.log({
-      user_id: user.id,
-      event_id: event.id
-    });
 
     try {
-      const ticket = await DBTicket.create({
-        user_id: user.id,
-        event_id: event.id
-      });
+      const ticket = await DBTicket.findByPk(id, { include: [DBUser, DBEvent] });
+
+      if (!ticket || ticket.user_id !== user.id) {
+        APIResponse.notFound().send(response);
+        return;
+      }
+
+      const publicTickets = {
+        id: ticket.id,
+        user: ticket.user,
+        amount: ticket.amount,
+        event: ticket.event.listItem()
+      };
 
       response.status(200);
-      response.send(ticket);
+      response.send(publicTickets);
 
     } catch (err) {
       request.logger.error(err);
-      response.send({ code: 500, message: err });
+      response.status(500);
+      response.send({ error: err });
     }
-  }
-
-  async purchaseBC(request: Request, response: Response): Promise<void> {
-    response.status(500);
-    response.send();
-  }
-
-  async purchaseSWP(request: Request, response: Response): Promise<void> {
-    response.status(500);
-    response.send();
-  }
-
-  async purchaseHCI(request: Request, response: Response): Promise<void> {
-    response.status(500);
-    response.send();
   }
 }
