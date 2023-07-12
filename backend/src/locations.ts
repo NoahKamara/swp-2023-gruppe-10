@@ -3,6 +3,7 @@ import { DBLocation } from './models/db.location';
 import { Sequelize } from 'sequelize-typescript';
 import { DBReview } from './models/db.review';
 import { Op } from 'sequelize';
+import { APIResponse } from './models/response';
 
 export class LocationController {
   /**
@@ -11,11 +12,10 @@ export class LocationController {
   async list(request: Request, response: Response): Promise<void> {
     try {
       const locations = await DBLocation.findAll();
-      response.status(200);
-      response.send(locations);
+      APIResponse.success(locations).send(response);
     } catch (err) {
+      APIResponse.internal(err).send(response);
       response.status(500);
-      response.send(err);
     }
   }
 
@@ -23,52 +23,26 @@ export class LocationController {
    * returns details for a location by name
    */
   async lookup(request: Request, response: Response): Promise<void> {
-    const name = request.params.name.toLowerCase();
-
+    const name = request.params.name;
+    console.log(name);
     if (!name) {
       console.error('client not provide name');
-      response.status(404);
-      response.send();
-    }
-try {
-    const location = await DBLocation.findOne({
-      subQuery : false,
-      include: [
-        {
-          model: DBReview,
-          as: 'reviews',
-          attributes: [],
-        },
-      ],
-      attributes: {
-        include: [[Sequelize.fn('avg', Sequelize.col('reviews.stars')), 'average_rating']],
-      },
-      where: {
-        name: {
-          [Op.iLike]: name
-        }
-      },
-      
-      group:['locations.name']
-
-
-    });
-
-    if (!location) {
-      console.error('did not find location for id');
-
-      response.status(404);
-      response.send({ code: 404, message: 'Keine Attraktion mit diesem Namen' });
-      return;
+      APIResponse.badRequest('Missing :name in path').send(response);
     }
 
+    try {
+      const location = await DBLocation.lookup(name);
 
-    response.status(200);
-    response.send(location);
-  } catch (err) {
-    response.send(err);
-    console.log(err);    
-  }
+      if (!location) {
+        console.error('did not find location for id');
+        APIResponse.notFound(`No location with name ${name}`).send(response);
+        return;
+      }
+
+      APIResponse.success(location).send(response);
+    } catch (err) {
+      APIResponse.internal(err).send(response);
+    }
     return;
   }
 }

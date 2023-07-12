@@ -1,6 +1,6 @@
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { EventListItem } from 'softwareproject-common';
+import { EventFilter, EventListItem } from 'softwareproject-common';
 import { EventService } from 'src/app/services/event.service';
 
 const listAnimation = trigger('listAnimation', [
@@ -30,10 +30,17 @@ export class EventsComponent implements OnInit {
 
   public searchTerm: string | null = null;
 
+  public filter: EventFilter = {
+    startDate: new Date()
+  };
   // dateFormat(date: string | Date): string {
   //   console.log(typeof date);
   //   return (new Date(date)).toLocaleDateString();
   // }
+
+  filterDidChange(): void {
+    console.log(JSON.stringify(this.filter));
+  }
 
   // Perform search
   onSearchTermChange(): void {
@@ -43,8 +50,13 @@ export class EventsComponent implements OnInit {
       return;
     }
 
-    this.eventService.search(this.searchTerm).subscribe({
+    const filter: EventFilter = {
+      term: this.searchTerm.length > 0 ? this.searchTerm : undefined,
+    };
+
+    this.eventService.filterUpcoming(filter).subscribe({
       next: (value) => {
+        this.events = [];
         this.events = value;
       },
       error: console.error

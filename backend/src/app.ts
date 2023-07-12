@@ -8,7 +8,7 @@
  */
 
 import errorHandler from 'errorhandler';
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
@@ -16,15 +16,19 @@ import { initDatabase } from './database/sequelize';
 import { ApiController } from './api';
 import { AuthController } from './auth';
 import { Sequelize } from 'sequelize-typescript';
-import { DBUser } from './models/db.user';
-import { DBUserAdapter } from './database/DBUserAdapter';
+import { DBUser } from './models/user/user.db';
 import { EventController } from './events';
-import { DBEvent } from './models/db.event';
+import { DBEvent } from './models/event/event.db';
 import { LocationController } from './locations';
 import { DBLocation } from './models/db.location';
 import { injectLogging } from './utils/logger';
 import { DBTicket } from './models/db.ticket';
 import { TicketController } from './tickets';
+import { DBSession } from './models/session/session.db';
+import { HCIPalProvider } from './payment/HCIPalProvider';
+import { PaymentProviderInterface } from './payment/PaymentProviderInterface';
+import { PaymentController } from './payment';
+import { DBController } from './database/DBController';
 import { DBReview } from './models/db.review';
 import { RatingController, ReviewController } from './review';
 
@@ -51,19 +55,31 @@ app.use(injectLogging);
 app.use(cookieParser());
 
 // Database
+
 const sequelize = new Sequelize({
   dialect: 'postgres',
   host: 'localhost',
   username: 'admin',
   password: 'CHOOSE_A_PASSWORD',
   database: 'postgres',
-  models: [DBUser, DBEvent, DBLocation, DBTicket,DBReview],
+  models: [DBUser, DBEvent, DBLocation, DBTicket, DBReview, DBSession],
   modelMatch: (filename, member): boolean => {
     console.error(filename, member);
     return true;
   },
   port: 5432
 });
+
+const testDB = () => {
+  DBUser.count();
+  DBEvent.count();
+  DBLocation.count();
+  DBTicket.count();
+  DBSession.count();
+};
+
+
+const db = DBController.default;
 
 /**
  *  API Routen festlegen
@@ -95,7 +111,7 @@ const api = new ApiController();
 /**
  * AUTHENTICATION
  */
-const auth = new AuthController({ userAdapter: new DBUserAdapter(), salt: 10 });
+const auth = new AuthController({salt: 10 , db: db});
 app.post('api/login', auth.login.bind(auth));
 
 
@@ -116,17 +132,20 @@ app.delete('/api/session', auth.logout.bind(auth));               // Invalidate 
  * Events
  */
 
-const events = new EventController();
+const events = new EventController(db);
 
-app.get('/api/events', events.list);                              // List Events
-app.get('/api/events/:id', events.details);                       // Get Details of Event
+app.get('/api/events', events.list.bind(events));                              // List Events
+app.post('/api/events', events.filterUpcoming.bind(events));
+app.get('/api/events/:id', events.details.bind(events));                       // Get Details of Event
 
 
 const tickets = new TicketController();
 
-app.post('/api/tickets/:id', tickets.purchase);                              // List Events
+app.get('/api/tickets/:id', tickets.detail);                              // List Events
 app.get('/api/tickets', tickets.list);                              // List Events
 
+const purchase = new PaymentController();
+app.post('/api/purchase', purchase.purchase.bind(purchase));
 
 /**
  * Locations
@@ -193,6 +212,7 @@ app.use('/img', express.static('img'));
 
 
 initDatabase(sequelize);
+testDB();
 
-
+export { auth as authCtrl, events as eventCtrl, locations as locationCtrl, tickets as ticketCtrl, purchase as purchaseCtrl };
 export default app;

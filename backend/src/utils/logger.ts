@@ -6,7 +6,7 @@ export class RequestLogger {
   constructor(private request: Request, public id: string = uuidv4()) {}
 
   info(message?: unknown, ...optionalParams: unknown[]): void {
-    if (!optionalParams) {
+    if (optionalParams.length > 0) {
       console.info(`${this.request.method} ${this.request.path} - [${this.id}] ${message}`, optionalParams);
     } else {
       console.info(`${this.request.method} ${this.request.path} - [${this.id}] ${message}`);
@@ -14,7 +14,7 @@ export class RequestLogger {
   }
 
   error(message?: unknown, ...optionalParams: unknown[]): void {
-    if (!optionalParams) {
+    if (optionalParams.length > 0) {
       console.error(`${this.request.method} ${this.request.path} - [${this.id}] ${message}`, optionalParams);
     } else {
       console.error(`${this.request.method} ${this.request.path} - [${this.id}] ${message}`);
@@ -22,7 +22,7 @@ export class RequestLogger {
   }
 
   warn(message?: unknown, ...optionalParams: unknown[]): void {
-    if (!optionalParams) {
+    if (optionalParams.length > 0) {
       console.warn(`${this.request.method} ${this.request.path} - [${this.id}] ${message}`, optionalParams);
     } else {
       console.warn(`${this.request.method} ${this.request.path} - [${this.id}] ${message}`);

@@ -1,5 +1,5 @@
 <div class="page-container">
-  <app-top-bar title="Events" [showBackBtn]="false"/>
+  <app-top-bar title="Events" [showBackBtn]="false" />
 
   <div class="scrollable-container space-y-8">
     <div>
@@ -18,7 +18,9 @@
 
         </div> -->
     </div>
+
       <div class="space-y-4">
+
       <div @listAnimation *ngFor="let item of events">
         <app-event-list-item [item]="item"></app-event-list-item>
       </div>

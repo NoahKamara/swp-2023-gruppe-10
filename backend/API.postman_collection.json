@@ -1,0 +1,945 @@
+{
+	"info": {
+		"_postman_id": "d7d83b2c-b0b0-426a-8929-bdef52af357a",
+		"name": "API",
+		"description": "# Introduction\nWhat does your API do?\n\n# Overview\nThings that the developers should know about\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nIs there a limit to the number of requests a user can send?",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10485741",
+		"_collection_link": "https://gold-rocket-784083.postman.co/workspace/SWP-Gruppe-10~c9ec6fcf-71b4-4fad-a08c-16e42b19f065/collection/10485741-d7d83b2c-b0b0-426a-8929-bdef52af357a?action=share&creator=10485741&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "New Folder",
+					"item": []
+				},
+				{
+					"name": "Create User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const sessionId = pm.cookies.get(\"sessionId\");",
+									"pm.collectionVariables.set(\"sessionId\", sessionId)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Max\",\n    \"lastName\": \"Mustermann\",\n    \"email\": \"{{user_email}}\",\n    \"password\": \"{{user_pass}}\",\n    \"street\": \"Musterweg\",\n    \"number\": \"4\",\n    \"city\": \"Konstanz\",\n    \"zipcode\": \"78467\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}/api/user",
+							"host": [
+								"{{baseURI}}"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						},
+						"description": "Creates a new User using the User Info in the body."
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"Max\",\n    \"lastName\": \"Mustermann\",\n    \"email\": \"{{user_email}}\",\n    \"password\": \"{{user_pass}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURI}}/api/user",
+									"host": [
+										"{{baseURI}}"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "sessionId=o6KrDvivoYnLC5Y3Fa74F8bEaoG6rKne; Path=/; HttpOnly"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "41"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"29-LqFQRHpz1uUfjJlaxEyC4BNg1/M\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 May 2023 12:58:52 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"message\": \"Login successful\"\n}"
+						},
+						{
+							"name": "Failure: Duplicate Email",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"Max\",\n    \"lastName\": \"Mustermann\",\n    \"email\": \"{{user_email}}\",\n    \"password\": \"{{user_pass}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURI}}/api/user",
+									"host": [
+										"{{baseURI}}"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "55"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"37-G3T05VgO96l3mvezMI3a65nF/wo\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 May 2023 12:57:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 400,\n    \"message\": \"User with Email already exists\"\n}"
+						},
+						{
+							"name": "Failure: Validation Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"firstName\": \"Max\",\n    \"lastName\": \"Mustermann\",\n    \"email\": \"nomail\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURI}}/api/user",
+									"host": [
+										"{{baseURI}}"
+									],
+									"path": [
+										"api",
+										"user"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "94"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5e-gBDeVbxxE3H/r+gnzOlQhS7UYsA\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 May 2023 13:49:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": {\n        \"formErrors\": [],\n        \"fieldErrors\": {\n            \"email\": [\n                \"Invalid email\"\n            ],\n            \"password\": [\n                \"Required\"\n            ]\n        }\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const sessionId = pm.cookies.get(\"sessionId\");",
+									"pm.collectionVariables.set(\"sessionId\", sessionId)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{user_email}}\",\n    \"password\": \"{{user_pass}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURI}}/api/session",
+							"host": [
+								"{{baseURI}}"
+							],
+							"path": [
+								"api",
+								"session"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{user_email}}\",\n    \"password\": \"{{user_pass}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURI}}/api/session",
+									"host": [
+										"{{baseURI}}"
+									],
+									"path": [
+										"api",
+										"session"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "sessionId=dIcb2IhwQxFTkUl6lmPAudaGWF4GXAxf; Path=/; HttpOnly"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "41"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"29-LqFQRHpz1uUfjJlaxEyC4BNg1/M\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 May 2023 13:47:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"message\": \"Login successful\"\n}"
+						},
+						{
+							"name": "Failure: Wrong Password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"{{user_email}}\",\n    \"password\": \"wrong password\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURI}}/api/session",
+									"host": [
+										"{{baseURI}}"
+									],
+									"path": [
+										"api",
+										"session"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "39"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27-fbsD9tnKzUe7C5UO8yQqIcUy1ss\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 May 2023 13:47:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"Wrong password\"\n}"
+						},
+						{
+							"name": "Failure: Unknown Email",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"wrong@email.de\",\n    \"password\": \"{{user_pass}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURI}}/api/session",
+									"host": [
+										"{{baseURI}}"
+									],
+									"path": [
+										"api",
+										"session"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "49"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"31-cYrp5DqxQz0Evh27nQKwJyhz3RU\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 May 2023 13:48:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 401,\n    \"message\": \"E-Mail address not found\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURI}}/api/session",
+							"host": [
+								"{{baseURI}}"
+							],
+							"path": [
+								"api",
+								"session"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURI}}/api/session",
+									"host": [
+										"{{baseURI}}"
+									],
+									"path": [
+										"api",
+										"session"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "42"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2a-JqnUS6pRqPhdZn79EtHITgIQS4M\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 May 2023 13:53:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 200,\n    \"message\": \"Logout successful\"\n}"
+						},
+						{
+							"name": "Failure: Invalid Session",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseURI}}/api/session",
+									"host": [
+										"{{baseURI}}"
+									],
+									"path": [
+										"api",
+										"session"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "64"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"40-n8X5/UY+JHUkvMDvb9yiPstcsy0\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 May 2023 13:54:41 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"code\": 404,\n    \"message\": \"Logout failure: No Session with that ID\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Auth",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURI}}/api/auth",
+							"host": [
+								"{{baseURI}}"
+							],
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURI}}/api/auth",
+									"host": [
+										"{{baseURI}}"
+									],
+									"path": [
+										"api",
+										"auth"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "4"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4-X/5TO4MPCKAyY0ipFgr6/IraRNs\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 May 2023 13:54:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "true"
+						}
+					]
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "List Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Connection",
+								"value": "erere",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURI}}/api/events?term=Musik&hello=1&hello=2&hello=3&hello=4&efeefef&fef&efef&ee&ee&&e",
+							"host": [
+								"{{baseURI}}"
+							],
+							"path": [
+								"api",
+								"events"
+							],
+							"query": [
+								{
+									"key": "term",
+									"value": "Musik"
+								},
+								{
+									"key": "hello",
+									"value": "1"
+								},
+								{
+									"key": "hello",
+									"value": "2"
+								},
+								{
+									"key": "hello",
+									"value": "3"
+								},
+								{
+									"key": "hello",
+									"value": "4"
+								},
+								{
+									"key": "efeefef",
+									"value": null,
+									"description": "e"
+								},
+								{
+									"key": "fef",
+									"value": null
+								},
+								{
+									"key": "efef",
+									"value": null
+								},
+								{
+									"key": "ee",
+									"value": null
+								},
+								{
+									"key": "ee",
+									"value": null
+								},
+								{
+									"key": null,
+									"value": null
+								},
+								{
+									"key": "e",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURI}}/api/events/7",
+							"host": [
+								"{{baseURI}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Locations",
+			"item": [
+				{
+					"name": "List Locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURI}}/api/locations",
+							"host": [
+								"{{baseURI}}"
+							],
+							"path": [
+								"api",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Detail",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"url": {
+							"raw": "{{baseURI}}/api/locations/palmenhaus?test=test",
+							"host": [
+								"{{baseURI}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"palmenhaus"
+							],
+							"query": [
+								{
+									"key": "test",
+									"value": "test"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tickets",
+			"item": [
+				{
+					"name": "Ticket Purchase",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseURI}}/api/events/7/purchase",
+							"host": [
+								"{{baseURI}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"7",
+								"purchase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Tickets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURI}}/api/tickets",
+							"host": [
+								"{{baseURI}}"
+							],
+							"path": [
+								"api",
+								"tickets"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURI",
+			"value": "http://localhost:80",
+			"type": "string"
+		},
+		{
+			"key": "user_email",
+			"value": "max.mustermann@uni-konstanz.de",
+			"type": "string"
+		},
+		{
+			"key": "user_pass",
+			"value": "0penS3same",
+			"type": "string"
+		},
+		{
+			"key": "sessionId",
+			"value": ""
+		}
+	]
+}

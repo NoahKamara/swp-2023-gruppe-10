@@ -1,16 +1,19 @@
 {
   "folders": [
-	{
-      "path": "common",
+    {
+      "path": "common"
     },
-	{
-      "path": "database",
+    {
+      "path": "database"
     },
     {
       "path": "backend"
     },
-	{
+    {
       "path": "frontend"
+    },
+    {
+      "path": "docs"
     }
   ],
   "settings": {

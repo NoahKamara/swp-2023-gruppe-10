@@ -1,8 +1,10 @@
 <div class="card space-x-2 w-full" >
   <figure>
+
     <div class="container"> 
       <img src="/img/events/{{ item.picture }}"  alt="Event Bild" routerLink="/events/{{ item.id }}" />
         <mat-icon (click)="didClickFavButton()"> {{isFavorite ? "favorite": "favorite_border"}} </mat-icon> 
+
     </div>
 
   </figure>
@@ -11,8 +13,28 @@
       <!-- This splits the actual title and the date & time info into separate lines -->
       {{ item.title }}
     </div>
-    <div class="text-sm">
-      {{ item.price }} €
+
+    <div class="text-sm flex flex-row gap-1">
+
+
+      <div  class="grow">
+          {{ dateFormat(item.start_date) }}
+        <span *ngIf="item.start_date !== item.end_date">
+          – {{ dateFormat(item.end_date) }}
+        </span>
+
+        <span *ngIf="item.start_time">
+          {{ item.start_time }}
+
+          <span *ngIf="item.end_time">
+            - {{ item.end_time }}
+          </span>
+        </span>
+      </div>
+
+      <div class="px-2">
+        {{ item.price }} €
+      </div>
     </div>
   </div>
 </div>

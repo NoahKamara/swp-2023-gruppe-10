@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from 'softwareproject-common';
+import { EventListItem, Location } from 'softwareproject-common';
+import { EventService } from 'src/app/services/event.service';
 import { LocationService } from 'src/app/services/location.service';
 import { ReviewComponent } from '../review/review.component';
 
@@ -13,8 +14,14 @@ import { ReviewComponent } from '../review/review.component';
 export class LocationDetailComponent implements OnInit {
   
   public location: Location | null = null;
+  public events: EventListItem[] = [];
 
-  constructor(private route: ActivatedRoute, private router: Router, private locationService: LocationService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private locationService: LocationService,
+    private eventService: EventService
+  ) { }
 
   ngOnInit(): void {
     const name = this.route.snapshot.paramMap.get('name');
@@ -24,13 +31,18 @@ export class LocationDetailComponent implements OnInit {
       return;
     }
 
-    // fetch event
-    const observeEvent = this.locationService.lookup(name);
-
-    // When event succeeds, set local var
-    observeEvent.subscribe({
+    // fetch Location
+    this.locationService.lookup(name).subscribe({
       next: (value) => {
         this.location = value;
+      },
+      error: console.error
+    });
+
+    // Fetch Events for location
+    this.eventService.filterUpcoming({ locations: [name] }).subscribe({
+      next: (value) => {
+        this.events = value;
       },
       error: console.error
     });

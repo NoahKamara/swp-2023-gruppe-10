@@ -1,15 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserAdapter } from './adapters/UserAdapter';
 import bcrypt from 'bcrypt';
-
 import { validateBody } from './validation/requestValidation';
 import { createUserSchema, updatePasswordSchema, userAddressSchema, userCredentialsSchema, userNameSchema } from './validation/user';
-import { PublicUser, User } from 'softwareproject-common';
-
+import { APIResponse } from './models/response';
+import { UserInterface } from './models/user/user.interface';
+import { DBControllerInterface } from './database/DBController';
+import { SessionInterface } from './models/session/session.interface';
 
 export class AuthController {
-  private userAdapter: UserAdapter;
-
+  public db: DBControllerInterface;
   private salt: number | string = 10;
 
   /**
@@ -19,14 +18,13 @@ export class AuthController {
    * @param {UserAdapter} userAdapter - Brief description of the parameter here.
    */
   constructor({
-    userAdapter,
-    salt,
+    salt, db
   }: {
-    userAdapter: UserAdapter;
-    salt: number | string;
+    salt: number | string,
+    db: DBControllerInterface
   }) {
-    this.userAdapter = userAdapter;
     this.salt = salt;
+    this.db = db;
   }
 
   /**
@@ -34,37 +32,24 @@ export class AuthController {
    */
   async authorize(request: Request, response: Response, next: NextFunction): Promise<void> {
     response.locals.session = null;
-    response.locals.user = null;
 
     // get session id from cookies
     const sessionId = request.cookies.sessionId;
+
     if (!sessionId) {
       request.logger.warn('authorization: failure - no session id in header');
       next();
       return;
     }
 
-    // get session by id
-    const sess = await this.userAdapter.getSession(sessionId);
-    if (!sess) {
-      request.logger.warn(`authorization: failure - unknown session sessId='${sessionId}' `);
-      next();
-      return;
+    request.logger.info(`authorization: trying with id ${sessionId}`);
+
+    try {
+      response.locals.session = await this.db.sessions.byID(sessionId);
+      request.logger.info('authorization: succeeded');
+    } catch (err) {
+      request.logger.warn('authorization: failure - session could not be found', err);
     }
-
-    // get user by id
-    const user = await this.userAdapter.getUserById(sess.userId);
-
-    if (!user) {
-      request.logger.warn(`authorization: failure - unknown user sessId='${sessionId}' userID='${sess.userId}'`);
-      next();
-      return;
-    }
-
-    request.logger.info(`authorization: success - sessId='${sess.sessionId}' userID='${user.id}'`);
-
-    response.locals.session = sess;
-    response.locals.user = user;
 
     return next();
   }
@@ -73,93 +58,66 @@ export class AuthController {
    * Create a new user
    */
   async createUser(request: Request, response: Response): Promise<void> {
-    request.logger.info('create user');
+    const data = validateBody(request, response, createUserSchema);
 
-    const userInfo = validateBody(request, response, createUserSchema);
-
-    if (!userInfo) {
+    if (!data) {
       request.logger.error('invalid user info in body');
       return;
     }
 
-    request.logger.info('create user');
-    const pwdHash = bcrypt.hashSync(userInfo.password, this.salt);
 
-    userInfo.password = pwdHash;
+    data.password = bcrypt.hashSync(data.password, this.salt);
 
-    const existingUser = await this.userAdapter.getUserByEmail(userInfo.email);
-    if (existingUser) {
-      response.status(400);
-      response.send({ code: 400, message: 'Nutzer mit Email existiert bereits' });
+    try {
+      await this.db.users.byEmail(data.email);
+      APIResponse.badRequest('Nutzer mit Email existiert bereits').send(response);
       return;
+    } catch {
+      request.logger.info('no user with this email. can create new one');
     }
 
     try {
-      // create user with controller
-      const user = await this.userAdapter.createUser(userInfo);
-
-      if (!user.id) {
-        response.status(500);
-        response.send({ code: 500, message: 'Nutzer hat keine ID' });
-        return;
-      }
+      const user = await this.db.users.insert(data);
 
       // create session
-      const session = await this.userAdapter.createSession(user.id);
+      const session = await user.createSession();
 
-      response.status(200);
-      response.cookie('sessionId', session.sessionId, { httpOnly: true });
-      response.send({ code: 200, message: 'Registrierung erfolgreich' });
+      response.cookie('sessionId', session.session_id, { httpOnly: true });
+      APIResponse.success().send(response);
       return;
     } catch (err) {
       request.logger.error(err);
-      response.send({ code: 500, message: err });
+      APIResponse.internal(err).send(response);
     }
   }
 
   /**
    *  returns true if the user is authorized, otherwise false
    */
-  getAuth(request: Request, response: Response): void {
-    if (!response.locals.session) {
-      response.status(200);
-      response.send(false);
+  async getAuth(request: Request, response: Response): Promise<void> {
+    const user: UserInterface = response.locals.session?.user;
+
+    if (!user) {
+      request.logger.error('endpoint requires authorization');
+      APIResponse.unauthorized().send(response);
       return;
     }
 
-    response.status(200);
-    response.send(true);
-    return;
+    APIResponse.success().send(response);
   }
 
   /**
    *  returns user info if they are authorized
    */
-  getUser(request: Request, response: Response): void {
-    const user: User = response.locals.user;
+  async getUser(request: Request, response: Response): Promise<void> {
+    const user: UserInterface = response.locals.session?.user;
 
-    if (!user || !user.id) {
-      response.status(401);
-      response.send({
-        code: 401,
-        message: 'Unauthorized'
-      });
+    if (!user) {
+      APIResponse.unauthorized().send(response);
       return;
     }
 
-    const publicUser: PublicUser = {
-      id: user.id,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      street: user.street,
-      number: user.number,
-      city: user.city,
-      zipcode: user.zipcode
-    };
-
-    response.status(200);
-    response.send(publicUser);
+    APIResponse.success(user.public).send(response);
     return;
   }
 
@@ -168,42 +126,21 @@ export class AuthController {
    */
   async updateName(request: Request, response: Response): Promise<void> {
     const data = validateBody(request, response, userNameSchema);
-    if (!data) {
-      request.logger.error('no user name info provided in body');
-      return;
-    }
+    if (!data) return;
 
-
-    const user: User = response.locals.user;
-
+    const user: UserInterface = response.locals.session?.user;
     if (!user) {
-      response.status(401);
-      response.send({
-        code: 401,
-        message: 'Unauthorized'
-      });
+      APIResponse.unauthorized().send(response);
       return;
     }
-
-    user.firstName = data.firstName;
-    user.lastName = data.lastName;
 
     try {
-      await this.userAdapter.updateUser(user);
-
-      response.status(200);
-      response.send({
-        code: 200,
-        message: 'Name wurde aktualisiert'
-      });
+      await user.updateName(data);
+      request.logger.info('name updated');
+      APIResponse.success().send(response);
     } catch (err) {
       request.logger.error(err);
-      response.status(500);
-      response.send({
-        code: 500,
-        error: err,
-        message: 'Internal Server Error'
-      });
+      APIResponse.internal(err).send(response);
     }
   }
 
@@ -214,38 +151,18 @@ export class AuthController {
     const data = validateBody(request, response, userAddressSchema);
     if (!data) return;
 
-    const user: User = response.locals.user;
-
+    const user: UserInterface = response.locals.session?.user;
     if (!user) {
-      response.status(401);
-      response.send({
-        code: 401,
-        message: 'Unauthorized'
-      });
+      APIResponse.unauthorized().send(response);
       return;
     }
 
-    user.street = data.street;
-    user.number = data.number;
-    user.city = data.city;
-    user.zipcode = data.zipcode;
-
     try {
-      await this.userAdapter.updateUser(user);
-
-      response.status(200);
-      response.send({
-        code: 200,
-        message: 'Addresse wurde aktualisiert'
-      });
+      await user.updateAddress(data);
+      APIResponse.success().send(response);
     } catch (err) {
       request.logger.error(err);
-      response.status(500);
-      response.send({
-        code: 500,
-        error: err,
-        message: 'Internal Server Error'
-      });
+      APIResponse.internal(err).send(response);
     }
   }
 
@@ -256,46 +173,26 @@ export class AuthController {
     const data = validateBody(request, response, updatePasswordSchema);
     if (!data) return;
 
-    const user: User = response.locals.user;
-
+    const user: UserInterface = response.locals.session?.user;
     if (!user) {
-      response.status(401);
-      response.send({
-        code: 401,
-        message: 'Unauthorized'
-      });
+      APIResponse.unauthorized().send(response);
       return;
     }
 
     if (!bcrypt.compareSync(data.oldPassword, user.password)) {
-      response.status(401);
-      response.send({
-        code: 401,
-        message: 'Passwort inkorrekt'
-      });
-
       request.logger.error('old password doesnt match');
+      APIResponse.unauthorized('Passwort inkorrekt').send(response);
       return;
     }
 
-    user.password = bcrypt.hashSync(data.newPassword, this.salt);
+    const hashedPassword = bcrypt.hashSync(data.newPassword, this.salt);
 
     try {
-      await this.userAdapter.updateUser(user);
-
-      response.status(200);
-      response.send({
-        code: 200,
-        message: 'Passwort wurde aktualisiert'
-      });
+      await user.updatePassword(hashedPassword);
+      APIResponse.success().send(response);
     } catch (err) {
       request.logger.error(err);
-      response.status(500);
-      response.send({
-        code: 500,
-        error: err,
-        message: 'Internal Server Error'
-      });
+      APIResponse.internal(err).send(response);
     }
   }
 
@@ -303,58 +200,53 @@ export class AuthController {
    * Login an existing user
    */
   async login(request: Request, response: Response): Promise<void> {
-    request.logger.info(request.body);
-    const bodyData = validateBody(request, response, userCredentialsSchema);
-    if (!bodyData) return;
+    const body = validateBody(request, response, userCredentialsSchema);
+    if (!body) return;
 
-    request.logger.info(bodyData);
-    const email: string = bodyData.email;
-    const password: string = bodyData.password;
-
-    // retrieve user
-    const user = await this.userAdapter.getUserByEmail(email);
-
-    request.logger.info(email, user);
-    if (!user || !bcrypt.compareSync(password, user.password)) {
-      response.status(401);
-      response.send({ code: 401, message: 'Falsches Passwort oder Unbekannter Nutzer' });
+    let user: UserInterface;
+    try {
+      user = await this.db.users.byEmail(body.email);
+    } catch {
+      request.logger.info('could not lookup user by mail');
+      APIResponse.unauthorized('Falsches Passwort oder Unbekannter Nutzer').send(response);
       return;
     }
 
-    if (!user.id) {
-      response.status(500);
-      response.send({ code: 500, message: 'Nutzer hat keine ID' });
+    if (!bcrypt.compareSync(body.password, user.password)) {
+      request.logger.info('password mismatch');
+      APIResponse.unauthorized('Falsches Passwort oder Unbekannter Nutzer').send(response);
       return;
     }
 
     // create session
-    const session = await this.userAdapter.createSession(user.id);
+    try {
+      request.logger.info('creating session');
+      const session = await user.createSession();
+      response.cookie('sessionId', session.session_id, { httpOnly: true });
+      APIResponse.success().send(response);
+    } catch (err) {
+      request.logger.error(err);
+      APIResponse.internal(err).send(response);
+    }
 
-    response.status(200);
-    response.cookie('sessionId', session.sessionId, { httpOnly: true });
-    response.send({ code: 200, message: 'Anmeldung erfolgreich' });
     return;
   }
 
   /**
    * logout a currently logged in user
    */
-  logout(request: Request, response: Response): void {
-    const sessionId = request.cookies.sessionId;
-
-    request.logger.info('session', sessionId);
-
-    if (!sessionId) {
-      response.status(400);
-      response.send({ code: 400, message: 'Nutzer ist nicht authentifiziert' });
+  async logout(request: Request, response: Response): Promise<void> {
+    const session: SessionInterface = response.locals.session;
+    if (!session) {
+      APIResponse.unauthorized().send(response);
       return;
     }
 
 
-    this.userAdapter.delSession(sessionId);
+    await this.db.sessions.destroy(session);
 
     // invalidate session cookie
     response.cookie('sessionId', null, { httpOnly: true, expires: new Date(0) });
-    response.send({ code: 200, message: 'Abmeldung erfolgreich' });
+    APIResponse.success().send(response);
   }
 }

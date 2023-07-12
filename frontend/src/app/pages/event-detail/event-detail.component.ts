@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
 import { Event } from 'softwareproject-common';
 import * as Leaflet from 'leaflet';
 import { LocationService } from 'src/app/services/location.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-event-detail',
@@ -14,7 +15,7 @@ export class EventDetailComponent implements OnInit {
   public event: Event | null = null;
   public isFavorite = false ;
 
-  constructor(private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
+  constructor(@Inject(LOCALE_ID) public locale: string, private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -34,6 +35,10 @@ export class EventDetailComponent implements OnInit {
       },
       error: console.error
     });
+  }
+
+  dateFormat(date: Date): string {
+    return formatDate(date, 'dd.MM.yyyy', this.locale);
   }
   didClickFavButton(): void {
   if(this.isFavorite === false){

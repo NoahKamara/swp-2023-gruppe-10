@@ -1,9 +1,35 @@
-import { DBEvent } from './models/db.event';
+import { DBEvent } from './models/event/event.db';
 import { Request, Response } from 'express';
-import { FindAttributeOptions, Op } from 'sequelize';
+import { APIResponse } from './models/response';
+import { DBControllerInterface } from './database/DBController';
+import { EventFilter } from 'softwareproject-common';
+import { z } from 'zod';
+import { validateBody } from './validation/requestValidation';
 
+
+const filterSchema = z.object({
+  term: z.string().optional(),
+  locations: z.array(z.string()).optional(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  minPrice: z.number().min(0).optional(),
+  maxPrice: z.number().min(0).optional()
+});
 
 export class EventController {
+  constructor(private controller: DBControllerInterface) {}
+
+  async filterUpcoming(request: Request, response: Response): Promise<void> {
+    try {
+      const filter = validateBody(request,response,filterSchema);
+      const events = await this.controller.events.filterUpcoming(filter ?? {});
+
+      APIResponse.success(events.map(e => e.listItem())).send(response);
+    } catch (err) {
+      console.error(err);
+      APIResponse.internal(err).send(response);
+    }
+  }
   /**
   * Returns a list of _upcoming_ events
   *
@@ -12,51 +38,25 @@ export class EventController {
   * - search: GET /events?term='blumen'
   */
   async list(request: Request, response: Response): Promise<void> {
-    const searchTerm = request.query.term;
-
-    let events: DBEvent[];
-
-    const attribs: FindAttributeOptions = ['id', 'title', 'start_date', 'end_date', 'price', 'picture'];
-
     try {
-      if (searchTerm) {
-        request.logger.info(`listing events matching: "${searchTerm}"`);
+      const filter = filterSchema.parse(request.query);
 
-        // Filter title or description like search term
-        events = await DBEvent.findAll({
-          attributes: attribs,
-          where: {
-            start_date: {
-              [Op.gte]: Date.now()
-            },
-            title: {
-              [Op.iLike]: '%' + searchTerm + '%'
-            },
-          }
-        });
-      } else {
-        request.logger.info('listing all events');
+      console.log('FILTER', filter);
+      console.log('FILTER', request.query);
 
-        // dont filter
-        events = await DBEvent.findAll({
-          attributes: attribs,
-          where: {
-            start_date: {
-              [Op.gte]: Date.now()
-            }
-          },
-          order: [
-            ['start_date', 'ASC'],
-            ['end_date', 'DESC']
-          ]
-        });
+      if (filter.locations) {
+        console.log('LOCATIONS', filter.locations.length);
+      }
+      if (request.query.term) {
+        filter.term = String(request.query.term);
       }
 
-      response.status(200);
-      response.send(events);
+      const events = await this.controller.events.filterUpcoming(filter);
+
+      APIResponse.success(events.map(e => e.listItem())).send(response);
     } catch (err) {
-      response.status(500);
-      response.send(err);
+      console.error(err);
+      APIResponse.internal(err).send(response);
     }
   }
 
@@ -66,25 +66,22 @@ export class EventController {
   async details(request: Request, response: Response): Promise<void> {
     const id = request.params.id;
 
+
     if (!id) {
       request.logger.error('client not provide id');
-      response.status(404);
-      response.send();
+      APIResponse.badRequest('missing :id in path').send(response);
+      return;
     }
 
     const event = await DBEvent.findByPk(id);
 
     if (!event) {
       request.logger.error('did not find event for id');
-
-      response.status(404);
-      response.send({ code: 404, message: 'Kein Event zu dieser ID' });
+      APIResponse.notFound('missing :id in path').send(response);
       return;
     }
 
-
-    response.status(200);
-    response.send(event);
+    APIResponse.success(event).send(response);
     return;
   }
 }
