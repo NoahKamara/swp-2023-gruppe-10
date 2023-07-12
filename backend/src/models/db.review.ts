@@ -52,6 +52,7 @@ export class DBReview extends Model {
 
 
 
+
   // @Column
   // amount!: number;
 }

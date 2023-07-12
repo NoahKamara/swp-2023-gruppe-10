@@ -13,10 +13,8 @@
     </div>
 
     <div class="text-sm flex flex-row gap-1">
-
-
-      <div  class="grow">
-          {{ dateFormat(item.start_date) }}
+      <div grow>
+        {{ dateFormat(item.start_date) }}
         <span *ngIf="item.start_date !== item.end_date">
           – {{ dateFormat(item.end_date) }}
         </span>
@@ -30,7 +28,7 @@
         </span>
       </div>
 
-      <div class="px-2">
+      <div>
         {{ item.price }} €
       </div>
     </div>

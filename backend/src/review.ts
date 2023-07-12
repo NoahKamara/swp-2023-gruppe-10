@@ -113,25 +113,13 @@ export class ReviewController {
 
       if (!user || !user.id) {
         console.log(user.id);
-        // MARK: APIResponse
-        // streamlined APIResponse -> avoid errors
         APIResponse.unauthorized().send(response);
-        return;
-
-        // error -> status 200 but code is 401
-        // frontend will try to decode array of reviews throw error
-        response.status(200);
-        response.send({
-          code: 401,
-          message: 'Unauthorized'
-        });
         return;
       }
 
       const name = request.params.name;
 
       if (!name) {
-
         request.logger.error('client did not provide event name');
         APIResponse.badRequest('client did not provide event id').send(response);
         return;
