@@ -3,101 +3,181 @@ import { Request, Response } from 'express';
 import { Op } from 'sequelize';
 import { User } from 'softwareproject-common';
 import { DBLocation } from './models/db.location';
+import { APIResponse } from './models/response';
+import { DBUser } from './models/user/user';
+import { validateBody } from './validation/requestValidation';
+import { createReviewSchema } from './validation/review';
 
 
 export class ReviewController {
 
-    /**
-   * returns details for a review by name of location
-   */
-    async lookup(request: Request, response: Response): Promise<void> {
+  /**
+ * returns details for a review by name of location
+ */
+  async lookup(request: Request, response: Response): Promise<void> {
+    const name = request.params.name.toLowerCase();
+    const userID = response.locals.session.user.id;
+    if (!userID) {
+      console.error('unauthorized');
+      APIResponse.unauthorized().send(response);
+      return;
+    }
 
-        const name = request.params.name.toLowerCase();
+    if (!name) {
+      console.error('client not provide name');
+      APIResponse.badRequest('client did not provide name').send(response);
+      return;
+    }
 
-        if (!name) {
-            console.error('client not provide name');
-            response.status(404);
-            response.send();
-        }
-        try {
-            const review = await DBReview.findAll({
-                where: {
-                    location_name: {
-                        [Op.iLike]: name
-                    }
-                },
+    try {
+      const location = await DBLocation.findOne({
+        where: {
+          name: {
+            [Op.iLike]: name
+          }
+        },
+        include: { all: true, nested: true }
+      });
 
-            });
-
-            if (!review) {
-                console.error('did not find review for location');
-
-                response.status(404);
-                response.send({ code: 404, message: 'Keine Attraktion mit diesem Namen' });
-                return;
-            }
-
-
-            response.status(200);
-            response.send(review);
-        } catch (err) {
-            response.send(err);
-            console.log(err);
-        }
+      if (!location) {
+        console.error(`No location with name ${name}`);
+        APIResponse.notFound(`No location with name ${name}`).send(response);
         return;
+      }
+
+      // Convert to public and remove signed-in user's review
+      const reviews = location.reviews.flatMap(r => {
+        if (r.user_id === userID) return null;
+        return r.public;
+      }).filter(r => r);
+
+      APIResponse.success(reviews).send(response);
+    } catch (err) {
+      request.logger.error(err);
+      APIResponse.internal(err).send(response);
+    }
+  }
+
+   /**
+ * returns review by the signed in user for a location
+ */
+   async mine(request: Request, response: Response): Promise<void> {
+    const user = response.locals.session.user;
+    if (!user) {
+      APIResponse.unauthorized().send(response);
+      return;
     }
 
-    async postReview(request: Request, response: Response): Promise<void> {
-        try {
-            const user: User = response.locals.user;
+    const name = request.params.name.toLowerCase();
 
-            if (!user || !user.id) {
-                response.status(200);
-                response.send({
-                    code: 401,
-                    message: 'Unauthorized'
-                });
-                return;
-            }
+    if (!name) {
+      console.error('client not provide name');
+      APIResponse.badRequest('client did not provide name').send(response);
+      return;
+    }
 
-            const id = request.params.id;
+    try {
+      const location = await DBLocation.lookup(name);
 
-            if (!id) {
-                request.logger.error('client did not provide event id');
-                response.status(400);
-                response.send();
-                return;
-            }
-            
-            const location = await DBLocation.findByPk(id);
+      if (!location) {
+        console.error(`No location with name ${name}`);
+        APIResponse.notFound(`No location with name ${name}`).send(response);
+        return;
+      }
 
-            if (!location) {
-                request.logger.error('location id was invalid');
-                response.status(400);
-                response.send();
-                return;
-              }
-          
-              console.log({
-                user_id: user.id,
-                location_id: location.id
-              });
+      const review = await DBReview.findOne({
+        where: {
+          location_id: location.id,
+          user_id: user.id
+        },
+        include: { all: true, nested: true }
+      });
 
-            const review = await DBReview.create({
-                user_id: user.id,
-                location_id: location.id,
-                location_name: location.name,
-                
+      if (!review) {
+        console.error(`user has not reviewed location ${location.id}`);
+        APIResponse.notFound(`user has not reviewed ${name}`).send(response);
+        return;
+      }
 
-            });
+      APIResponse.success(review.public).send(response);
+    } catch (err) {
+      request.logger.error(err);
+      APIResponse.internal(err).send(response);
+    }
+  }
 
-            response.status(200);
-            response.send(review);
+  async postReview(request: Request, response: Response): Promise<void> {
+    try {
+      const user: User = response.locals.session.user;
 
-        } catch (err) {
-            request.logger.error(err);
-            response.send({ code: 500, message: err });
+
+      if (!user || !user.id) {
+        console.log(user.id);
+        // MARK: APIResponse
+        // streamlined APIResponse -> avoid errors
+        APIResponse.unauthorized().send(response);
+        return;
+
+        // error -> status 200 but code is 401
+        // frontend will try to decode array of reviews throw error
+        response.status(200);
+        response.send({
+          code: 401,
+          message: 'Unauthorized'
+        });
+        return;
+      }
+
+      const name = request.params.name;
+
+      if (!name) {
+
+        request.logger.error('client did not provide event name');
+        APIResponse.badRequest('client did not provide event id').send(response);
+        return;
+      }
+
+      const location = await DBLocation.lookup(name);
+
+      if (!location) {
+        request.logger.error(`location name '${name}' was invalid`);
+        APIResponse.badRequest(`location name '${name}' was invalid`).send(response);
+        return;
+      }
+
+
+
+      const data = validateBody(request, response, createReviewSchema);
+
+      request.logger.info(data);
+
+      await DBReview.upsert(
+        {
+          ...data,
+          user_id: user.id,
+          location_id: location.id,
+          location_name: location.name,
         }
+      );
+
+      const review = await DBReview.findOne({
+        where: {
+          user_id: user.id,
+          location_id: location.id
+        },
+        include:[DBUser]
+      });
+
+      if (!review) {
+        APIResponse.notFound('did not find created review').send(response);
+        return;
+      }
+      console.log(review);
+      APIResponse.success(review.public).send(response);
+    } catch (err) {
+      request.logger.error(err);
+      response.send({ code: 500, message: err });
     }
+  }
 }
 

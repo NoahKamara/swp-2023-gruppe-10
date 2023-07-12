@@ -4,10 +4,9 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es6", // or a more recent ecmascript version
+    "target": "es6",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "target": "es6",
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": true,
@@ -24,7 +23,7 @@
     }
   },
   "include": [
-    "src/**/*",
+    "src/**/*.ts",
     "specs/**/*"
   ]
 }

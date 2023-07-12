@@ -11,4 +11,10 @@ module.exports = [
     output: 'src/validation/user.ts',
     jsDocTagFilter: (tags) => tags.map(tag => tag.name).includes('schema')
   },
+  {
+    name: 'review',
+    input: '../common/src/review.ts',
+    output: 'src/validation/review.ts',
+    jsDocTagFilter: (tags) => tags.map(tag => tag.name).includes('schema')
+  },
 ];

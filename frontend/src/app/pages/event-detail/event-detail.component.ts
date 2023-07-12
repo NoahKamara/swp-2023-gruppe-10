@@ -12,7 +12,7 @@ import { formatDate } from '@angular/common';
   styleUrls: ['./event-detail.component.css']
 })
 export class EventDetailComponent implements OnInit {
-  public event: Event | null = null;
+  public event: Event | undefined;
   public isFavorite = false ;
 
   constructor(@Inject(LOCALE_ID) public locale: string, private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
@@ -40,6 +40,7 @@ export class EventDetailComponent implements OnInit {
   dateFormat(date: Date): string {
     return formatDate(date, 'dd.MM.yyyy', this.locale);
   }
+
   didClickFavButton(): void {
   if(this.isFavorite === false){
     this.isFavorite = true;

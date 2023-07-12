@@ -1,8 +1,5 @@
 import { Request, Response } from 'express';
 import { DBLocation } from './models/db.location';
-import { Sequelize } from 'sequelize-typescript';
-import { DBReview } from './models/db.review';
-import { Op } from 'sequelize';
 import { APIResponse } from './models/response';
 
 export class LocationController {

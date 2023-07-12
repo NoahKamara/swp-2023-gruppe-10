@@ -1,9 +1,6 @@
-import { CreationOptional } from 'sequelize';
-import { Table, Model, ForeignKey, BelongsTo, Column, PrimaryKey, DataType } from 'sequelize-typescript';
-import { Event, User } from 'softwareproject-common';
-import { DBEvent } from './db.event';
-import { DBUser } from './db.user';
-import { number } from 'zod';
+import { Table, Model, ForeignKey, BelongsTo, Column } from 'sequelize-typescript';
+import { DBEvent } from './event/event';
+import { DBUser } from './user/user';
 
 @Table({ modelName: 'favorites', timestamps: false })
 export class DBFavorites extends Model {

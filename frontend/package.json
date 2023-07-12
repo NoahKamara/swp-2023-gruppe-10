@@ -5,6 +5,7 @@
   "scripts": {
     "start-public": "ng serve --host=192.168.178.173 --disable-host-check",
     "start": "ng serve",
+    "recbuild": "cd ../common && npm run build; npm install ../common; cd ../backend && npm run build",
     "present": "npm run start -- --configuration=present",
     "build": "cd ../common; npm run build; ng build",
     "lint": "eslint \"src/**/*.{js,ts}\"",

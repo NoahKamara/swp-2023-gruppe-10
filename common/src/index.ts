@@ -4,6 +4,7 @@ import { Location } from './location';
 import { Ticket, PublicTicket } from './ticket';
 import { APIError, APIBaseError, APIContextError } from './responses';
 import { PaymentProvider, PaymentError, PaymentErrorMessage, HCIPalData, SWPsafeData, BachelorcardData } from './paymentprovider';
+import { Review, PublicReview, CreateReview } from './review';
 
 export {
   User, PublicUser, UserAddress, UserCredentials, CreateUser, UpdatePassword,
@@ -12,5 +13,6 @@ export {
   Ticket, PublicTicket,
   APIError, APIBaseError, APIContextError,
   PaymentProvider, PaymentError, PaymentErrorMessage,
-  HCIPalData, SWPsafeData, BachelorcardData
+  HCIPalData, SWPsafeData, BachelorcardData,
+  Review, PublicReview, CreateReview
 };

@@ -21,6 +21,9 @@ export class LocationMapComponent implements OnInit {
   public locationName!: string;
 
   @Input()
+  public showName = true;
+
+  @Input()
   public enableNavigation = true;
 
   private location: Location | null = null;

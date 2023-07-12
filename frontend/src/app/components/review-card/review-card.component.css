@@ -1,0 +1,8 @@
+.card {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.card-title {
+  white-space: pre-wrap;
+}
