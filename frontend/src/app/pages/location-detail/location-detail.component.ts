@@ -3,13 +3,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EventListItem, Location } from 'softwareproject-common';
 import { EventService } from 'src/app/services/event.service';
 import { LocationService } from 'src/app/services/location.service';
+import { ReviewComponent } from '../review/review.component';
 
 @Component({
   selector: 'app-location-detail',
   templateUrl: './location-detail.component.html',
   styleUrls: ['./location-detail.component.css']
 })
+
 export class LocationDetailComponent implements OnInit {
+  
   public location: Location | null = null;
   public events: EventListItem[] = [];
 
@@ -44,4 +47,23 @@ export class LocationDetailComponent implements OnInit {
       error: console.error
     });
   }
+
+  public rating = 3.5;
+
+  
+  getIcon(star:number): string{
+
+    if(star <= this.rating){
+        return 'star';
+    } else if(star <= this.rating +0.5){
+      return 'star_half';
+    } else{
+      return 'grade';
+    }
+  }
+
+  openReviews(): void{
+    this.router.navigateByUrl('/reviews');
+  }
+
 }

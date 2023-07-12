@@ -1,9 +1,7 @@
 import { CreationOptional } from 'sequelize';
-import { Table, Model, ForeignKey, BelongsTo, Column, PrimaryKey, DataType } from 'sequelize-typescript';
-import { Event, User } from 'softwareproject-common';
+import { Table, Model, ForeignKey, BelongsTo, Column } from 'sequelize-typescript';
 import { DBEvent } from './event/event.db';
 import { DBUser } from './user/user.db';
-import { number } from 'zod';
 
 
 

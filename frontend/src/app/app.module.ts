@@ -55,6 +55,8 @@ import { ButtonComponent } from './components/button/button.component';
 import { PaymentErrorMessageComponent } from './components/payment-forms/payment-error-message/payment-error-message.component';
 import {MatSliderModule} from '@angular/material/slider';
 import { TicketComponent } from './pages/ticket/ticket.component';
+import { ReviewComponent } from './pages/review/review.component';
+
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
  *  Damit fangen wir ab, falls ein Benutzer nicht eingeloggt ist,
@@ -121,6 +123,8 @@ const routes: Routes = [
       { path: ':name', component: LocationDetailComponent },
     ]
   },
+
+  {path: 'reviews', component:ReviewComponent},
 
 
   // Events
@@ -222,6 +226,7 @@ const routes: Routes = [
     ButtonComponent,
     PaymentErrorMessageComponent,
     TicketComponent,
+    ReviewComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

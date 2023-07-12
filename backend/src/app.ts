@@ -29,6 +29,8 @@ import { HCIPalProvider } from './payment/HCIPalProvider';
 import { PaymentProviderInterface } from './payment/PaymentProviderInterface';
 import { PaymentController } from './payment';
 import { DBController } from './database/DBController';
+import { DBReview } from './models/db.review';
+import { RatingController, ReviewController } from './review';
 
 // Express server instanziieren
 const app = express();
@@ -60,7 +62,7 @@ const sequelize = new Sequelize({
   username: 'admin',
   password: 'CHOOSE_A_PASSWORD',
   database: 'postgres',
-  models: [DBUser, DBEvent, DBLocation, DBTicket, DBSession],
+  models: [DBUser, DBEvent, DBLocation, DBTicket, DBReview, DBSession],
   modelMatch: (filename, member): boolean => {
     console.error(filename, member);
     return true;
@@ -154,6 +156,13 @@ const locations = new LocationController();
 app.get('/api/locations', locations.list);                          // List locations
 app.get('/api/locations/:name', locations.lookup);                 // lookup location by name
 
+
+/**
+ * Reviews
+ */
+const review = new ReviewController();
+ app.get('/api/locations/:name/review', review.lookup);         //lookup review by locationname
+ app.post('/api/locations/:name/review', review.postReview);         //post review by locationname
 
 /**
  * Other Routes

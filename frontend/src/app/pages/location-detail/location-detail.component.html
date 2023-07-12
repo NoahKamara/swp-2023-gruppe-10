@@ -4,6 +4,25 @@
   <div *ngIf="location" class="scrollable-container space-y-8">
     <img src="/img/locations/{{ location.picture }}" class="rounded-lg" alt="Event Bild" />
 
+    <div class="flex place-content-center">
+      <div class="grid grid-cols-6 w-3/5 place-content-center">
+        <div *ngFor="let n of [1,2,3,4,5]">
+          <button mat-icon-button>
+            <mat-icon>{{getIcon(n)}}</mat-icon>
+          </button>
+        </div>
+        <div >{{rating}}</div>
+        
+
+      </div>
+      <div class="grow"></div>
+      <button mat-icon-button (click)="openReviews()">
+        <mat-icon>reviews </mat-icon>
+      </button>
+    </div>
+
+
+
     <div [innerHTML]="location.description_html"></div>
 
     <app-location-map [locationName]="location.name"/>

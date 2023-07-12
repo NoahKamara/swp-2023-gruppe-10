@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { DBLocation } from './models/db.location';
+import { Sequelize } from 'sequelize-typescript';
+import { DBReview } from './models/db.review';
 import { Op } from 'sequelize';
 import { APIResponse } from './models/response';
 
@@ -26,18 +28,21 @@ export class LocationController {
     if (!name) {
       console.error('client not provide name');
       APIResponse.badRequest('Missing :name in path').send(response);
-      return;
     }
 
-    const location = await DBLocation.lookup(name);
+    try {
+      const location = await DBLocation.lookup(name);
 
-    if (!location) {
-      console.error('did not find location for id');
-      APIResponse.notFound(`No location with name ${name}`).send(response);
-      return;
+      if (!location) {
+        console.error('did not find location for id');
+        APIResponse.notFound(`No location with name ${name}`).send(response);
+        return;
+      }
+
+      APIResponse.success(location).send(response);
+    } catch (err) {
+      APIResponse.internal(err).send(response);
     }
-
-    APIResponse.success(location).send(response);
     return;
   }
 }
