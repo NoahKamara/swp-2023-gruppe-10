@@ -1,0 +1,15 @@
+<span *ngIf="control.hasError('unknown')">
+  Dieses Konto existiert nicht
+</span>
+<span *ngIf="control.hasError('foreign')">
+  Zahlungen sind nur mit Deutschen Accounts zulässig
+</span>
+<span *ngIf="control.hasError('balance')">
+  Ungenügender Kontostand
+</span>
+<span *ngIf="control.hasError('invalid')">
+  Nicht Korrekt
+</span>
+<span *ngIf="control.hasError('required')">
+  *Pflichtfeld
+</span>

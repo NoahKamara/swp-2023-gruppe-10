@@ -1,43 +1,98 @@
-<div class="page-container">
-  <app-top-bar [title]="event?.title ?? 'Event'" />
+<div class="page-container w-full">
+  <app-top-bar title="Bestellen" [showBackBtn]="false"/>
 
   <div *ngIf="event" class="scrollable-container space-y-4">
-    <div class="text-base">
-      {{ event.start_date }} - {{ event.end_date }}
-    </div>
-    <div class="text-base">
-      1x Ticket
+    <div class="text-xl">
+      {{ event.title }}
     </div>
 
-    <div class="text-base">
-      Gesamtkosten: {{ event.price }}
+    <div class="space-y-1">
+      <div class="flex flex-row gap-1">
+        <div class="grow">
+          {{ dateFormat(event.start_date) }}
+          <span *ngIf="event.start_date !== event.end_date">
+            – {{ dateFormat(event.end_date) }}
+          </span>
+        </div>
+
+        <div>
+          {{amount}}x Ticket
+        </div>
+      </div>
+      <div class="w-full">
+        <mat-slider style="width: 90%; align-self: center;">
+          <input matSliderThumb [(ngModel)]="amount" [min]="0" [max]="20">
+        </mat-slider>
+      </div>
+
+      <div class="flex flex-row gap-1">
+        <div class="grow">
+          <div *ngIf="event.start_time">
+            {{ event.start_time }}
+
+            <span *ngIf="event.end_time">
+              - {{ event.end_time }}
+            </span>
+            Uhr
+          </div>
+        </div>
+
+        <div>
+          {{ event.price }} €
+        </div>
+      </div>
     </div>
 
-
-    <div [ngSwitch]="selectedProvider" class="w-full">
-      <div *ngSwitchCase="providerEnum.bachelorcard">
-        <app-bachelor-card-form (didSubmit)="submit($event)"/>
-      </div>
-      <div *ngSwitchCase="providerEnum.hciPal">
-       <app-hcipal-form (didSubmit)="submit($event)"/>
-      </div>
-      <div *ngSwitchCase="providerEnum.swpsafe">
-        <app-swpsafe-form (didSubmit)="submit($event)"/>
-      </div>
-      <div *ngSwitchDefault providerSelection></div>
-      <div *ngIf="selectedProvider;else providerSelection">
-        <button class="btn btn-active btn-accent btn-block text-accent-content mt-1"
-          (click)="selectedProvider = null">Abbrechen</button>
+    <div *ngIf="!purchasedTicketID;else successView" class="w-full  space-y-2">
+      <div [ngSwitch]="selectedProvider">
+        <div *ngSwitchCase="providerEnum.bachelorcard">
+          <app-bachelor-card-form [amount]="amount" [eventID]="event.id" (didPurchase)="onPurchase($event)" />
+        </div>
+        <div *ngSwitchCase="providerEnum.hciPal">
+          <app-hcipal-form [amount]="amount" [eventID]="event.id" (didPurchase)="onPurchase($event)" />
+        </div>
+        <div *ngSwitchCase="providerEnum.swpsafe">
+          <app-swpsafe-form [amount]="amount" [eventID]="event.id" (didPurchase)="onPurchase($event)" />
+        </div>
+        <div *ngSwitchDefault providerSelection></div>
+        <div *ngIf="selectedProvider;else providerSelection">
+          <app-button (didClick)="selectedProvider = null" [level]="1">Zurück</app-button>
+        </div>
       </div>
     </div>
+
   </div>
 </div>
 
+
+
+<ng-template #successView>
+  <div class="w-full flex flex-col">
+
+    <mat-icon fontIcon="local_activity" class="self-center my-4" style="font-size: 20rem; height: 20rem; width: 20rem"></mat-icon>
+
+    <div class="flex-none">
+      <app-button [level]="1" routerLink="/events">
+        Andere Events
+      </app-button>
+
+      <app-button routerLink="/tickets/{{ purchasedTicketID }}">
+        Zum Ticket
+      </app-button>
+    </div>
+  </div>
+</ng-template>
+
 <ng-template #providerSelection>
-  <h2>Zahlungsanbieter: </h2>
+  <div class="text-lg">Zahlungsanbieter: </div>
+
   <div class="space-y-2">
     <div *ngFor="let provider of providers">
       <app-payment-provider-btn [provider]="provider" (didSelect)="didSelect($event)" />
     </div>
   </div>
+
+  <app-button class="mt-4" routerLink="../">
+    Abbrechen
+  </app-button>
 </ng-template>

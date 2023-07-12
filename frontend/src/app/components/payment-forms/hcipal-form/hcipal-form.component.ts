@@ -1,8 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { AnyPaymentData } from 'src/app/services/tickets.service';
-import { PaymentProviderPurchaseInterface } from '../PaymentProviderPurchaseInterface';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AnyPaymentData, HCIPalData, TicketsService } from 'src/app/services/tickets.service';
+import { PaymentProviderPurchaseInterfaceNew } from '../PaymentProviderPurchaseInterface';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
+import { PaymentService } from 'src/app/services/payment.service';
+import { Router } from '@angular/router';
+import { PaymentErrorMessage, Ticket } from 'softwareproject-common';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 interface DataFormGroup {
@@ -15,10 +19,18 @@ interface DataFormGroup {
   templateUrl: './hcipal-form.component.html',
   styleUrls: ['./hcipal-form.component.css']
 })
-export class HCIPalFormComponent implements PaymentProviderPurchaseInterface, OnInit {
+export class HCIPalFormComponent implements PaymentProviderPurchaseInterfaceNew, OnInit {
+  @Input()
+  eventID!: number;
+
+  @Input()
+  amount!: number;
 
   @Output()
-  didSubmit: EventEmitter<AnyPaymentData> = new EventEmitter();
+  didPurchase: EventEmitter<Ticket> = new EventEmitter();
+
+
+  constructor(private payment: PaymentService, private router: Router) { }
 
   public formGroup = new FormGroup<DataFormGroup>({
     email: new FormControl<string>('', [Validators.required, Validators.email]),
@@ -28,8 +40,8 @@ export class HCIPalFormComponent implements PaymentProviderPurchaseInterface, On
   ngOnInit(): void {
     if (environment.isPresenting) {
       this.formGroup.setValue({
-        email: 'max.mustermann@email.com',
-        password: 'max.mustermann@email.com'
+        email: 'petra@heisenberg.eu',
+        password: '6uTQu8DhqXVz!!fXpGcD5'
       });
     }
   }
@@ -39,11 +51,69 @@ export class HCIPalFormComponent implements PaymentProviderPurchaseInterface, On
 
     if (this.formGroup.invalid) return;
 
+    this.formGroup.disable();
     const values = this.formGroup.value;
 
-    this.didSubmit.emit({
-      email: values.email ?? '',
+    const data: HCIPalData = {
+      name: values.email ?? '',
       password: values.password ?? ''
+    };
+
+
+    this.payment.hcipal({ eventID: this.eventID, amount: 1, data: data }).subscribe({
+      next: (val) => {
+        console.log(val);
+        this.didPurchase.emit(val);
+      },
+      error: (err: HttpErrorResponse) => {
+        const error = err.error;
+        console.error(error.error);
+
+        this.formGroup.enable();
+
+        switch (error.error) {
+          case PaymentErrorMessage.internalError:
+            console.error('Payment failed due to internal server error');
+            break;
+          case PaymentErrorMessage.foreignAccount:
+            this.formGroup.controls.email.setErrors({
+              'foreign': true
+            });
+            break;
+          case PaymentErrorMessage.unknownAccount:
+            this.formGroup.controls.email.setErrors({
+              'unknown': true
+            });
+            break;
+          case PaymentErrorMessage.invalidData:
+            this.formGroup.controls.email.setErrors({
+              'invalid': true
+            });
+            this.formGroup.controls.password.setErrors({
+              'invalid': true
+            });
+            break;
+          case PaymentErrorMessage.frozen:
+            this.formGroup.controls.email.setErrors({
+              'frozen': true
+            });
+            break;
+          case PaymentErrorMessage.expired:
+            this.formGroup.controls.email.setErrors({
+              'expired': true
+            });
+            break;
+
+          case PaymentErrorMessage.notEnoughBalance:
+            this.formGroup.controls.email.setErrors({
+              'balance': true
+            });
+            break;
+          default:
+            console.log('unknown error', error.error);
+        }
+
+      }
     });
   }
 }

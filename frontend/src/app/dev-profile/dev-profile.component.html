@@ -1,0 +1,30 @@
+<div *ngIf="data;then content else placeholder"></div>
+
+<ng-template #content>
+  <div class="card card-side card-compact h-24">
+    <figure class="w-24">
+      <img class="w-24 h-24 rounded-lg object-cover" style="width: 144px!important; border-bottom-right-radius: 0;  border-top-right-radius: 0;"
+        src="/assets/about/{{data?.firstName?.toLowerCase()}}-{{data?.lastName?.toLowerCase()}}.jpg">
+    </figure>
+
+    <div class="card-body gap-0">
+      <h2 class="card-title mb-0 pb-0">{{ data?.firstName ?? 'First' }} {{ data?.lastName ?? 'Lastname' }}</h2>
+      <div class="text-xs">
+        <div>
+          {{ data?.course ?? 'University Course' }}
+          ({{ data?.semester ?? 'Semester' }})
+        </div>
+
+        <div>
+          <b>Kontakt: </b>
+          <a href="mailto://{{ data?.mail }}">
+            {{ data?.mail }}
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #placeholder>other content here...</ng-template>

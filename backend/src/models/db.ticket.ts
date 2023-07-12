@@ -1,7 +1,7 @@
 import { CreationOptional } from 'sequelize';
-import { Table, Model, ForeignKey, BelongsTo, Column, PrimaryKey, DataType } from 'sequelize-typescript';
-import { DBEvent } from './db.event';
-import { DBUser } from './db.user';
+import { Table, Model, ForeignKey, BelongsTo, Column } from 'sequelize-typescript';
+import { DBEvent } from './event/event.db';
+import { DBUser } from './user/user.db';
 
 
 
@@ -23,6 +23,6 @@ export class DBTicket extends Model {
   @BelongsTo(() => DBUser, 'user_id')
   user!: DBUser;
 
-  // @Column
-  // amount!: number;
+  @Column
+  amount!: number;
 }

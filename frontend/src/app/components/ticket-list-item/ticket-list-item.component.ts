@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { formatDate } from '@angular/common';
+import { Component, Inject, Input, LOCALE_ID } from '@angular/core';
 import { PublicTicket } from 'softwareproject-common';
 
 @Component({
@@ -9,4 +10,10 @@ import { PublicTicket } from 'softwareproject-common';
 export class TicketListItemComponent {
   @Input()
   public item!: PublicTicket;
+
+  constructor(@Inject(LOCALE_ID) public locale: string){}
+
+  dateFormat(date: Date): string {
+    return formatDate(date, 'dd.MM.yyyy', this.locale);
+  }
 }

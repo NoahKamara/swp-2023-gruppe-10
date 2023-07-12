@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
@@ -40,7 +41,7 @@ import { LocationDetailComponent } from './pages/location-detail/location-detail
 import { EditProfileNameComponent } from './pages/edit-profile-name/edit-profile-name.component';
 import { EditProfileAddressComponent } from './pages/edit-profile-address/edit-profile-address.component';
 import { EditProfilePasswordComponent } from './pages/edit-profile-password/edit-profile-password.component';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import {MatDialogModule} from '@angular/material/dialog';
 import { EditDialogComponent } from './components/edit-dialog/edit-dialog.component';
 import { EventPaymentComponent } from './pages/event-payment/event-payment.component';
@@ -50,9 +51,11 @@ import { SWPsafeFormComponent } from './components/payment-forms/swpsafe-form/sw
 import { HCIPalFormComponent } from './components/payment-forms/hcipal-form/hcipal-form.component';
 import { TicketsComponent } from './pages/tickets/tickets.component';
 import { TicketListItemComponent } from './components/ticket-list-item/ticket-list-item.component';
+import { ButtonComponent } from './components/button/button.component';
+import { PaymentErrorMessageComponent } from './components/payment-forms/payment-error-message/payment-error-message.component';
+import {MatSliderModule} from '@angular/material/slider';
+import { TicketComponent } from './pages/ticket/ticket.component';
 import { ReviewComponent } from './pages/review/review.component';
-import { ReviewDataComponent } from './components/review-data/review-data/review-data.component';
-
 
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
@@ -67,23 +70,33 @@ import { ReviewDataComponent } from './components/review-data/review-data/review
  */
 const loginGuard = (): Observable<boolean> => {
   const authObservable = inject(AuthService).checkAuth();
-
   const router = inject(Router);
 
   authObservable.subscribe({
-    next: success => {
-      if (!success) {
+    next: value => {
+      if (value === true) return;
 
-        router.navigate(['/login']);
-      }
-    },
-    error: err => {
-      console.error(err);
+      console.warn('loginGuard: failure - redirecting to login');
       router.navigate(['/login']);
-    }
+    },
   });
 
   return authObservable;
+};
+
+const antiLoginGuard = (): Observable<boolean> => {
+  const authObservable = inject(AuthService).checkAuth();
+  const router = inject(Router);
+
+  authObservable.subscribe({
+    next: value => {
+      if (value === false) return;
+      console.info('antiLoginGuard: user already authenticated - redirecting to map');
+      router.navigate(['/map']);
+    }
+  });
+
+  return authObservable.pipe(map(val => !val));
 };
 
 /**
@@ -95,8 +108,8 @@ const loginGuard = (): Observable<boolean> => {
  */
 const routes: Routes = [
   // Authentication
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent, canActivate: [antiLoginGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [antiLoginGuard] },
 
   // About
   { path: 'about', component: AboutComponent },
@@ -124,7 +137,11 @@ const routes: Routes = [
         path: ':id',
         children: [
           { path: '', component: EventDetailComponent },
-          { path: 'payment', component: EventPaymentComponent }
+          { path: 'payment', children: [
+            { path: '', component: EventPaymentComponent },
+            { path: 'success', component: EventPaymentComponent }
+          ]
+        }
         ]
      }
     ]
@@ -133,7 +150,8 @@ const routes: Routes = [
     path: 'tickets',
     canActivate: [loginGuard],
     children: [
-      { path: '', component: TicketsComponent }
+      { path: '', component: TicketsComponent },
+      { path: ':id', component: TicketComponent }
     ]
    },
 
@@ -205,8 +223,10 @@ const routes: Routes = [
     HCIPalFormComponent,
     TicketsComponent,
     TicketListItemComponent,
-    ReviewComponent,
-    ReviewDataComponent,
+    ButtonComponent,
+    PaymentErrorMessageComponent,
+    TicketComponent,
+    ReviewComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -216,12 +236,14 @@ const routes: Routes = [
     BrowserAnimationsModule,
     LeafletModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
     MatIconModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatGridListModule,
     MatDialogModule,
+    MatSliderModule
   ],
   providers: [
     HttpClientModule

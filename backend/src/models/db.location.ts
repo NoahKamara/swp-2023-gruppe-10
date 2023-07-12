@@ -1,9 +1,7 @@
-import { CreationOptional } from 'sequelize';
-import { Column, Table, Model, HasMany } from 'sequelize-typescript';
+import { CreationOptional, Op, col, fn } from 'sequelize';
+import { Column, Table, Model, HasMany, Sequelize } from 'sequelize-typescript';
 import { Location } from 'softwareproject-common';
 import { DBReview } from './db.review';
-
-
 
 
 @Table({ modelName: 'locations', timestamps: false })
@@ -27,6 +25,37 @@ export class DBLocation extends Model<Location> {
 
   @Column
   description_html!: string;
+
+  /**
+    * looks for a location with this name and returns it
+    *
+    * @memberof DBLocation
+    * @static
+    * @method
+    * @param {string} name
+    * @return {DBLocation | null}
+    */
+  static async lookup(name: string): Promise<DBLocation | null> {
+    return await DBLocation.findOne({
+      subQuery: false,
+      include: [
+        {
+          model: DBReview,
+          as: 'reviews',
+          attributes: [],
+        },
+      ],
+      attributes: {
+        include: [[fn('avg', col('reviews.stars')), 'average_rating']],
+      },
+      where: {
+        name: {
+          [Op.iLike]: name
+        }
+      },
+      group: ['locations.name']
+    });
+  }
 
   @HasMany(() => DBReview)
   reviews!: DBReview[] | null;

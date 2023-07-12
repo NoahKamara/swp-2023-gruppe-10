@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { Request, Response } from 'express';
+import { APIResponse } from '../models/response';
 
 /**
  * validates the request body against the provided schema
@@ -22,13 +23,15 @@ export const validateBody = <T>(
 
   try {
     const validatedData = schema.parse(req.body);
+    req.logger.info('validation succeeded');
     return validatedData;
   } catch (err) {
+    req.logger.info('validation failed with error', err);
+
     if (err instanceof z.ZodError) {
-      res.status(400).json({ errors: err.flatten() });
+      APIResponse.badRequest(err.flatten()).send(res);
     } else {
-      console.error(err);
-      res.sendStatus(500);
+      APIResponse.internal('Validation failed with error that is not ZodError').send(res);
     }
   }
 };

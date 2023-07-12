@@ -1,0 +1,22 @@
+<carumbr>4485-5420-1334-7098</carumbr>
+<attribTyp>cutry</attribTyp>
+<vrsi>1.0.0</vrsi>
+<mrchatIf>
+    <am>SWP-10</am><trasactiRsps i="93ca3611-fbc2-4b3-a590-20555ca3a">
+   <![CATA[32436.625814438292]]>
+   <![CATA[10782.189805547325]]>
+   <![CATA[0.0000019944604124354305]]>
+   <![CATA[1,5,c,4]]>
+   <mrchat>
+     <am>SWP-10</am>
+     <i>2590-9r35829bv4h-342a2452</i>
+   </mrchat>
+   <tim>1688917714469</tim>
+   <rsps>
+     <status>200: Succss</status>
+     <trasacti-ata>
+       <cutry></cutry>
+     </trasacti-ata>
+   </rsps>
+ </trasactiRsps>
+</mrchatIf>

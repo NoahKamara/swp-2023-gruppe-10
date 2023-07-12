@@ -1,7 +1,8 @@
 <div class="card space-x-2 w-full" routerLink="/events/{{ item.id }}">
   <figure>
     <div style="width:100%;height:0; padding-top:50%;position:relative;">
-        <img src="/img/events/{{ item.picture }}" style="aspect-ratio: 1.5/1; position:absolute; top:0; left:0; width:100%;" alt="Event Bild" />
+      <img src="/img/events/{{ item.picture }}"
+        style="aspect-ratio: 1.5/1; position:absolute; top:0; left:0; width:100%;" alt="Event Bild" />
     </div>
 
   </figure>
@@ -10,8 +11,28 @@
       <!-- This splits the actual title and the date & time info into separate lines -->
       {{ item.title }}
     </div>
-    <div class="text-sm">
-      {{ item.price }} €
+
+    <div class="text-sm flex flex-row gap-1">
+
+
+      <div  class="grow">
+          {{ dateFormat(item.start_date) }}
+        <span *ngIf="item.start_date !== item.end_date">
+          – {{ dateFormat(item.end_date) }}
+        </span>
+
+        <span *ngIf="item.start_time">
+          {{ item.start_time }}
+
+          <span *ngIf="item.end_time">
+            - {{ item.end_time }}
+          </span>
+        </span>
+      </div>
+
+      <div class="px-2">
+        {{ item.price }} €
+      </div>
     </div>
   </div>
 </div>

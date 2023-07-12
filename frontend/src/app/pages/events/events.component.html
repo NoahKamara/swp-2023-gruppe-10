@@ -1,10 +1,25 @@
 <div class="page-container">
-  <app-top-bar title="Events" [showBackBtn]="false"/>
+  <app-top-bar title="Events" [showBackBtn]="false" />
 
   <div class="scrollable-container space-y-8">
-    <mat-icon (click)="didClickFavButton()" class="float-right transform: scale-150">{{isFavorite ? "favorite": "favorite_border"}}</mat-icon>
-    <input type="text" placeholder="Events Suchen" class="input input-bordered w-full" [(ngModel)]="searchTerm" (ngModelChange)="onSearchTermChange()"/>
-      <div class="space-y-4">
+    <div>
+      <input type="text" placeholder="Events Suchen" class="input input-bordered w-5/6" [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchTermChange()" />
+
+        <mat-icon (click)="didClickFavButton()" class="float-right scale-150 translate-y-3 -translate-x-1">{{isFavorite ? "favorite":
+          "favorite_border"}}</mat-icon>
+
+        <!-- SLIDER FOR DATE -->
+        <!-- <div class="w-full">
+          <mat-slider style="width: 100%" [min]="0" [max]="200" [step]="5">
+            <input matSliderStartThumb [value]="filter.minPrice" (valueChange)="filterDidChange()">
+            <input matSliderEndThumb [value]="filter.maxPrice ?? 300" (valueChange)="filterDidChange()">
+          </mat-slider>
+
+        </div> -->
+    </div>
+
+    <div class="space-y-4">
       <div @listAnimation *ngFor="let item of events">
         <app-event-list-item [item]="item"></app-event-list-item>
       </div>

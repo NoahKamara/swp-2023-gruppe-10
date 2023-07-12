@@ -1,13 +1,6 @@
-/**
-* Interface for Session Information
-*
-* @interface
-* @extends {ParentInterfaceNameHereIfAny}
-*/
-export interface Session {
-  /** used to identify the session & to authorize user  */
-  sessionId: string
+import { User } from 'softwareproject-common';
 
-  /** id of the user this session belongs to */
-  userId: number
+export interface Session {
+  session_id: string
+  user_id: number
 }
