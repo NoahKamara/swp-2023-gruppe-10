@@ -8,8 +8,20 @@ import { formatDate } from '@angular/common';
   styleUrls: ['./event-list-item.component.css']
 })
 export class EventListItemComponent {
+  public isFavorite = false;
+
+  didClickFavButton(): void {
+    if(this.isFavorite === false){
+      this.isFavorite = true;
+    }
+    else{
+      this.isFavorite = false;
+    }
+  }
+  
   @Input()
   public item!: EventListItem;
+
 
   constructor(@Inject(LOCALE_ID) public locale: string){}
 
