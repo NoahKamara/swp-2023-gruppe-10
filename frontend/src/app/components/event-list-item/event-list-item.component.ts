@@ -8,9 +8,6 @@ import { EventListItem } from 'softwareproject-common';
 })
 export class EventListItemComponent {
   public isFavorite = false;
-  
-  @Input()
-  public item!: EventListItem;
 
   didClickFavButton(): void {
     if(this.isFavorite === false){
@@ -20,4 +17,9 @@ export class EventListItemComponent {
       this.isFavorite = false;
     }
   }
+  
+  @Input()
+  public item!: EventListItem;
+
+ 
 }
