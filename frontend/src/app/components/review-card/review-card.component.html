@@ -1,0 +1,36 @@
+<div class="card w-full bg-base shadow-xl mt-2 mb-2">
+  <div class="mt-5 ml-5 mr-5 mb-1 space-y-0">
+    <div class="flex-none flex flex-row justify-between text-primary-focus">
+      <!-- Rating -->
+      <div class="flex-none">
+        <span *ngFor="let star of [1,2,3,4,5]">
+          <button>
+            <mat-icon style="font-size: 1.5rem;">{{ starIcon(star) }}</mat-icon>
+          </button>
+        </span>
+      </div>
+
+      <!-- Author -->
+      <div class="flex-none">
+        {{ review.name }}
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="text-base font-bold mb-2">
+      {{ review.title }}
+    </div>
+
+    <!-- Coment -->
+    <div class="line-clamp-4 text-ellipsis text-base">
+      {{ review.comment }}
+    </div>
+
+    <div class="float-right text-accent">
+      <button class="btn btn-ghost gap-1" (click)="!isOwn ? setHelpful() : {}">
+        <mat-icon>recommend</mat-icon>
+          {{ review.helpful }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PaymentProviderInterface } from './PaymentProviderInterface';
+import { PaymentProviderInterface } from './PaymentProvider';
 import { PaymentError } from 'softwareproject-common';
 import { parse } from 'csv-parse';
 

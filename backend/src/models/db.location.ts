@@ -58,5 +58,5 @@ export class DBLocation extends Model<Location> {
   }
 
   @HasMany(() => DBReview)
-  reviews!: DBReview[] | null;
+  reviews!: DBReview[];
 }

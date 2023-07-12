@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
@@ -42,7 +42,7 @@ import { EditProfileNameComponent } from './pages/edit-profile-name/edit-profile
 import { EditProfileAddressComponent } from './pages/edit-profile-address/edit-profile-address.component';
 import { EditProfilePasswordComponent } from './pages/edit-profile-password/edit-profile-password.component';
 import { Observable, map } from 'rxjs';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { EditDialogComponent } from './components/edit-dialog/edit-dialog.component';
 import { EventPaymentComponent } from './pages/event-payment/event-payment.component';
 import { PaymentProviderBtnComponent } from './components/payment-provider-btn/payment-provider-btn.component';
@@ -53,10 +53,10 @@ import { TicketsComponent } from './pages/tickets/tickets.component';
 import { TicketListItemComponent } from './components/ticket-list-item/ticket-list-item.component';
 import { ButtonComponent } from './components/button/button.component';
 import { PaymentErrorMessageComponent } from './components/payment-forms/payment-error-message/payment-error-message.component';
-import {MatSliderModule} from '@angular/material/slider';
+import { MatSliderModule } from '@angular/material/slider';
 import { TicketComponent } from './pages/ticket/ticket.component';
 import { ReviewComponent } from './pages/review/review.component';
-
+import { ReviewCardComponent } from './components/review-card/review-card.component';
 
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
@@ -121,11 +121,16 @@ const routes: Routes = [
     canActivate: [loginGuard],
     children: [
       { path: '', component: MapComponent },
-      { path: ':name', component: LocationDetailComponent },
+      {
+        path: ':name', children: [
+          { path: '', component: LocationDetailComponent },
+          { path: 'reviews', component: ReviewComponent },
+        ]
+      }
     ]
   },
 
-  {path: 'reviews', component:ReviewComponent},
+
 
 
   // Events
@@ -138,13 +143,14 @@ const routes: Routes = [
         path: ':id',
         children: [
           { path: '', component: EventDetailComponent },
-          { path: 'payment', children: [
-            { path: '', component: EventPaymentComponent },
-            { path: 'success', component: EventPaymentComponent }
-          ]
-        }
+          {
+            path: 'payment', children: [
+              { path: '', component: EventPaymentComponent },
+              { path: 'success', component: EventPaymentComponent }
+            ]
+          }
         ]
-     }
+      }
     ]
   },
   {
@@ -154,7 +160,7 @@ const routes: Routes = [
       { path: '', component: TicketsComponent },
       { path: ':id', component: TicketComponent }
     ]
-   },
+  },
 
   // Routen können auch geschachtelt werden, indem der "Child" Eigenschaft der
   // Route nochmals ein paar Routen übergeben werden.
@@ -224,15 +230,11 @@ const routes: Routes = [
     HCIPalFormComponent,
     TicketsComponent,
     TicketListItemComponent,
-<<<<<<< HEAD
     ReviewComponent,
-    ReviewComponent,
-=======
     ButtonComponent,
     PaymentErrorMessageComponent,
     TicketComponent,
-    ReviewComponent
->>>>>>> 2cc9d8ce493ea1943275964cb195de5d9c2317b5
+    ReviewCardComponent
   ],
   imports: [
     RouterModule.forRoot(routes),

@@ -1,4 +1,4 @@
-import { PaymentProviderInterface } from './PaymentProviderInterface';
+import { PaymentProviderInterface } from './PaymentProvider';
 import { BachelorcardData, PaymentError } from 'softwareproject-common';
 import axios from 'axios';
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';

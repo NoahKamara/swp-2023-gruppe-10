@@ -12,7 +12,7 @@ import { ReviewComponent } from '../review/review.component';
 })
 
 export class LocationDetailComponent implements OnInit {
-  
+
   public location: Location | null = null;
   public events: EventListItem[] = [];
 
@@ -50,7 +50,7 @@ export class LocationDetailComponent implements OnInit {
 
   public rating = 3.5;
 
-  
+
   getIcon(star:number): string{
 
     if(star <= this.rating){
@@ -61,9 +61,4 @@ export class LocationDetailComponent implements OnInit {
       return 'grade';
     }
   }
-
-  openReviews(): void{
-    this.router.navigateByUrl('/reviews');
-  }
-
 }

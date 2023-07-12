@@ -1,33 +1,34 @@
 <div class="page-container">
-  <app-top-bar [title]="location?.name ?? 'Attraktion'"/>
+  <app-top-bar [title]="location?.name ?? 'Attraktion'" />
 
   <div *ngIf="location" class="scrollable-container space-y-8">
     <img src="/img/locations/{{ location.picture }}" class="rounded-lg" alt="Event Bild" />
 
-    <div class="flex place-content-center">
-      <div class="grid grid-cols-6 w-3/5 place-content-center">
-        <div *ngFor="let n of [1,2,3,4,5]">
-          <button mat-icon-button>
-            <mat-icon>{{getIcon(n)}}</mat-icon>
+    <div class="flex flex-row content-center justify-between h-14" stlye="font-size: 2rem">
+      <div class="flex-none flex flex-row items-center">
+        <span class="flex-none" *ngFor="let n of [1,2,3,4,5]">
+          <button>
+            <mat-icon style="width: 2.5rem; height: 2rem; font-size: 2rem;">{{getIcon(n)}}</mat-icon>
           </button>
-        </div>
-        <div >{{rating}}</div>
-        
+        </span>
 
+        <div class="flex-none h-8 ml-2">{{rating}}</div>
       </div>
-      <div class="grow"></div>
-      <button mat-icon-button (click)="openReviews()">
-        <mat-icon>reviews </mat-icon>
-      </button>
+
+      <div class="flex-none">
+        <button mat-icon-button routerLink="reviews">
+          <mat-icon class="h-12 w-12">reviews</mat-icon>
+        </button>
+      </div>
     </div>
 
 
 
     <div [innerHTML]="location.description_html"></div>
 
-    <app-location-map [locationName]="location.name"/>
+    <app-location-map [locationName]="location.name" [showName]="false"/>
 
-    <div class="space-y-4">
+    <div class="space-y-4" *ngIf="events.length > 0">
       <div class="text-xl">Events an diesem Ort:</div>
       <div *ngFor="let item of events">
         <app-event-list-item [item]="item"></app-event-list-item>

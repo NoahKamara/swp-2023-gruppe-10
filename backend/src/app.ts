@@ -26,11 +26,11 @@ import { DBTicket } from './models/db.ticket';
 import { TicketController } from './tickets';
 import { DBSession } from './models/session/session.db';
 import { HCIPalProvider } from './payment/HCIPalProvider';
-import { PaymentProviderInterface } from './payment/PaymentProviderInterface';
+import { PaymentProviderInterface } from './payment/PaymentProvider';
 import { PaymentController } from './payment';
 import { DBController } from './database/DBController';
 import { DBReview } from './models/db.review';
-import { RatingController, ReviewController } from './review';
+import { ReviewController } from './review';
 
 // Express server instanziieren
 const app = express();
@@ -161,8 +161,10 @@ app.get('/api/locations/:name', locations.lookup);                 // lookup loc
  * Reviews
  */
 const review = new ReviewController();
- app.get('/api/locations/:name/review', review.lookup);         //lookup review by locationname
- app.post('/api/locations/:name/review', review.postReview);         //post review by locationname
+ app.get('/api/locations/:name/reviews', review.lookup);            // lookup reviews by locationname
+ app.post('/api/locations/:name/reviews', review.postReview);       // post review by locationname
+ app.get('/api/locations/:name/reviews/me', review.mine);                 // lookup user's review by locationname
+
 
 /**
  * Other Routes
