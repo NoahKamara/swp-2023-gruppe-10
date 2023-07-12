@@ -18,7 +18,8 @@ export class TopBarComponent {
   constructor(private router: Router, private location: Location) { }
 
   didClickBackBtn(): void {
-    console.info('going back', this.location);
+    const oldPath = this.location.path;
     this.location.back();
+    console.info('navigate', `${oldPath} > ${this.location.path}`);
   }
 }

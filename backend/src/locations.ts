@@ -23,8 +23,8 @@ export class LocationController {
    * returns details for a location by name
    */
   async lookup(request: Request, response: Response): Promise<void> {
-    const name = request.params.name.toLowerCase();
-
+    const name = request.params.name;
+    console.log(name);
     if (!name) {
       console.error('client not provide name');
       APIResponse.badRequest('Missing :name in path').send(response);
