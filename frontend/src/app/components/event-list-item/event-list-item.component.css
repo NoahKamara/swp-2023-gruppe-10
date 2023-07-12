@@ -22,14 +22,14 @@
 
 .container mat-icon{
   position: absolute;
-  top: 4%;
-  left: 91%;
+  top: 6%;
+  left: 90%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   color: var(--background) ;
   border: none;
   cursor: pointer;
-  transform: scale(1.5);
+  transform: scale(1.4);
   background-color: var(--foreground);
   border-radius: 5px;
  
