@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Event, EventFilter, EventListItem } from 'softwareproject-common';
+import { Favorite } from 'softwareproject-common/dist/favorite';
 
 
 
@@ -40,4 +41,6 @@ export class EventService {
   public detail(id: string | number): Observable<Event> {
     return this.http.get<Event>('/api/events/' + id);
   }
+
+  
 }

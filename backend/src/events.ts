@@ -2,9 +2,10 @@ import { DBEvent } from './models/event/event.db';
 import { Request, Response } from 'express';
 import { APIResponse } from './models/response';
 import { DBControllerInterface } from './database/DBController';
-import { EventFilter } from 'softwareproject-common';
+import { EventFilter, User } from 'softwareproject-common';
 import { z } from 'zod';
 import { validateBody } from './validation/requestValidation';
+import { DBUser } from './models/user/user';
 
 
 const filterSchema = z.object({

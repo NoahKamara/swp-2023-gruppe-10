@@ -42,6 +42,12 @@ export class EventDetailComponent implements OnInit {
   }
 
   didClickFavButton(): void {
+  const id  = this.route.snapshot.paramMap.get('id');
+  if (!id) {
+    console.error('No ID Present');
+    this.router.navigateByUrl('/events');
+    return;
+  }
   if(this.isFavorite === false){
     this.isFavorite = true;
   }
