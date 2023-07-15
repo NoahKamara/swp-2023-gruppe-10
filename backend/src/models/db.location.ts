@@ -57,6 +57,32 @@ export class DBLocation extends Model<Location> {
     });
   }
 
+  static async lookup2(name: string): Promise<unknown> {
+    const result = await DBLocation.findOne({
+      subQuery: false,
+      include: [
+        {
+          model: DBReview,
+          as: 'reviews',
+          attributes: [],
+        },
+      ],
+      attributes: [
+        [Sequelize.fn('avg', Sequelize.col('reviews.stars')), 'average_rating'],
+      ],
+      where: {
+        name: {
+          [Op.iLike]: name,
+        },
+      },
+      group: ['locations.name'],
+    });
+
+    const averageRating = result?.get('average_rating');
+    return averageRating;
+  
+  }
+
   @HasMany(() => DBReview)
   reviews!: DBReview[];
 }

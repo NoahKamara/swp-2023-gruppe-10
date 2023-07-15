@@ -22,4 +22,12 @@ export class LocationService {
   public lookup(name: string): Observable<Location> {
     return this.http.get<Location>('/api/locations/'+name);
   }
+
+  /**
+  * Returns the location with the name
+  * @param {string} name location name
+  */
+   public lookup2(name: string): Observable<number> {
+    return this.http.get<number>('/api/locations/'+name+'/rating');
+  }
 }

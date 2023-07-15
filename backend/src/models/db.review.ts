@@ -1,5 +1,5 @@
 import { CreationOptional } from 'sequelize';
-import { Table, Model, ForeignKey, BelongsTo, Column, PrimaryKey } from 'sequelize-typescript';
+import { Table, Model, ForeignKey, BelongsTo, Column, PrimaryKey, HasMany } from 'sequelize-typescript';
 import { DBUser } from './user/user';
 import { DBLocation } from './db.location';
 import { PublicReview } from 'softwareproject-common';
@@ -30,6 +30,9 @@ export class DBReview extends Model {
   // MARK: HasMany for helpful
   // @HasMany(() => DBHelpful)
   // helpful!: DBHelpful[]
+  @HasMany(() => DBReview)
+  reviews!: DBReview[];
+  
   helpful = 0;
 
   @Column
@@ -48,6 +51,7 @@ export class DBReview extends Model {
       helpful: randomInt(0, 100)
     };
   }
+
 
 
 

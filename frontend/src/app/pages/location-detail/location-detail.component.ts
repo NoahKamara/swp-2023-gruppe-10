@@ -15,6 +15,7 @@ export class LocationDetailComponent implements OnInit {
 
   public location: Location | null = null;
   public events: EventListItem[] = [];
+  public rating = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,6 +40,14 @@ export class LocationDetailComponent implements OnInit {
       error: console.error
     });
 
+    // fetch Rating
+    this.locationService.lookup2(name).subscribe({
+      next: (value) => {
+        this.rating = value;
+      },
+      error: console.error
+    });
+
     // Fetch Events for location
     this.eventService.filterUpcoming({ locations: [name] }).subscribe({
       next: (value) => {
@@ -48,11 +57,12 @@ export class LocationDetailComponent implements OnInit {
     });
   }
 
-  public rating = 3.5;
+
 
 
   getIcon(star:number): string{
 
+    console.log(star);
     if(star <= this.rating){
         return 'star';
     } else if(star <= this.rating +0.5){

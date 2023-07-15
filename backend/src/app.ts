@@ -155,7 +155,7 @@ const locations = new LocationController();
 
 app.get('/api/locations', locations.list);                          // List locations
 app.get('/api/locations/:name', locations.lookup);                 // lookup location by name
-
+app.get('/api/locations/:name/rating', locations.lookup2);
 
 /**
  * Reviews
