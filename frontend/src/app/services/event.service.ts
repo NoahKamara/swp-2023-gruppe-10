@@ -42,5 +42,10 @@ export class EventService {
     return this.http.get<Event>('/api/events/' + id);
   }
 
+  public makeFavorite(id: string): Observable<Favorite>{
+   return this.http.get<Favorite>('/api/events/'+id+'/favorite');
+
+  }
+
   
 }
