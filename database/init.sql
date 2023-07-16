@@ -68,7 +68,7 @@ CREATE TABLE reviews (
     CONSTRAINT reviews_pk PRIMARY KEY (user_id, location_id)
 );
 
-CREATE TABLE helpful (
+CREATE TABLE helpfuls (
     rev_id int NOT NULL,
     user_id int NOT NULL,
     CONSTRAINT helpful_pk PRIMARY KEY (rev_id, user_id)
