@@ -3820,8 +3820,13 @@ select.mat-mdc-form-field-input-control:not(.mat-mdc-native-select-inline) optio
 }
 
 /* CUSTOM CAL */
+.mat-datepicker-popup {
+  padding-top: 10px;
+}
+
 .mat-calendar {
   background-color: var(--mainau-beige);
+  border-radius: var(--rounded-btn, 0.5rem);
 }
 
 .mat-calendar-body-cell-content {
@@ -3892,41 +3897,21 @@ select.mat-mdc-form-field-input-control:not(.mat-mdc-native-select-inline) optio
   color: #0C4522
 }
 
-
 /* Calendar Controls */
 .mat-mdc-icon-button {
   color: var(--mainau-beige)
 }
 
+
+
 /* Input Field Padding */
-.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
-  padding-top: 8px;
-  padding-bottom: 8px
-}
-
-.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
+.mat-mdc-text-field-wrapper.mdc-text-field--filled .mat-mdc-form-field-infix {
   padding-top: 12px;
-  padding-bottom: 4px
+  padding-bottom: 10px
 }
 
-.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
-  padding-top: 8px;
-  padding-bottom: 8px
-}
-
-.mat-mdc-form-field-infix {
-  flex-shrink: 1;
-  height: 3rem/* 48px */;
-  font-size: 0.875rem/* 14px */;
-  font-size: 1rem/* 16px */;
-  line-height: 1.25rem/* 20px */;
-  line-height: 2;
-  line-height: 1.5rem/* 24px */;
-  /* border-width: 1px;
-  border-color: hsl(var(--bc) / var(--tw-border-opacity));
-  --tw-border-opacity: 0;
-  --tw-bg-opacity: 1;
-  border-radius: var(--rounded-btn, 0.5rem); */
+.mat-mdc-icon-button {
+  color: var(--mainau-green)!important;
 }
 
 .mdc-text-field {
@@ -3937,4 +3922,7 @@ select.mat-mdc-form-field-input-control:not(.mat-mdc-native-select-inline) optio
   border-radius: var(--rounded-btn, 0.5rem)!important;
 }
 
+/* .mat-button-focus-overlay {
+  background-color: whitesmoke!important;
+} */
 
