@@ -2,20 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventListItem, Location } from 'softwareproject-common';
 import { EventService } from 'src/app/services/event.service';
-import { LocationService } from 'src/app/services/location.service';
+import { LocationService, PublicLocation } from 'src/app/services/location.service';
 import { ReviewComponent } from '../review/review.component';
+
 
 @Component({
   selector: 'app-location-detail',
   templateUrl: './location-detail.component.html',
   styleUrls: ['./location-detail.component.css']
 })
-
 export class LocationDetailComponent implements OnInit {
 
-  public location: Location | null = null;
+  public location: PublicLocation | null = null;
   public events: EventListItem[] = [];
-  public rating = 0;
+
+  round(input: number): number {
+    return Math.round(input * 100) / 100;
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -40,14 +43,6 @@ export class LocationDetailComponent implements OnInit {
       error: console.error
     });
 
-    // fetch Rating
-    this.locationService.lookup2(name).subscribe({
-      next: (value) => {
-        this.rating = value;
-      },
-      error: console.error
-    });
-
     // Fetch Events for location
     this.eventService.filterUpcoming({ locations: [name] }).subscribe({
       next: (value) => {
@@ -61,11 +56,9 @@ export class LocationDetailComponent implements OnInit {
 
 
   getIcon(star:number): string{
-
-    console.log(star);
-    if(star <= this.rating){
+    if(star <= (this.location?.average_rating ?? 0)){
         return 'star';
-    } else if(star <= this.rating +0.5){
+    } else if(star <= (this.location?.average_rating ?? 0) +0.5){
       return 'star_half';
     } else{
       return 'grade';

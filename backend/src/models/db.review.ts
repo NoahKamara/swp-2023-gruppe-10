@@ -10,7 +10,8 @@ import { lookup } from 'dns';
 
 @Table({ modelName: 'reviews', timestamps: false })
 export class DBReview extends Model {
-  declare id: CreationOptional<number>;
+  @Column
+  id!: number;
 
   @PrimaryKey
   @ForeignKey(() => DBUser)
@@ -34,7 +35,7 @@ export class DBReview extends Model {
 
 
   @HasMany(() => DBHelpful)
-   helpful!: DBHelpful[]
+  helpfuls!: DBHelpful[];
 
 
   @Column
@@ -45,21 +46,18 @@ export class DBReview extends Model {
 
 
   public get public(): PublicReview {
+    console.log('ID', this.id);
     return {
-
+      id: this.id,
       name: this.user.firstName + ' ' + this.user.lastName[0] + '.',
       title: this.title,
       comment: this.comment,
       stars: this.stars,
-      // FIXME: helpful subquery
-
-      helpful: Number(DBReview.lookup2(this.id))
-
-
-    }
+      helpful: this.helpfuls.length
+    };
   }
 
- 
+
   static async lookup2(id: number): Promise<unknown> {
     const result = await DBHelpful.findOne({
       subQuery: false,
