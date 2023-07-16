@@ -1,8 +1,9 @@
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatCalendar, MatCalendarCellClassFunction, MatCalendarCellCssClasses } from '@angular/material/datepicker';
 import { EventFilter, EventListItem } from 'softwareproject-common';
 import { EventService } from 'src/app/services/event.service';
-
 const listAnimation = trigger('listAnimation', [
   transition('* <=> *', [
     query(':enter',
@@ -11,10 +12,11 @@ const listAnimation = trigger('listAnimation', [
     ),
     query(':leave',
       animate('200ms', style({ opacity: 0 })),
-      { optional: true}
+      { optional: true }
     )
   ])
 ]);
+
 
 
 @Component({
@@ -23,8 +25,9 @@ const listAnimation = trigger('listAnimation', [
   animations: [listAnimation]
 })
 export class EventsComponent implements OnInit {
+
   events: EventListItem[] = [];
-  public isFavorite = false ;
+  public isFavorite = false;
 
   constructor(private eventService: EventService) { }
 
@@ -41,6 +44,11 @@ export class EventsComponent implements OnInit {
   filterDidChange(): void {
     console.log(JSON.stringify(this.filter));
   }
+
+  public dateRange = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
 
   // Perform search
   onSearchTermChange(): void {
@@ -77,10 +85,10 @@ export class EventsComponent implements OnInit {
     this.fetchAll();
   }
   didClickFavButton(): void {
-    if(this.isFavorite === false){
+    if (this.isFavorite === false) {
       this.isFavorite = true;
     }
-    else{
+    else {
       this.isFavorite = false;
     }
   }

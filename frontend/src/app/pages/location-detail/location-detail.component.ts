@@ -61,8 +61,6 @@ export class LocationDetailComponent implements OnInit {
 
 
   getIcon(star:number): string{
-
-    console.log(star);
     if(star <= this.rating){
         return 'star';
     } else if(star <= this.rating +0.5){

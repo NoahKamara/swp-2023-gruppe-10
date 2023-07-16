@@ -57,6 +57,11 @@ import { MatSliderModule } from '@angular/material/slider';
 import { TicketComponent } from './pages/ticket/ticket.component';
 import { ReviewComponent } from './pages/review/review.component';
 import { ReviewCardComponent } from './components/review-card/review-card.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatMenuModule } from '@angular/material/menu';
+import { EventDateFilterComponent } from './components/event-filter/event-date-filter/event-date-filter.component';
 
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
@@ -234,7 +239,8 @@ const routes: Routes = [
     ButtonComponent,
     PaymentErrorMessageComponent,
     TicketComponent,
-    ReviewCardComponent
+    ReviewCardComponent,
+    EventDateFilterComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -251,9 +257,13 @@ const routes: Routes = [
     MatInputModule,
     MatGridListModule,
     MatDialogModule,
-    MatSliderModule
+    MatSliderModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatMenuModule
   ],
   providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'de-DE' },
     HttpClientModule
   ],
   bootstrap: [RootComponent]
