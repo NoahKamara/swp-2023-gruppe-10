@@ -33,10 +33,9 @@ export class DBReview extends Model {
 
 
 
-  // @HasMany(() => DBHelpful)
-  // helpful!: DBHelpful[]
+  @HasMany(() => DBHelpful)
+   helpful!: DBHelpful[]
 
-  helpful = 0;
 
   @Column
   title!: string;
@@ -58,6 +57,7 @@ export class DBReview extends Model {
 
 
     }
+  }
 
  
   static async lookup2(id: number): Promise<unknown> {

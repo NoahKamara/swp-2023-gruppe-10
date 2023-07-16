@@ -7,7 +7,7 @@ import { randomInt } from 'crypto';
 import { DBReview } from './db.review';
 
 
-@Table({ modelName: 'helpful', timestamps: false })
+@Table({ modelName: 'helpfuls', timestamps: false })
 export class DBHelpful extends Model {
   declare id: CreationOptional<number>;
 
@@ -26,16 +26,6 @@ export class DBHelpful extends Model {
 
   @BelongsTo(() => DBUser, 'user_id')
   user!: DBUser;
-
-  // MARK: HasMany for helpful
-  // @HasMany(() => DBHelpful)
-  // helpful!: DBHelpful[]
-  
-
-
-
-
-
 
   // @Column
   // amount!: number;
