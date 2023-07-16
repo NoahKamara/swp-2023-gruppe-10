@@ -22,7 +22,7 @@ export class DBHelpful extends Model {
   rev_id!: number;
 
   @BelongsTo(() => DBReview, 'rev_id')
-  location!: DBReview;
+  review!: DBReview;
 
   @BelongsTo(() => DBUser, 'user_id')
   user!: DBUser;

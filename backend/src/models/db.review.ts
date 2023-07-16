@@ -46,6 +46,7 @@ export class DBReview extends Model {
 
   public get public(): PublicReview {
     return {
+      id: this.id,
 
       name: this.user.firstName + ' ' + this.user.lastName[0] + '.',
       title: this.title,
