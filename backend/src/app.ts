@@ -31,6 +31,7 @@ import { PaymentController } from './payment';
 import { DBController } from './database/DBController';
 import { DBReview } from './models/db.review';
 import { ReviewController } from './review';
+import { DBHelpful } from './models/db.helpful';
 
 // Express server instanziieren
 const app = express();
@@ -62,7 +63,7 @@ const sequelize = new Sequelize({
   username: 'admin',
   password: 'CHOOSE_A_PASSWORD',
   database: 'postgres',
-  models: [DBUser, DBEvent, DBLocation, DBTicket, DBReview, DBSession],
+  models: [DBUser, DBEvent, DBLocation, DBTicket, DBReview, DBSession,DBHelpful],
   modelMatch: (filename, member): boolean => {
     console.error(filename, member);
     return true;
