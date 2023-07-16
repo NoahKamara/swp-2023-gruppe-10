@@ -23,7 +23,6 @@ export declare type EventListItem = {
   end_time: string
   picture: string,
   price: number,
-  isFavorite: boolean,
 }
 
 export declare interface Event extends EventListItem {

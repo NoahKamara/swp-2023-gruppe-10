@@ -10,6 +10,7 @@ import { Favorite } from 'softwareproject-common/dist/favorite';
   providedIn: 'root'
 })
 export class EventService {
+
   constructor(private http: HttpClient) { }
 
   /**
@@ -43,8 +44,12 @@ export class EventService {
   }
 
   public makeFavorite(id: string): Observable<Favorite>{
-   return this.http.get<Favorite>('/api/events/'+id+'/favorite');
+   return this.http.get<Favorite>('/api/events/' + id + '/favorite');
 
+  }
+  public isFavorite(id:string): Observable<boolean>{
+    return this.http.get<boolean>('/api/events/'+id+'/isFavorite');
+  
   }
 
   

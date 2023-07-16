@@ -28,7 +28,6 @@ const  listItem = (item: PublicEvent): EventListItem => {
     start_time: item.start_time,
     end_time: item.end_time,
     price: item.price,
-    isFavorite: item.isFavorite
   };
 };
 
@@ -126,11 +125,14 @@ export class EventController {
       APIResponse.badRequest('Missing "ID" in path').send(response);
       return;
     }
+    const isAlready = await DBFavorites.findOne({
+      where:{
+        user_id: user.id,
+        event_id: id,
+      }
+    });
 
-
-    // const userInfo = validateBody(request, response, purchaseTicketSchema);
-    // if (!userInfo) return;
-
+    if(!isAlready){
       await DBFavorites.create({
         user_id: user.id,
         event_id: id,
@@ -138,22 +140,8 @@ export class EventController {
       response.status(200);
       response.send();
       return;
-  }
-  
-  async deleteFavourite(request: Request, response: Response): Promise<void>{
-    const user: User = response.locals.session?.user;
-    if (!user || !user.id) {
-      APIResponse.unauthorized().send(response);
-      return;
     }
-
-    const id = request.params.id;
-
-    if (!id) {
-      APIResponse.badRequest('Missing "ID" in path').send(response);
-      return;
-    }
-    try{
+    else{
     await DBFavorites.destroy({
       where:{
         user_id: user.id,
@@ -162,30 +150,56 @@ export class EventController {
       response.status(200);
       response.send();
     }
-    catch(err){
-      APIResponse.notFound('did not find favorite').send(response);
-        return;
-    }
   }
+  
+  // async deleteFavourite(request: Request, response: Response): Promise<void>{
+  //   const user: User = response.locals.session?.user;
+  //   if (!user || !user.id) {
+  //     APIResponse.unauthorized().send(response);
+  //     return;
+  //   }
 
-  async findFavorites(request: Request, response: Response): Promise<void>{
+  //   const id = request.params.id;
+
+  //   if (!id) {
+  //     APIResponse.badRequest('Missing "ID" in path').send(response);
+  //     return;
+  //   }
+  //   try{
+  //   await DBFavorites.destroy({
+  //     where:{
+  //       user_id: user.id,
+  //       event_id: id
+  //     }});
+  //     response.status(200);
+  //     response.send();
+  //   }
+  //   catch(err){
+  //     APIResponse.notFound('did not find favorite').send(response);
+  //       return;
+  //   }
+  // }
+
+  async isFavorite(request: Request, response: Response): Promise<boolean>{
     const user: User = response.locals.session?.user;
     if (!user || !user.id) {
       APIResponse.unauthorized().send(response);
-      return;
+      return false;
     }
-    try{
-    const favorite: Favorite[] = await DBFavorites.findAll({
+    const id = request.params.id;
+    const isFavorite = await DBFavorites.findOne({
       where:{
-        user_id: user.id
+        user_id: user.id,
+        event_id: id,
       }});
       response.status(200),
-      response.send(favorite);
+      response.send();
+      if(!isFavorite){
+        return false;
+      }
+      else{
+        return true;
+      }
   }
   
-  catch(err){
-    APIResponse.notFound('no favorites found').send(response);
-    return;
   }
-  }
-}

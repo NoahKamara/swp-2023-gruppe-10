@@ -9,22 +9,24 @@ import { EventService } from 'src/app/services/event.service';
   styleUrls: ['./event-list-item.component.css']
 })
 export class EventListItemComponent {
-  
+  public isFavorite = false;
   @Input()
   public item!: EventListItem;
 
-  public isFavorite= false;
 
   didClickFavButton(): void {
+    const id = this.item.id;
     if(this.isFavorite === false){
       this.isFavorite = true;
+      this.eventService.makeFavorite(id.toString());
     }
     else{
       this.isFavorite = false;
+      this.eventService.makeFavorite(id.toString());
     }
   }
 
-  constructor(@Inject(LOCALE_ID) public locale: string){}
+  constructor(@Inject(LOCALE_ID) public locale: string ,private eventService: EventService){}
 
   dateFormat(date: Date): string {
     return formatDate(date, 'dd.MM.yyyy', this.locale);

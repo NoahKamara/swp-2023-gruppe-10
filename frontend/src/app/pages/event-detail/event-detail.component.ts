@@ -16,7 +16,6 @@ import { Favorite } from 'softwareproject-common/dist/favorite';
 export class EventDetailComponent implements OnInit {
   public event: Event | undefined;
   public isFavorite = false ;
-
   constructor(@Inject(LOCALE_ID) public locale: string, private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
 
   ngOnInit(): void {
@@ -26,7 +25,6 @@ export class EventDetailComponent implements OnInit {
       this.router.navigateByUrl('/events');
       return;
     }
-
     // fetch event
     const observeEvent = this.eventService.detail(id);
 
@@ -51,12 +49,12 @@ export class EventDetailComponent implements OnInit {
   }
   if(this.isFavorite === false){
     this.isFavorite = true;
-    const favorite: Favorite = {
-      event_id: Number(id),
-    };
+    this.eventService.makeFavorite(id);
+    
   }
   else{
     this.isFavorite = false;
+    this.eventService.makeFavorite(id);
   }
 }
 }
