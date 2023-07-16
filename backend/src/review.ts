@@ -58,6 +58,10 @@ export class ReviewController {
     }
   }
 
+
+
+
+
    /**
  * returns review by the signed in user for a location
  */
@@ -167,5 +171,34 @@ export class ReviewController {
       response.send({ code: 500, message: err });
     }
   }
+  /**
+   * returns rating for a location by name
+   */
+   async lookup2(request: Request, response: Response): Promise<void> {
+    const id = request.params.id;
+    console.log(id);
+    if (!id) {
+      console.error('client not provide if');
+      APIResponse.badRequest('Missing if').send(response);
+    }
+
+    try {
+      const helpful = await DBReview.lookup2(Number(id));
+
+
+      if (!helpful) {
+        console.error('did not find location for id');
+        APIResponse.notFound(`No review with name ${id}`).send(response);
+        return;
+      }
+
+      APIResponse.success(helpful).send(response);
+    } catch (err) {
+      APIResponse.internal(err).send(response);
+    }
+    return;
+  }
+
+  
 }
 
