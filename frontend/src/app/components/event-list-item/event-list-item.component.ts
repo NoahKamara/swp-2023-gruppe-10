@@ -1,9 +1,7 @@
 import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
 import { EventListItem } from 'softwareproject-common';
-import { DatePipe } from '@angular/common';
 import { formatDate } from '@angular/common';
 import { EventService } from 'src/app/services/event.service';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
 @Component({
   selector: 'app-event-list-item',
   templateUrl: './event-list-item.component.html',

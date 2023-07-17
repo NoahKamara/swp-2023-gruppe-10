@@ -17,23 +17,7 @@ export class EmanuelMoellComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.aboutService.getEmanuelMoell().subscribe({
-      next: (val) => {
-        this.myName = val;
-      },
 
-      // error: Es gab einen Fehler
-      error: (err) => {
-        console.error(err);
-        this.myName = {
-          firstName: 'Error!',
-          lastName: 'Error!',
-          semester: 'Error!',
-          course: 'Error!',
-          mail: 'Error!'
-        };
-      }
-    });
   }
 
 }
