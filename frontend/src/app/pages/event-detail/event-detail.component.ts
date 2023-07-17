@@ -39,7 +39,7 @@ export class EventDetailComponent implements OnInit {
     const Favorite = this.eventService.isFavorite(id.toString());
     Favorite.subscribe({  
     next: (value) => {
-        this.isFavorite = !value;
+        this.isFavorite = value;
       },
       error: console.error
     });
@@ -56,14 +56,16 @@ export class EventDetailComponent implements OnInit {
     console.error('No ID Present');
     return;
   }
-  if(this.isFavorite === false){
-    this.isFavorite = true;
     this.eventService.makeFavorite(id);
+    const Favorite = this.eventService.isFavorite(id.toString());
+    Favorite.subscribe({  
+    next: (value) => {
+        this.isFavorite = value;
+        console.log(value);
+      },
+      error: console.error
+    });
     
   }
-  else{
-    this.isFavorite = false;
-    this.eventService.makeFavorite(id);
-  }
 }
-}
+

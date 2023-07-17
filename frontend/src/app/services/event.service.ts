@@ -43,12 +43,12 @@ export class EventService {
     return this.http.get<Event>('/api/events/' + id);
   }
 
-  public makeFavorite(id: string): Observable<Favorite>{
-   return this.http.get<Favorite>('/api/events/' + id);
+  public makeFavorite(id: string): Observable<void>{
+   return this.http.get<void>('/api/events/'+id+'/addOrDelete');
 
   }
   public isFavorite(id:string): Observable<boolean>{
-    return this.http.get<boolean>('/api/events/'+id);
+    return this.http.get<boolean>('/api/events/'+id+'/isFavorite');
   
   }
 

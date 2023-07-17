@@ -137,8 +137,10 @@ app.delete('/api/session', auth.logout.bind(auth));               // Invalidate 
 const events = new EventController(db);
 
 app.get('/api/events', events.list.bind(events));                              // List Events
-app.post('/api/events', events.filterUpcoming.bind(events));
+app.post('/api/events', events.filterUpcoming.bind(events));                   
 app.get('/api/events/:id', events.details.bind(events));                       // Get Details of Event
+app.get('/api/events/:id/isFavorite',events.isFavorite);
+app.get('/api/events/:id/addOrDelete', events.makeFavorite.bind(events));                      
 
 
 const tickets = new TicketController();
@@ -218,5 +220,5 @@ app.use('/img', express.static('img'));
 initDatabase(sequelize);
 testDB();
 
-export { auth as authCtrl, events as eventCtrl, locations as locationCtrl, tickets as ticketCtrl, purchase as purchaseCtrl };
+export { auth as authCtrl, events as eventCtrl, locations as locationCtrl, tickets as ticketCtrl, purchase as purchaseCtrl};
 export default app;

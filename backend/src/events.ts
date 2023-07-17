@@ -132,7 +132,7 @@ export class EventController {
       }
     });
 
-    if(!isAlready){
+    if(isAlready === null){
       await DBFavorites.create({
         user_id: user.id,
         event_id: id,
@@ -149,7 +149,34 @@ export class EventController {
       }});
       response.status(200);
       response.send('object deleted');
+      return;
     }
+  }
+
+  async isFavorite(request: Request, response: Response): Promise<boolean>{
+    const user: User = response.locals.session?.user;
+    if (!user || !user.id) {
+      APIResponse.unauthorized().send(response);
+      return false;
+    }
+    const id = request.params.id;
+    let exists = false;
+    const isFavorite = await DBFavorites.findOne({
+      where:{
+        user_id: user.id,
+        event_id: id,
+      }});
+      if(!isFavorite){
+        exists = false;
+      }
+      else{
+        exists = true;
+      }
+      response.status(200),
+      response.send(exists);
+      return exists;
+  }
+  
   }
   
   // async deleteFavourite(request: Request, response: Response): Promise<void>{
@@ -180,26 +207,4 @@ export class EventController {
   //   }
   // }
 
-  async isFavorite(request: Request, response: Response): Promise<boolean>{
-    const user: User = response.locals.session?.user;
-    if (!user || !user.id) {
-      APIResponse.unauthorized().send(response);
-      return false;
-    }
-    const id = request.params.id;
-    const isFavorite = await DBFavorites.findOne({
-      where:{
-        user_id: user.id,
-        event_id: id,
-      }});
-      response.status(200),
-      response.send();
-      if(!isFavorite){
-        return false;
-      }
-      else{
-        return true;
-      }
-  }
-  
-  }
+ 
