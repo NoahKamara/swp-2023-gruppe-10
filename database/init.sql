@@ -59,20 +59,20 @@ CREATE TABLE tickets (
 );
 
 CREATE TABLE reviews (
-    id serial NOT NULL,
+    id serial UNIQUE NOT NULL,
     user_id int NOT NULL,
     location_id int NOT NULL,
     title text NOT NULL,
     comment text NOT NULL,
     stars int NOT NULL,
-    CONSTRAINT reviews_pk PRIMARY KEY (user_id, location_id)
+    CONSTRAINT reviews_pk UNIQUE (user_id, location_id)
 );
 
-CREATE TABLE helpful (
+CREATE TABLE helpfuls (
     rev_id int NOT NULL,
     user_id int NOT NULL,
     CONSTRAINT helpful_pk PRIMARY KEY (rev_id, user_id)
-)
+);
 
 INSERT INTO locations (name, coordinates_lat, coordinates_lng, picture, description, description_html)
 VALUES

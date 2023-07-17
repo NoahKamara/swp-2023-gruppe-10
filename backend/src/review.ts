@@ -1,12 +1,13 @@
 import { DBReview } from './models/db.review';
 import { Request, Response } from 'express';
-import { Op } from 'sequelize';
+import { Op, col, fn } from 'sequelize';
 import { User } from 'softwareproject-common';
 import { DBLocation } from './models/db.location';
 import { APIResponse } from './models/response';
 import { DBUser } from './models/user/user';
 import { validateBody } from './validation/requestValidation';
 import { createReviewSchema } from './validation/review';
+import { DBHelpful } from './models/db.helpful';
 
 
 export class ReviewController {
@@ -16,7 +17,7 @@ export class ReviewController {
  */
   async lookup(request: Request, response: Response): Promise<void> {
     const name = request.params.name.toLowerCase();
-    const userID = response.locals.session.user.id;
+    const userID = response.locals.session?.user?.id;
     if (!userID) {
       console.error('unauthorized');
       APIResponse.unauthorized().send(response);
@@ -46,22 +47,28 @@ export class ReviewController {
       }
 
       // Convert to public and remove signed-in user's review
-      const reviews = location.reviews.flatMap(r => {
-        if (r.user_id === userID) return null;
-        return r.public;
-      }).filter(r => r);
+      const woOwn = location.reviews
+        .filter(r => r.user_id !== userID)
+        .map(r => r.public);
 
-      APIResponse.success(reviews).send(response);
+      // console.log('IDHERE', location.reviews[0]?.id);
+
+      // console.log(rev2);
+      APIResponse.success(woOwn).send(response);
     } catch (err) {
       request.logger.error(err);
       APIResponse.internal(err).send(response);
     }
   }
 
-   /**
- * returns review by the signed in user for a location
- */
-   async mine(request: Request, response: Response): Promise<void> {
+
+
+
+
+  /**
+* returns review by the signed in user for a location
+*/
+  async mine(request: Request, response: Response): Promise<void> {
     const user = response.locals.session.user;
     if (!user) {
       APIResponse.unauthorized().send(response);
@@ -95,7 +102,7 @@ export class ReviewController {
 
       if (!review) {
         console.error(`user has not reviewed location ${location.id}`);
-        APIResponse.notFound(`user has not reviewed ${name}`).send(response);
+        APIResponse.success(null).send(response);
         return;
       }
 
@@ -112,7 +119,6 @@ export class ReviewController {
 
 
       if (!user || !user.id) {
-        console.log(user.id);
         APIResponse.unauthorized().send(response);
         return;
       }
@@ -139,6 +145,7 @@ export class ReviewController {
 
       request.logger.info(data);
 
+
       await DBReview.upsert(
         {
           ...data,
@@ -153,19 +160,102 @@ export class ReviewController {
           user_id: user.id,
           location_id: location.id
         },
-        include:[DBUser]
+        include: [DBUser, DBHelpful]
       });
 
       if (!review) {
         APIResponse.notFound('did not find created review').send(response);
         return;
       }
-      console.log(review);
+      console.log('PUBLIC', review.public);
       APIResponse.success(review.public).send(response);
     } catch (err) {
       request.logger.error(err);
-      response.send({ code: 500, message: err });
+      APIResponse.internal(err).send(response);
     }
+  }
+  /**
+   * returns rating for a location by name
+   */
+  async lookup2(request: Request, response: Response): Promise<void> {
+    const id = request.params.id;
+    console.log(id);
+    if (!id) {
+      console.error('client not provide if');
+      APIResponse.badRequest('Missing if').send(response);
+    }
+
+    DBReview.findAll({
+
+    });
+
+    // try {
+    //   const helpful = await DBReview.lookup2(Number(id));
+    //   console.log(helpful);
+
+    //   if (!helpful) {
+    //     console.error('did not find location for id');
+    //     APIResponse.notFound(`No review with name ${id}`).send(response);
+    //     return;
+    //   }
+
+    //   APIResponse.success(helpful).send(response);
+    // } catch (err) {
+    //   APIResponse.internal(err).send(response);
+    // }
+    return;
+  }
+
+
+  async toggleHelpful(request: Request, response: Response): Promise<void> {
+    // toggle
+
+    const userID = response.locals.session?.user?.id;
+    if (!userID) {
+      console.error('unauthorized');
+      APIResponse.unauthorized().send(response);
+      return;
+    }
+
+    const reviewID = request.params.reviewID;
+
+    if (!reviewID) {
+      request.logger.error('client did not provide reviewID');
+      APIResponse.badRequest('client did not provide reviewID').send(response);
+      return;
+    }
+
+    const helpful = await DBHelpful.findOne({
+      where: {
+        user_id: userID,
+        rev_id: reviewID
+      }
+    });
+
+    if (!helpful) { // Not marked
+      console.log('WTF', !helpful);
+      try {
+        // Create New
+        await DBHelpful.upsert({
+          user_id: userID,
+          rev_id: reviewID
+        });
+      } catch (err) {
+        console.error(err);
+        APIResponse.internal(err).send(response);
+      }
+    } else { // Not marked
+      await helpful.destroy();
+    }
+
+
+    const count = await DBHelpful.count({
+      where: {
+        rev_id: reviewID
+      }
+    });
+
+    APIResponse.success({ 'count': count }).send(response);
   }
 }
 

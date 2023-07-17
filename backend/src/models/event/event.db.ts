@@ -1,8 +1,17 @@
-import { CreationOptional, Op, WhereOptions } from 'sequelize';
-import { Column, Table, Model } from 'sequelize-typescript';
+import { CreationOptional, Op, WhereOptions, col, fn } from 'sequelize';
+import { Column, Table, Model, HasMany, BelongsToMany} from 'sequelize-typescript';
 import { Event, EventListItem, EventFilter } from 'softwareproject-common';
 import { EventFactory } from './event.factory';
 import { EventInterface } from './event.interface';
+import { DBFavorites } from '../db.favorites';
+import { DBUser } from '../user/user';
+
+export interface PublicEvent extends Event{
+  isFavorite: boolean;
+
+}
+
+
 
 @Table({ modelName: 'events', timestamps: false })
 export class DBEvent extends Model<Event> implements EventInterface {
@@ -45,25 +54,17 @@ export class DBEvent extends Model<Event> implements EventInterface {
   @Column
   description_html!: string;
 
+  @BelongsToMany(() => DBUser, () => DBFavorites)
+  favoritedUsers!: DBUser[];
 
-  listItem(): EventListItem {
-    return {
-      id: this.id,
-      title: this.title,
-      picture: this.picture,
-      start_date: this.start_date,
-      end_date: this.end_date,
-      start_time: this.start_time,
-      end_time: this.end_time,
-      price: this.price
-    };
-  }
+
+
 
 
   /**
    * Implements EventFactory.filterUpcoming
    */
-  static async filterUpcoming(filter: EventFilter): Promise<DBEvent[]> {
+  static async filterUpcoming(filter: EventFilter,user_id: number): Promise<PublicEvent[]> {
     console.log('FILTER', filter);
     const where: WhereOptions<DBEvent> = {
       // start_date: {
@@ -107,8 +108,39 @@ export class DBEvent extends Model<Event> implements EventInterface {
       };
     }
 
-    return await DBEvent.findAll({
-      where: where
+    const events = await DBEvent.findAll({
+      include: {
+        model: DBUser,
+        on: {
+          id: user_id,
+        }
+      },
+      /*attributes: {
+        include: [[fn('count',col('favorites')),'favCount']]
+      }
+      */
     });
-  }
+    // const events = await DBEvent.findAll();
+    console.log(events[0]);
+    return events.map( item => {
+    //console.log(event.favoritedUsers);
+      return {
+        id: item.id,
+        title: item.title,
+        picture: item.picture,
+        start_date: item.start_date,
+        end_date: item.end_date,
+        start_time: item.start_time,
+        end_time: item.end_time,
+        price: item.price,
+        location: item.location,
+        description: item.description,
+        description_html: item.description_html,
+        isFavorite: item.favoritedUsers.length === 0,
+      };
+
+    }
+    );
+
+}
 }

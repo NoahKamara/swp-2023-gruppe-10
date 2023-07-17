@@ -2,6 +2,7 @@ import { EventListItem } from 'softwareproject-common';
 import { MockDBController } from '../../database/mock-controller';
 import { EventFactory, EventFilter } from './event.factory';
 import { EventInterface } from './event.interface';
+import { PublicEvent } from './event.db';
 
 
 
@@ -9,7 +10,7 @@ import { EventInterface } from './event.interface';
 export class MockEventFactory implements EventFactory<MockEvent> {
   constructor(private controller: MockDBController) { }
 
-  filterUpcoming(filter: EventFilter): Promise<MockEvent[]> {
+  filterUpcoming(filter: EventFilter,user_id: number): Promise<PublicEvent[]> {
     throw Error('not implemented');
   }
 }
@@ -27,6 +28,7 @@ export class MockEvent implements EventInterface {
     public price: number,
     public description: string,
     public description_html: string,
+    public isFavorite: boolean,
     public controller: MockDBController
   ) {}
 
@@ -39,7 +41,7 @@ export class MockEvent implements EventInterface {
       end_date: this.end_date,
       start_time: this.start_time,
       end_time: this.end_time,
-      price: this.price
+      price: this.price,
     };
   }
 }

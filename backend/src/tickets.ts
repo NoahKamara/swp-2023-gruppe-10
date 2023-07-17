@@ -68,7 +68,7 @@ export class TicketController {
         id: ticket.id,
         user: ticket.user,
         amount: ticket.amount,
-        event: ticket.event.listItem()
+        event: ticket.event.listItem(),
       };
 
       response.status(200);

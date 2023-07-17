@@ -31,6 +31,8 @@ import { PaymentController } from './payment';
 import { DBController } from './database/DBController';
 import { DBReview } from './models/db.review';
 import { ReviewController } from './review';
+import { DBFavorites } from './models/db.favorites';
+import { DBHelpful } from './models/db.helpful';
 
 // Express server instanziieren
 const app = express();
@@ -62,7 +64,7 @@ const sequelize = new Sequelize({
   username: 'admin',
   password: 'CHOOSE_A_PASSWORD',
   database: 'postgres',
-  models: [DBUser, DBEvent, DBLocation, DBTicket, DBReview, DBSession],
+  models: [DBUser, DBEvent, DBLocation, DBTicket, DBReview, DBSession,DBFavorites,DBHelpful],
   modelMatch: (filename, member): boolean => {
     console.error(filename, member);
     return true;
@@ -76,6 +78,7 @@ const testDB = () => {
   DBLocation.count();
   DBTicket.count();
   DBSession.count();
+  DBFavorites.count();
 };
 
 
@@ -135,8 +138,10 @@ app.delete('/api/session', auth.logout.bind(auth));               // Invalidate 
 const events = new EventController(db);
 
 app.get('/api/events', events.list.bind(events));                              // List Events
-app.post('/api/events', events.filterUpcoming.bind(events));
+app.post('/api/events', events.filterUpcoming.bind(events));                   
 app.get('/api/events/:id', events.details.bind(events));                       // Get Details of Event
+app.get('/api/events/:id/isFavorite',events.isFavorite);
+app.get('/api/events/:id/addOrDelete', events.makeFavorite);                      
 
 
 const tickets = new TicketController();
@@ -163,6 +168,7 @@ app.get('/api/locations/:name/rating', locations.lookup2);
 const review = new ReviewController();
  app.get('/api/locations/:name/reviews', review.lookup);            // lookup reviews by locationname
  app.post('/api/locations/:name/reviews', review.postReview);       // post review by locationname
+ app.patch('/api/helpful/:reviewID', review.toggleHelpful);       // post review by locationname
  app.get('/api/locations/:name/reviews/me', review.mine);                 // lookup user's review by locationname
 
 
@@ -216,5 +222,5 @@ app.use('/img', express.static('img'));
 initDatabase(sequelize);
 testDB();
 
-export { auth as authCtrl, events as eventCtrl, locations as locationCtrl, tickets as ticketCtrl, purchase as purchaseCtrl };
+export { auth as authCtrl, events as eventCtrl, locations as locationCtrl, tickets as ticketCtrl, purchase as purchaseCtrl};
 export default app;

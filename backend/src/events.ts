@@ -1,10 +1,13 @@
-import { DBEvent } from './models/event/event.db';
+import { DBEvent, PublicEvent } from './models/event/event.db';
 import { Request, Response } from 'express';
 import { APIResponse } from './models/response';
 import { DBControllerInterface } from './database/DBController';
-import { EventFilter } from 'softwareproject-common';
+import { EventFilter, EventListItem, User } from 'softwareproject-common';
 import { z } from 'zod';
 import { validateBody } from './validation/requestValidation';
+import { DBUser } from './models/user/user';
+import { DBFavorites } from './models/db.favorites';
+import { Favorite } from 'softwareproject-common/dist/favorite';
 
 
 const filterSchema = z.object({
@@ -15,16 +18,34 @@ const filterSchema = z.object({
   minPrice: z.number().min(0).optional(),
   maxPrice: z.number().min(0).optional()
 });
+const  listItem = (item: PublicEvent): EventListItem => {
+  return {
+    id: item.id,
+    title: item.title,
+    picture: item.picture,
+    start_date: item.start_date,
+    end_date: item.end_date,
+    start_time: item.start_time,
+    end_time: item.end_time,
+    price: item.price,
+  };
+};
 
 export class EventController {
   constructor(private controller: DBControllerInterface) {}
 
   async filterUpcoming(request: Request, response: Response): Promise<void> {
+    const user: User = response.locals.session?.user;
+
+    if (!user || !user.id) {
+      APIResponse.unauthorized().send(response);
+      return;
+    }
     try {
       const filter = validateBody(request,response,filterSchema);
-      const events = await this.controller.events.filterUpcoming(filter ?? {});
+      const events = await this.controller.events.filterUpcoming(filter ?? {},user.id);
 
-      APIResponse.success(events.map(e => e.listItem())).send(response);
+      APIResponse.success(events.map(e => listItem(e))).send(response);
     } catch (err) {
       console.error(err);
       APIResponse.internal(err).send(response);
@@ -38,6 +59,12 @@ export class EventController {
   * - search: GET /events?term='blumen'
   */
   async list(request: Request, response: Response): Promise<void> {
+    const user: User = response.locals.session?.user;
+
+    if (!user || !user.id) {
+      APIResponse.unauthorized().send(response);
+      return;
+    }
     try {
       const filter = filterSchema.parse(request.body);
 
@@ -50,9 +77,9 @@ export class EventController {
         filter.term = String(request.query.term);
       }
 
-      const events = await this.controller.events.filterUpcoming(filter);
+      const events = await this.controller.events.filterUpcoming(filter,user.id);
 
-      APIResponse.success(events.map(e => e.listItem())).send(response);
+      APIResponse.success(events.map(e => listItem(e))).send(response);
     } catch (err) {
       console.error(err);
       APIResponse.internal(err).send(response);
@@ -83,4 +110,100 @@ export class EventController {
     APIResponse.success(event).send(response);
     return;
   }
-}
+  async makeFavorite(request: Request, response: Response): Promise<void>{
+    const user: User = response.locals.session?.user;
+
+    if (!user || !user.id) {
+      APIResponse.unauthorized().send(response);
+      return;
+    }
+
+    const id = request.params.id;
+
+    if (!id) {
+      APIResponse.badRequest('Missing "ID" in path').send(response);
+      return;
+    }
+    const isAlready = await DBFavorites.findOne({
+      where:{
+        user_id: user.id,
+        event_id: id,
+      }
+    });
+
+    if(isAlready === null){
+      await DBFavorites.create({
+        user_id: user.id,
+        event_id: id,
+      });
+      response.status(200);
+      response.send('object created');
+      return;
+    }
+    else{
+    await DBFavorites.destroy({
+      where:{
+        user_id: user.id,
+        event_id: id
+      }});
+      response.status(200);
+      response.send('object deleted');
+      return;
+    }
+  }
+
+  async isFavorite(request: Request, response: Response): Promise<boolean>{
+    const user: User = response.locals.session?.user;
+    if (!user || !user.id) {
+      APIResponse.unauthorized().send(response);
+      return false;
+    }
+    const id = request.params.id;
+    let exists = false;
+    const isFavorite = await DBFavorites.findOne({
+      where:{
+        user_id: user.id,
+        event_id: id,
+      }});
+      if(!isFavorite){
+        exists = false;
+      }
+      else{
+        exists = true;
+      }
+      response.status(200),
+      response.send(exists);
+      return exists;
+  }
+  
+  }
+  
+  // async deleteFavourite(request: Request, response: Response): Promise<void>{
+  //   const user: User = response.locals.session?.user;
+  //   if (!user || !user.id) {
+  //     APIResponse.unauthorized().send(response);
+  //     return;
+  //   }
+
+  //   const id = request.params.id;
+
+  //   if (!id) {
+  //     APIResponse.badRequest('Missing "ID" in path').send(response);
+  //     return;
+  //   }
+  //   try{
+  //   await DBFavorites.destroy({
+  //     where:{
+  //       user_id: user.id,
+  //       event_id: id
+  //     }});
+  //     response.status(200);
+  //     response.send();
+  //   }
+  //   catch(err){
+  //     APIResponse.notFound('did not find favorite').send(response);
+  //       return;
+  //   }
+  // }
+
+ 
