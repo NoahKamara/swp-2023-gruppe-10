@@ -1,12 +1,8 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
-import { Event, User } from 'softwareproject-common';
-import { UserService } from 'src/app/services/user.service';
-import * as Leaflet from 'leaflet';
-import { LocationService } from 'src/app/services/location.service';
+import { Event } from 'softwareproject-common';
 import { formatDate } from '@angular/common';
-import { Favorite } from 'softwareproject-common/dist/favorite';
 
 @Component({
   selector: 'app-event-detail',
@@ -16,6 +12,7 @@ import { Favorite } from 'softwareproject-common/dist/favorite';
 export class EventDetailComponent implements OnInit {
   public event: Event | undefined;
   public isFavorite = false;
+  public return: void | undefined;
   constructor(@Inject(LOCALE_ID) public locale: string, private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
 
   ngOnInit(): void {
@@ -56,15 +53,30 @@ export class EventDetailComponent implements OnInit {
     console.error('No ID Present');
     return;
   }
-    this.eventService.makeFavorite(id);
-    const Favorite = this.eventService.isFavorite(id.toString());
-    Favorite.subscribe({  
-    next: (value) => {
-        this.isFavorite = value;
-        console.log(value);
-      },
-      error: console.error
+  if(this.isFavorite === false){
+    const data = this.eventService.makeFavorite(id);
+    data.subscribe({
+      next: (value) =>
+        this.return = value,
     });
+    this.isFavorite = true;
+  }
+  else{
+    const data = this.eventService.makeFavorite(id);
+    data.subscribe({
+      next: (value) =>
+        this.return = value,
+    });
+    this.isFavorite = false;
+  }
+    // const Favorite = this.eventService.isFavorite(id.toString());
+    // Favorite.subscribe({  
+    // next: (value) => {
+    //     this.isFavorite = value;
+    //     console.log(value);
+    //   },
+    //   error: console.error
+    // });
     
   }
 }

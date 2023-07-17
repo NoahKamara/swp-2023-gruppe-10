@@ -140,7 +140,7 @@ app.get('/api/events', events.list.bind(events));                              /
 app.post('/api/events', events.filterUpcoming.bind(events));                   
 app.get('/api/events/:id', events.details.bind(events));                       // Get Details of Event
 app.get('/api/events/:id/isFavorite',events.isFavorite);
-app.get('/api/events/:id/addOrDelete', events.makeFavorite.bind(events));                      
+app.get('/api/events/:id/addOrDelete', events.makeFavorite);                      
 
 
 const tickets = new TicketController();

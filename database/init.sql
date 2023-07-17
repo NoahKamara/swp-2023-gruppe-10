@@ -72,7 +72,7 @@ CREATE TABLE helpful (
     rev_id int NOT NULL,
     user_id int NOT NULL,
     CONSTRAINT helpful_pk PRIMARY KEY (rev_id, user_id)
-)
+);
 
 INSERT INTO locations (name, coordinates_lat, coordinates_lng, picture, description, description_html)
 VALUES

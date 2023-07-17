@@ -13,6 +13,7 @@ export class EventListItemComponent implements OnInit {
   public isFavorite = false;
   @Input()
   public item!: EventListItem;
+  public return: void | undefined;
 
   
  
@@ -41,15 +42,22 @@ export class EventListItemComponent implements OnInit {
 
   didClickFavButton(): void {
     const id = this.item.id;
-      this.eventService.makeFavorite(id.toString());
-      const Favorite = this.eventService.isFavorite(id.toString());
-      Favorite.subscribe({  
-       next: (value) => {
-        this.isFavorite = value;
-        console.log(value);
-      },
-      error: console.error
-    });
+    if(this.isFavorite === false){
+      const data = this.eventService.makeFavorite(id.toString());
+      data.subscribe({
+        next: (value) =>
+          this.return = value,
+      });
+      this.isFavorite = true;
+    }
+    else{
+      const data = this.eventService.makeFavorite(id.toString());
+      data.subscribe({
+        next: (value) =>
+          this.return = value,
+      });
+      this.isFavorite = false;
+    }
     
   
   }
