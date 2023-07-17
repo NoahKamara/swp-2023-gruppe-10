@@ -138,7 +138,7 @@ export class EventController {
         event_id: id,
       });
       response.status(200);
-      response.send();
+      response.send('object created');
       return;
     }
     else{
@@ -148,7 +148,7 @@ export class EventController {
         event_id: id
       }});
       response.status(200);
-      response.send();
+      response.send('object deleted');
     }
   }
   

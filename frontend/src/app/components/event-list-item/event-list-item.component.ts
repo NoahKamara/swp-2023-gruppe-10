@@ -17,22 +17,25 @@ export class EventListItemComponent {
 
   constructor(@Inject(LOCALE_ID) public locale: string ,private eventService: EventService){}
 
-  public id = this.item.id;
+  
+  // public Favorite = this.eventService.isFavorite(this.id.toString());
+    
+  // Favorite.subscribe({
+  //     next: (value) => {
+  //     this.isFavorite = value;
+  //   },
+  //   error: console.error
+  // });
 
-  this.eventService.isFavorite(this.id.toString()).subscribe({
-    next: (value) => {
-      this.isFavorite = value;
-    },
-    error: console.error
-  });
   didClickFavButton(): void {
+    const id = this.item.id;
     if(this.isFavorite === false){
       this.isFavorite = true;
-      this.eventService.makeFavorite(this.id.toString());
+      this.eventService.makeFavorite(id.toString());
     }
     else{
       this.isFavorite = false;
-      this.eventService.makeFavorite(this.id.toString());
+      this.eventService.makeFavorite(id.toString());
     }
   }
 

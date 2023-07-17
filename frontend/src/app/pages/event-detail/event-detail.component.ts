@@ -15,7 +15,7 @@ import { Favorite } from 'softwareproject-common/dist/favorite';
 })
 export class EventDetailComponent implements OnInit {
   public event: Event | undefined;
-  public isFavorite = false ;
+  public isFavorite = false;
   constructor(@Inject(LOCALE_ID) public locale: string, private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
 
   ngOnInit(): void {
@@ -24,6 +24,7 @@ export class EventDetailComponent implements OnInit {
       console.error('No ID Present');
       this.router.navigateByUrl('/events');
       return;
+
     }
     // fetch event
     const observeEvent = this.eventService.detail(id);
@@ -35,6 +36,14 @@ export class EventDetailComponent implements OnInit {
       },
       error: console.error
     });
+    const Favorite = this.eventService.isFavorite(id.toString());
+    Favorite.subscribe({  
+    next: (value) => {
+        this.isFavorite = !value;
+      },
+      error: console.error
+    });
+
   }
 
   dateFormat(date: Date): string {

@@ -98,7 +98,7 @@ export class DBEvent extends Model<Event> implements EventInterface {
     // const events = await DBEvent.findAll();
     console.log(events[0]);
     return events.map( item => {
-    // console.log(event.favoritedUsers);
+    //console.log(event.favoritedUsers);
       return {
         id: item.id,
         title: item.title,
@@ -113,6 +113,7 @@ export class DBEvent extends Model<Event> implements EventInterface {
         description_html: item.description_html,
         isFavorite: item.favoritedUsers.length === 0,
       };
+      
     }
     );
 
