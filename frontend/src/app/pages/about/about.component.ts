@@ -16,7 +16,6 @@ export class AboutComponent implements OnInit {
     const observables = [
       this.aboutService.getNoahKamara(),
       this.aboutService.getMariusBerner(),
-      // this.aboutService.getEmanuelMoell(),
       this.aboutService.getNiklasGroene()
     ]
     .map(value => ({ value, sort: Math.random() }))

@@ -1,8 +1,12 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
-import { Event } from 'softwareproject-common';
+import { Event, User } from 'softwareproject-common';
+import { UserService } from 'src/app/services/user.service';
+import * as Leaflet from 'leaflet';
+import { LocationService } from 'src/app/services/location.service';
 import { formatDate } from '@angular/common';
+import { Favorite } from 'softwareproject-common/dist/favorite';
 
 @Component({
   selector: 'app-event-detail',
