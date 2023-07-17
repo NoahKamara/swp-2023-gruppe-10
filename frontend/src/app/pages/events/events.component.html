@@ -9,26 +9,23 @@
       <mat-icon (click)="didClickFavButton()" class="float-right scale-150 translate-y-3 -translate-x-1">{{isFavorite ?
         "favorite":
         "favorite_border"}}</mat-icon>
-
-      <!-- SLIDER FOR DATE -->
-      <!-- <div class="w-full">
-          <mat-slider style="width: 100%" [min]="0" [max]="200" [step]="5">
-            <input matSliderStartThumb [value]="filter.minPrice" (valueChange)="filterDidChange()">
-            <input matSliderEndThumb [value]="filter.maxPrice ?? 300" (valueChange)="filterDidChange()">
-          </mat-slider>
-
-        </div> -->
     </div>
 
-    <div>
-      <!-- <app-validated-input></app-validated-input> -->
+
+
+    <div class="w-full flex flex-col">
+      <app-event-filter *ngIf="isFilterExpanded" (filterChange)="filterDidChange($event)"></app-event-filter>
+
+      <button (click)="toggleFilters()" class="flex flex-row justify-center" style="color: var(--mainau-gold)">
+        <span>{{ isFilterExpanded ? 'weniger' : 'mehr'}} Filteroptionen</span>
+
+        <mat-icon>{{isFilterExpanded ? 'expand_less' : 'expand_more'}}</mat-icon>
+      </button>
     </div>
-    <app-event-date-filter></app-event-date-filter>
 
 
 
     <div class="space-y-4">
-
       <div @listAnimation *ngFor="let item of events">
         <app-event-list-item [item]="item"></app-event-list-item>
       </div>

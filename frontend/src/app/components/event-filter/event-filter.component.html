@@ -1,0 +1,25 @@
+<div class="grid grid-cols-6 gap-0">
+  <!-- Date -->
+  <div class="col-span-5">
+    <mat-form-field>
+      <mat-date-range-input [min]="today" [max]="dateRange.controls.endDate.value" [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Start date"
+          [formControl]="dateRange.controls.startDate">
+        <input matEndDate formControlName="end" placeholder="End date" [formControl]="dateRange.controls.endDate">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+  </div>
+
+  <app-button class="col-span-1" [level]="1" (didClick)="clearDate()">
+    <mat-icon>remove</mat-icon>
+  </app-button>
+
+  <app-price-filter class="col-span-5" [(minValue)]="minPrice" [maxValue]="maxPrice" (minValueChange)="didChange()" (maxValueChange)="didChange()"
+      (maxValueChange)="didChange()"></app-price-filter>
+
+  <app-button class="col-span-1" [level]="1" (didClick)="clearPrice()">
+    <mat-icon>remove</mat-icon>
+  </app-button>
+</div>

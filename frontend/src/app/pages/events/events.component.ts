@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatCalendar, MatCalendarCellClassFunction, MatCalendarCellCssClasses } from '@angular/material/datepicker';
 import { EventFilter, EventListItem } from 'softwareproject-common';
 import { EventService } from 'src/app/services/event.service';
+
 const listAnimation = trigger('listAnimation', [
   transition('* <=> *', [
     query(':enter',
@@ -27,6 +28,8 @@ const listAnimation = trigger('listAnimation', [
 export class EventsComponent implements OnInit {
 
   events: EventListItem[] = [];
+  public showFilters = false;
+
   public isFavorite = false;
 
   constructor(private eventService: EventService) { }
@@ -41,8 +44,17 @@ export class EventsComponent implements OnInit {
   //   return (new Date(date)).toLocaleDateString();
   // }
 
-  filterDidChange(): void {
-    console.log(JSON.stringify(this.filter));
+  public isFilterExpanded = true;
+
+  toggleFilters(): void {
+    this.isFilterExpanded = (!this.isFilterExpanded);
+  }
+
+  filterDidChange(filter: EventFilter): void {
+    console.log(filter);
+    this.filter = filter;
+    this.onSearchTermChange();
+    // console.log(JSON.stringify(this.filter, undefined, 2));
   }
 
   public dateRange = new FormGroup({
@@ -59,6 +71,7 @@ export class EventsComponent implements OnInit {
     }
 
     const filter: EventFilter = {
+      ...this.filter,
       term: this.searchTerm.length > 0 ? this.searchTerm : undefined,
     };
 

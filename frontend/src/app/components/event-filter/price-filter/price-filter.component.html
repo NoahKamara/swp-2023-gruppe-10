@@ -1,0 +1,4 @@
+<div class="custom-slider">
+  <ngx-slider (valueChange)="minValueChange.emit($event)" [(value)]="minValue" [(highValue)]="maxValue"
+    (highValueChange)="maxValueChange.emit($event)" [options]="options"></ngx-slider>
+</div>

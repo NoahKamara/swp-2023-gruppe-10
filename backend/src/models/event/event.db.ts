@@ -64,10 +64,11 @@ export class DBEvent extends Model<Event> implements EventInterface {
    * Implements EventFactory.filterUpcoming
    */
   static async filterUpcoming(filter: EventFilter): Promise<DBEvent[]> {
+    console.log('FILTER', filter);
     const where: WhereOptions<DBEvent> = {
-      start_date: {
-        [Op.gte]: Date.now()
-      }
+      // start_date: {
+      //   [Op.gte]: filter.endDate
+      // }
     };
 
     if (filter.term) {
@@ -76,9 +77,33 @@ export class DBEvent extends Model<Event> implements EventInterface {
       };
     }
 
-    if (filter.locations && filter.locations.length > 0) {
-      where.location = {
-        [Op.in]: filter.locations
+    // if (filter.locations && filter.locations.length > 0) {
+    //   where.location = {
+    //     [Op.in]: filter.locations
+    //   };
+    // }
+
+    // if (filter.endDate) {
+    //   where.start_date = {
+    //     [Op.lte]: filter.endDate
+    //   };
+
+    //   if (filter.endDate) {
+    //     where.end_date = {
+    //       [Op.gte]: filter.startDate
+    //     };
+    //   }
+    // }
+
+    if (filter.minPrice) {
+      where.price = {
+        [Op.gte]: filter.minPrice
+      };
+    }
+
+    if (filter.maxPrice) {
+      where.price = {
+        [Op.lte]: filter.maxPrice
       };
     }
 

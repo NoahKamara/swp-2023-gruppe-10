@@ -61,7 +61,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
-import { EventDateFilterComponent } from './components/event-filter/event-date-filter/event-date-filter.component';
+import { EventFilterComponent } from './components/event-filter/event-filter.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { PriceFilterComponent } from './components/event-filter/price-filter/price-filter.component';
+import { LocationFilterComponent } from './components/event-filter/location-filter/location-filter.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSelectModule} from '@angular/material/select';
+
 
 /**
  *  Hier definieren wir eine Funktion, die wir später (Zeile 43ff) dem Router übergeben.
@@ -240,7 +246,9 @@ const routes: Routes = [
     PaymentErrorMessageComponent,
     TicketComponent,
     ReviewCardComponent,
-    EventDateFilterComponent
+    EventFilterComponent,
+    PriceFilterComponent,
+    LocationFilterComponent
   ],
   imports: [
     RouterModule.forRoot(routes),
@@ -260,7 +268,10 @@ const routes: Routes = [
     MatSliderModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatMenuModule
+    MatMenuModule,
+    NgxSliderModule,
+    MatExpansionModule,
+    MatSelectModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'de-DE' },

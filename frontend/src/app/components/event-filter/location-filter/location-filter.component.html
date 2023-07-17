@@ -1,0 +1,6 @@
+<mat-form-field>
+  <mat-label>Attraktionen</mat-label>
+  <mat-select [(value)]="selection" multiple style="color: black;">
+    <mat-option *ngFor="let location of locations" [value]="location.name">{{location.name}}</mat-option>
+  </mat-select>
+</mat-form-field>

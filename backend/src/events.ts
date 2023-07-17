@@ -10,8 +10,8 @@ import { validateBody } from './validation/requestValidation';
 const filterSchema = z.object({
   term: z.string().optional(),
   locations: z.array(z.string()).optional(),
-  startDate: z.date().optional(),
-  endDate: z.date().optional(),
+  startDate: z.preprocess(arg => typeof arg === 'string' ? new Date( arg ) : undefined, z.date().optional()),
+  endDate: z.preprocess(arg => typeof arg === 'string' ? new Date( arg ) : undefined, z.date().optional()),
   minPrice: z.number().min(0).optional(),
   maxPrice: z.number().min(0).optional()
 });
@@ -39,10 +39,9 @@ export class EventController {
   */
   async list(request: Request, response: Response): Promise<void> {
     try {
-      const filter = filterSchema.parse(request.query);
+      const filter = filterSchema.parse(request.body);
 
       console.log('FILTER', filter);
-      console.log('FILTER', request.query);
 
       if (filter.locations) {
         console.log('LOCATIONS', filter.locations.length);

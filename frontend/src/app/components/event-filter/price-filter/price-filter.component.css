@@ -1,0 +1,37 @@
+.custom-slider {
+  width: 268px;
+  height: 48px
+}
+::ng-deep .custom-slider .ngx-slider .ngx-slider-bar {
+  background: var(--mainau-beige);
+  height: 10px;
+  border-radius: 5px;
+}
+
+::ng-deep .custom-slider .ngx-slider .ngx-slider-pointer {
+  width: 50px;
+  height: 20px;
+  background-color: var(--mainau-gold);
+  border-radius: 10px;
+  top: -5px
+}
+
+::ng-deep .custom-slider .ngx-slider .ngx-slider-pointer:after {
+  display: none;
+}
+
+::ng-deep .custom-slider .ngx-slider-model-value {
+  color: var(--mainau-beige)!important
+}
+
+::ng-deep .custom-slider .ngx-slider-combined {
+  color: var(--mainau-beige)!important
+}
+
+::ng-deep .custom-slider .ngx-slider-model-high {
+  color: var(--mainau-beige)!important
+}
+
+::ng-deep .custom-slider .ngx-slider-limit {
+  color: color-mix(in srgb, var(--mainau-beige) 60%, transparent)!important;
+}
