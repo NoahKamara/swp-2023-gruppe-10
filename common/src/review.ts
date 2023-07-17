@@ -26,6 +26,7 @@ export interface CreateReview {
 }
 
 export interface PublicReview {
+  id: number;
   name: string;
   stars: number;
   title: string;

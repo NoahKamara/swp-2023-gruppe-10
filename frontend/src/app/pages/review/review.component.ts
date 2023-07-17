@@ -71,6 +71,7 @@ export class ReviewComponent implements OnInit {
     const values = this.newReview.value;
 
     const review: CreateReview = {
+      // id: Number(this.route.snapshot.paramMap.get('id')),
       stars: values.stars ?? 1,
       title: values.title ?? 'ERR NO TITLE',
       comment: values.description ?? undefined

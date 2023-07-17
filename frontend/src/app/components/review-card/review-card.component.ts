@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { PublicReview } from 'softwareproject-common';
+import { ReviewService } from 'src/app/services/review.service';
 
 @Component({
   selector: 'app-review-card',
@@ -14,8 +15,18 @@ export class ReviewCardComponent {
   @Input()
   review!: PublicReview;
 
-  setHelpful(): void{
-    this.review.helpful = this.review.helpful+1;
+  constructor(private reviews: ReviewService) {}
+
+  setHelpful(): void {
+    // console.log(`/api/helpful/${this.review.}`)
+    this.reviews.toggleHelpful(this.review.id).subscribe({
+      next: (count) => {
+        this.review.helpful = count;
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 
   starIcon(star: number): string{

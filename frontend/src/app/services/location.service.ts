@@ -19,15 +19,10 @@ export class LocationService {
   * Returns the location with the name
   * @param {string} name location name
   */
-  public lookup(name: string): Observable<Location> {
-    return this.http.get<Location>('/api/locations/'+name);
+  public lookup(name: string): Observable<PublicLocation> {
+    return this.http.get<PublicLocation>('/api/locations/'+name);
   }
-
-  /**
-  * Returns the location with the name
-  * @param {string} name location name
-  */
-   public lookup2(name: string): Observable<number> {
-    return this.http.get<number>('/api/locations/'+name+'/rating');
-  }
+}
+export interface PublicLocation extends Location {
+  average_rating: number
 }

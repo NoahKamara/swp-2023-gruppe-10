@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { CreateReview, PublicReview, Review } from 'softwareproject-common';
 
 @Injectable({
@@ -47,4 +47,16 @@ export class ReviewService {
 
     return observable;
   }
+
+
+  toggleHelpful(reviewID: number): Observable<number> {
+    const observable = this.http.patch<ReviewHelpfulCountUpdate>('/api/helpful/'+reviewID, null);
+
+    return observable.pipe(map(r => r.count));
+  }
+}
+
+
+interface ReviewHelpfulCountUpdate {
+  count: number;
 }
