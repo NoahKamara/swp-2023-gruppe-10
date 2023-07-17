@@ -111,7 +111,7 @@ export class DBEvent extends Model<Event> implements EventInterface {
         location: item.location,
         description: item.description,
         description_html: item.description_html,
-        isFavorite: item.favoritedUsers.length === 1,
+        isFavorite: item.favoritedUsers.length === 0,
       };
     }
     );

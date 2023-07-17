@@ -13,20 +13,28 @@ export class EventListItemComponent {
   @Input()
   public item!: EventListItem;
 
+ 
 
+  constructor(@Inject(LOCALE_ID) public locale: string ,private eventService: EventService){}
+
+  public id = this.item.id;
+
+  this.eventService.isFavorite(this.id.toString()).subscribe({
+    next: (value) => {
+      this.isFavorite = value;
+    },
+    error: console.error
+  });
   didClickFavButton(): void {
-    const id = this.item.id;
     if(this.isFavorite === false){
       this.isFavorite = true;
-      this.eventService.makeFavorite(id.toString());
+      this.eventService.makeFavorite(this.id.toString());
     }
     else{
       this.isFavorite = false;
-      this.eventService.makeFavorite(id.toString());
+      this.eventService.makeFavorite(this.id.toString());
     }
   }
-
-  constructor(@Inject(LOCALE_ID) public locale: string ,private eventService: EventService){}
 
   dateFormat(date: Date): string {
     return formatDate(date, 'dd.MM.yyyy', this.locale);
