@@ -18,7 +18,7 @@ const filterSchema = z.object({
   minPrice: z.number().min(0).optional(),
   maxPrice: z.number().min(0).optional()
 });
-const  listItem = (item: PublicEvent): EventListItem => {
+export const  listItem = (item: PublicEvent): EventListItem => {
   return {
     id: item.id,
     title: item.title,
@@ -43,6 +43,7 @@ export class EventController {
     }
     try {
       const filter = validateBody(request,response,filterSchema);
+      console.log('FILTER', filter);
       const events = await this.controller.events.filterUpcoming(filter ?? {},user.id);
 
       APIResponse.success(events.map(e => listItem(e))).send(response);
@@ -136,8 +137,7 @@ export class EventController {
         user_id: user.id,
         event_id: id,
       });
-      response.status(200);
-      response.send('object created');
+      APIResponse.success().send(response);
       return;
     }
     else{
@@ -146,8 +146,7 @@ export class EventController {
         user_id: user.id,
         event_id: id
       }});
-      response.status(200);
-      response.send('object deleted');
+      APIResponse.success().send(response);
       return;
     }
   }
@@ -175,9 +174,9 @@ export class EventController {
       response.send(exists);
       return exists;
   }
-  
+
   }
-  
+
   // async deleteFavourite(request: Request, response: Response): Promise<void>{
   //   const user: User = response.locals.session?.user;
   //   if (!user || !user.id) {
@@ -206,4 +205,4 @@ export class EventController {
   //   }
   // }
 
- 
+

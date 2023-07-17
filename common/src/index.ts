@@ -15,5 +15,6 @@ export {
   APIError, APIBaseError, APIContextError,
   PaymentProvider, PaymentError, PaymentErrorMessage,
   HCIPalData, SWPsafeData, BachelorcardData,
-  Review, PublicReview, CreateReview,Favorite
+  Review, PublicReview, CreateReview,
+  Favorite
 };

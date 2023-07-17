@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCalendarCellClassFunction, MatCalendar } from '@angular/material/datepicker';
 import { LabelType, Options } from '@angular-slider/ngx-slider';
 import { EventFilter } from 'softwareproject-common';
-import { filter } from 'rxjs';
+import { Subject, debounceTime, filter } from 'rxjs';
 
 @Component({
   selector: 'app-event-filter',
@@ -24,6 +24,7 @@ export class EventFilterComponent implements OnInit {
 
   ngOnInit(): void {
     this.dateRange.valueChanges.subscribe(() => { this.didChange(); });
+
   }
 
   public maxPrice = 104.98;
@@ -46,6 +47,8 @@ export class EventFilterComponent implements OnInit {
     this.locations = [];
   }
 
+
+
   didChange(): void {
     const filter: EventFilter = {
       startDate: this.dateRange.controls.startDate.value ?? undefined,
@@ -54,7 +57,6 @@ export class EventFilterComponent implements OnInit {
       maxPrice: this.maxPrice,
       locations: this.locations.length > 0 ? this.locations : undefined
     };
-
     this.filterChange.emit(filter);
   }
 }

@@ -15,7 +15,7 @@ export class TicketsComponent implements OnInit {
   ngOnInit(): void {
     this.ticketService.listTickets().subscribe({
       next: (value) => {
-        console.log(value);
+        console.log('tickets', value);
         this.tickets = value;
       },
       error: console.error

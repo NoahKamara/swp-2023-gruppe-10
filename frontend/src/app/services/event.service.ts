@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, debounceTime, shareReplay } from 'rxjs';
 import { Event, EventFilter, EventListItem } from 'softwareproject-common';
 import { Favorite } from 'softwareproject-common/dist/favorite';
 
@@ -16,24 +16,25 @@ export class EventService {
   /**
   * Lists all _upcoming_ locations
   */
-  public list(): Observable<EventListItem[]> {
-    return this.http.get<EventListItem[]>('/api/events/');
-  }
+  // public list(): Observable<EventListItem[]> {
+  //   return this.http.get<EventListItem[]>('/api/events/').pipe(shareReplay()).pipe(debounceTime(500));
+  // }
 
   /**
   * Lists all _upcoming_ locations
   */
   public filterUpcoming(filter: Partial<EventFilter>): Observable<EventListItem[]> {
-    return this.http.post<EventListItem[]>('/api/events/', filter);
+    console.log('searching with filter', filter);
+    return this.http.post<EventListItem[]>('/api/events/', filter).pipe(debounceTime(500));
   }
 
   /**
   * Lists all _upcoming_ locations that match the search term
   * @param {string} term search term
   */
-  public search(term: string): Observable<EventListItem[]> {
-    return this.http.get<EventListItem[]>('/api/events?term=' + term);
-  }
+  // public search(term: string): Observable<EventListItem[]> {
+  //   return this.http.get<EventListItem[]>('/api/events?term=' + term);
+  // }
 
   /**
   * Returns the location with the id
@@ -49,8 +50,8 @@ export class EventService {
   }
   public isFavorite(id:string): Observable<boolean>{
     return this.http.get<boolean>('/api/events/'+id+'/isFavorite');
-  
+
   }
 
-  
+
 }

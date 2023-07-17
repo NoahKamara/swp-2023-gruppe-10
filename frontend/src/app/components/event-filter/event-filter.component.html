@@ -16,7 +16,7 @@
     <mat-icon>remove</mat-icon>
   </app-button>
 
-  <app-price-filter class="col-span-5" [(minValue)]="minPrice" [maxValue]="maxPrice" (minValueChange)="didChange()" (maxValueChange)="didChange()"
+  <app-price-filter class="col-span-5" [(minValue)]="minPrice" [(maxValue)]="maxPrice" (minValueChange)="didChange()" (maxValueChange)="didChange()"
       (maxValueChange)="didChange()"></app-price-filter>
 
   <app-button class="col-span-1" [level]="1" (didClick)="clearPrice()">

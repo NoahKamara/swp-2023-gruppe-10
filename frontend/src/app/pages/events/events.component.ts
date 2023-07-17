@@ -1,6 +1,6 @@
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormGroup } from '@angular/forms';
 import { MatCalendar, MatCalendarCellClassFunction, MatCalendarCellCssClasses } from '@angular/material/datepicker';
 import { EventFilter, EventListItem } from 'softwareproject-common';
 import { EventService } from 'src/app/services/event.service';
@@ -51,7 +51,6 @@ export class EventsComponent implements OnInit {
   }
 
   filterDidChange(filter: EventFilter): void {
-    console.log(filter);
     this.filter = filter;
     this.onSearchTermChange();
     // console.log(JSON.stringify(this.filter, undefined, 2));
@@ -64,15 +63,9 @@ export class EventsComponent implements OnInit {
 
   // Perform search
   onSearchTermChange(): void {
-    // If serach term is empty, fetch all events
-    if (!this.searchTerm) {
-      this.fetchAll();
-      return;
-    }
-
     const filter: EventFilter = {
       ...this.filter,
-      term: this.searchTerm.length > 0 ? this.searchTerm : undefined,
+      term: this.searchTerm ?? undefined
     };
 
     this.eventService.filterUpcoming(filter).subscribe({
@@ -86,7 +79,12 @@ export class EventsComponent implements OnInit {
 
   // fetch all events
   fetchAll(): void {
-    this.eventService.list().subscribe({
+    const filt: EventFilter =  {
+      ...this.filter,
+      term: this.searchTerm ?? undefined
+    };
+
+    this.eventService.filterUpcoming(filt).subscribe({
       next: (value) => {
         this.events = value;
       },

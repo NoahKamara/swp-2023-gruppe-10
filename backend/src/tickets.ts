@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import { PublicTicket, User } from 'softwareproject-common';
 import { DBTicket } from './models/db.ticket';
-import { DBEvent } from './models/event/event.db';
+import { DBEvent, PublicEvent } from './models/event/event.db';
 import { Ticket } from 'softwareproject-common';
 import { DBUser } from './models/user/user.db';
 import { APIResponse } from './models/response';
+import { listItem } from './events';
 
 export class TicketController {
   async list(request: Request, response: Response): Promise<void> {
@@ -24,11 +25,16 @@ export class TicketController {
       });
 
       const publicTickets: PublicTicket[] = tickets.map((ticket) => {
+        const pub: PublicEvent = {
+          ...ticket.event.dataValues,
+          isFavorite: false
+        };
+
         return  {
           id: ticket.id,
           user: ticket.user,
           amount: ticket.amount,
-          event: ticket.event.listItem()
+          event: listItem(pub)
         };
       });
 
@@ -68,7 +74,10 @@ export class TicketController {
         id: ticket.id,
         user: ticket.user,
         amount: ticket.amount,
-        event: ticket.event.listItem(),
+        event: listItem({
+          isFavorite: false,
+          ...ticket.event.dataValues
+        })
       };
 
       response.status(200);

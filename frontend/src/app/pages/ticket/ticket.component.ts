@@ -24,6 +24,7 @@ export class TicketComponent implements OnInit {
     }
 
     this.ticketService.details(id).subscribe(val => {
+      console.log(val);
       this.ticket = val;
     });
   }

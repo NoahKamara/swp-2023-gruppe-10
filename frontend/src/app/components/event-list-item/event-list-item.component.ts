@@ -15,16 +15,16 @@ export class EventListItemComponent implements OnInit {
   public item!: EventListItem;
   public return: void | undefined;
 
-  
- 
+
+
 
   constructor(@Inject(LOCALE_ID) public locale: string ,private eventService: EventService){}
   ngOnInit(): void {
     const id = this.item.id;
-  
+
     // fetch event
     const Favorite = this.eventService.isFavorite(id.toString());
-    Favorite.subscribe({  
+    Favorite.subscribe({
     next: (value) => {
         this.isFavorite = value;
       },
@@ -58,8 +58,6 @@ export class EventListItemComponent implements OnInit {
       });
       this.isFavorite = false;
     }
-    
-  
   }
 
   dateFormat(date: Date): string {
