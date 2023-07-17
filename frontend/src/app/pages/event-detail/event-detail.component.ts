@@ -1,10 +1,12 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
-import { Event } from 'softwareproject-common';
+import { Event, User } from 'softwareproject-common';
+import { UserService } from 'src/app/services/user.service';
 import * as Leaflet from 'leaflet';
 import { LocationService } from 'src/app/services/location.service';
 import { formatDate } from '@angular/common';
+import { Favorite } from 'softwareproject-common/dist/favorite';
 
 @Component({
   selector: 'app-event-detail',
@@ -13,8 +15,7 @@ import { formatDate } from '@angular/common';
 })
 export class EventDetailComponent implements OnInit {
   public event: Event | undefined;
-  public isFavorite = false ;
-
+  public isFavorite = false;
   constructor(@Inject(LOCALE_ID) public locale: string, private route: ActivatedRoute, private router: Router, private eventService: EventService) { }
 
   ngOnInit(): void {
@@ -23,8 +24,8 @@ export class EventDetailComponent implements OnInit {
       console.error('No ID Present');
       this.router.navigateByUrl('/events');
       return;
-    }
 
+    }
     // fetch event
     const observeEvent = this.eventService.detail(id);
 
@@ -35,6 +36,14 @@ export class EventDetailComponent implements OnInit {
       },
       error: console.error
     });
+    const Favorite = this.eventService.isFavorite(id.toString());
+    Favorite.subscribe({  
+    next: (value) => {
+        this.isFavorite = !value;
+      },
+      error: console.error
+    });
+
   }
 
   dateFormat(date: Date): string {
@@ -42,11 +51,19 @@ export class EventDetailComponent implements OnInit {
   }
 
   didClickFavButton(): void {
+  const id  = this.route.snapshot.paramMap.get('id');
+  if (!id) {
+    console.error('No ID Present');
+    return;
+  }
   if(this.isFavorite === false){
     this.isFavorite = true;
+    this.eventService.makeFavorite(id);
+    
   }
   else{
     this.isFavorite = false;
+    this.eventService.makeFavorite(id);
   }
 }
 }

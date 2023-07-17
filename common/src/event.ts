@@ -22,7 +22,7 @@ export declare type EventListItem = {
   start_time: string
   end_time: string
   picture: string,
-  price: number
+  price: number,
 }
 
 export declare interface Event extends EventListItem {
@@ -36,5 +36,5 @@ export declare interface Event extends EventListItem {
   picture: string
   price: number
   description: string
-  description_html: string
+  description_html: string,
 }

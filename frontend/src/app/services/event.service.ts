@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Event, EventFilter, EventListItem } from 'softwareproject-common';
+import { Favorite } from 'softwareproject-common/dist/favorite';
 
 
 
@@ -9,6 +10,7 @@ import { Event, EventFilter, EventListItem } from 'softwareproject-common';
   providedIn: 'root'
 })
 export class EventService {
+
   constructor(private http: HttpClient) { }
 
   /**
@@ -40,4 +42,15 @@ export class EventService {
   public detail(id: string | number): Observable<Event> {
     return this.http.get<Event>('/api/events/' + id);
   }
+
+  public makeFavorite(id: string): Observable<Favorite>{
+   return this.http.get<Favorite>('/api/events/' + id);
+
+  }
+  public isFavorite(id:string): Observable<boolean>{
+    return this.http.get<boolean>('/api/events/'+id);
+  
+  }
+
+  
 }
