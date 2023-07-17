@@ -77,7 +77,6 @@ export class ProfileComponent implements OnInit {
   loadUserData(): void {
     this.userService.getUser().subscribe({
       next: user => {
-        console.log('user', user);
         this.user = user;
       }
     });
