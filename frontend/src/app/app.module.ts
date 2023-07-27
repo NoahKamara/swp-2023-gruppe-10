@@ -23,7 +23,6 @@ import { LoginComponent } from './pages/login/login.component';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { MariusBernerComponent } from './components/marius-berner/marius-berner.component';
 import { NoahKamaraComponent } from './components/noah-kamara/noah-kamara.component';
-import { EmanuelMoellComponent } from './components/emanuel-moell/emanuel-moell.component';
 import { NiklasGroeneComponent } from './components/niklas-groene/niklas-groene.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -219,7 +218,6 @@ const routes: Routes = [
     BackButtonComponent,
     MariusBernerComponent,
     NoahKamaraComponent,
-    EmanuelMoellComponent,
     NiklasGroeneComponent,
     RegisterComponent,
     TopBarComponent,

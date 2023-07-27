@@ -1,7 +1,5 @@
-import { Component, Input, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { EventEmitter } from '@angular/core';
-import { LabelType, Options } from '@angular-slider/ngx-slider';
+import { Options } from '@angular-slider/ngx-slider';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-price-filter',
@@ -24,7 +22,7 @@ export class PriceFilterComponent {
   public options: Options = {
     floor: 0,
     ceil: 105,
-    translate: (value: number, label: LabelType): string => {
+    translate: (value: number): string => {
       return String(value)+' €';
     }
   };

@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AnyPaymentData, SWPsafeData } from 'src/app/services/tickets.service';
-import { PaymentProviderPurchaseInterface, PaymentProviderPurchaseInterfaceNew } from '../PaymentProviderPurchaseInterface';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { environment } from 'src/environments/environment';
-import { PaymentService } from 'src/app/services/payment.service';
 import { PaymentErrorMessage, Ticket } from 'softwareproject-common';
+import { PaymentService } from 'src/app/services/payment.service';
+import { SWPsafeData } from 'src/app/services/tickets.service';
+import { environment } from 'src/environments/environment';
+import { PaymentProviderPurchaseInterfaceNew } from '../PaymentProviderPurchaseInterface';
 
 interface DataFormGroup {
   code: FormControl<string | null>

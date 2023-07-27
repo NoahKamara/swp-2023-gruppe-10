@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { CreateReview, PublicReview, Review } from 'softwareproject-common';
+import { CreateReview, PublicReview } from 'softwareproject-common';
 
 @Injectable({
   providedIn: 'root'

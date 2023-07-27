@@ -1,10 +1,8 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatCalendarCellClassFunction, MatCalendar } from '@angular/material/datepicker';
-import { LabelType, Options } from '@angular-slider/ngx-slider';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Subject, debounceTime } from 'rxjs';
 import { EventFilter } from 'softwareproject-common';
-import { Subject, debounceTime, filter } from 'rxjs';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-event-filter',

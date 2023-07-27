@@ -1,10 +1,9 @@
-import { Component, Inject, Input, LOCALE_ID, OnInit } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Event, Ticket } from 'softwareproject-common';
 import { EventService } from 'src/app/services/event.service';
 import { PaymentProvider } from 'src/app/components/payment-provider-btn/payment-provider-btn.component';
 import { AnyPaymentData, TicketsService } from 'src/app/services/tickets.service';
-import { tick } from '@angular/core/testing';
 import { formatDate } from '@angular/common';
 
 

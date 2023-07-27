@@ -1,12 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AnyPaymentData } from '../../../services/tickets.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { PaymentProviderPurchaseInterface, PaymentProviderPurchaseInterfaceNew } from '../PaymentProviderPurchaseInterface';
-import { environment } from 'src/environments/environment';
-import { PaymentErrorMessage, Ticket } from 'softwareproject-common';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { PaymentErrorMessage, Ticket } from 'softwareproject-common';
 import { PaymentService } from 'src/app/services/payment.service';
+import { environment } from 'src/environments/environment';
+import { PaymentProviderPurchaseInterfaceNew } from '../PaymentProviderPurchaseInterface';
 
 
 interface BachelorcardDataFG {

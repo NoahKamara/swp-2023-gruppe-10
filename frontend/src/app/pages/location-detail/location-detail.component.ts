@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EventListItem, Location } from 'softwareproject-common';
+import { EventListItem } from 'softwareproject-common';
 import { EventService } from 'src/app/services/event.service';
 import { LocationService, PublicLocation } from 'src/app/services/location.service';
-import { ReviewComponent } from '../review/review.component';
 
 
 @Component({

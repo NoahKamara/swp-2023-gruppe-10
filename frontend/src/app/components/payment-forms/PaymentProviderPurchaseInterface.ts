@@ -1,4 +1,4 @@
-import { EventEmitter, Input } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 import { Ticket } from 'softwareproject-common';
 import { AnyPaymentData } from 'src/app/services/tickets.service';
 

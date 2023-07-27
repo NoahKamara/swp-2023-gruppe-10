@@ -1,8 +1,7 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, debounceTime, shareReplay } from 'rxjs';
+import { Observable, debounceTime } from 'rxjs';
 import { Event, EventFilter, EventListItem } from 'softwareproject-common';
-import { Favorite } from 'softwareproject-common/dist/favorite';
 
 
 
