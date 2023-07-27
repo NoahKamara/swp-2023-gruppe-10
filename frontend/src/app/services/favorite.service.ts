@@ -10,16 +10,14 @@ export class FavoriteService {
 
   constructor(private http: HttpClient) { }
 
-public makeFavorite(id: string): Observable<Favorite> {
-    const observable = this.http.get<Favorite>('/api/events/'+id+'');
+  public makeFavorite(id: string): Observable<Favorite> {
+      const observable = this.http.get<Favorite>('/api/events/'+id+'');
 
-    observable.subscribe({
-        error: (err) => {
-            console.error(err);
-        }
-    });
-    return observable;
-}
-
-  
+      observable.subscribe({
+          error: (err) => {
+              console.error(err);
+          }
+      });
+      return observable;
+  }
 }

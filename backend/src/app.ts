@@ -138,10 +138,10 @@ app.delete('/api/session', auth.logout.bind(auth));               // Invalidate 
 const events = new EventController(db);
 
 app.get('/api/events', events.list.bind(events));                              // List Events
-app.post('/api/events', events.filterUpcoming.bind(events));                   
+app.post('/api/events', events.filterUpcoming.bind(events));
 app.get('/api/events/:id', events.details.bind(events));                       // Get Details of Event
 app.get('/api/events/:id/isFavorite',events.isFavorite);
-app.get('/api/events/:id/addOrDelete', events.makeFavorite);                      
+app.get('/api/events/:id/favorite', events.toggleFavorite);
 
 
 const tickets = new TicketController();

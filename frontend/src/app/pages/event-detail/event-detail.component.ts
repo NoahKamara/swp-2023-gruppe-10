@@ -38,7 +38,7 @@ export class EventDetailComponent implements OnInit {
       error: console.error
     });
     const Favorite = this.eventService.isFavorite(id.toString());
-    Favorite.subscribe({  
+    Favorite.subscribe({
     next: (value) => {
         this.isFavorite = value;
       },
@@ -58,7 +58,7 @@ export class EventDetailComponent implements OnInit {
     return;
   }
   if(this.isFavorite === false){
-    const data = this.eventService.makeFavorite(id);
+    const data = this.eventService.toggleFavorite(id);
     data.subscribe({
       next: (value) =>
         this.return = value,
@@ -66,7 +66,7 @@ export class EventDetailComponent implements OnInit {
     this.isFavorite = true;
   }
   else{
-    const data = this.eventService.makeFavorite(id);
+    const data = this.eventService.toggleFavorite(id);
     data.subscribe({
       next: (value) =>
         this.return = value,
@@ -74,14 +74,14 @@ export class EventDetailComponent implements OnInit {
     this.isFavorite = false;
   }
     // const Favorite = this.eventService.isFavorite(id.toString());
-    // Favorite.subscribe({  
+    // Favorite.subscribe({
     // next: (value) => {
     //     this.isFavorite = value;
     //     console.log(value);
     //   },
     //   error: console.error
     // });
-    
+
   }
 }
 

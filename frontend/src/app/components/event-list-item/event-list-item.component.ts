@@ -40,22 +40,13 @@ export class EventListItemComponent implements OnInit {
 
   didClickFavButton(): void {
     const id = this.item.id;
-    if(this.isFavorite === false){
-      const data = this.eventService.makeFavorite(id.toString());
+    const data = this.eventService.toggleFavorite(id.toString());
       data.subscribe({
         next: (value) =>
           this.return = value,
       });
-      this.isFavorite = true;
-    }
-    else{
-      const data = this.eventService.makeFavorite(id.toString());
-      data.subscribe({
-        next: (value) =>
-          this.return = value,
-      });
-      this.isFavorite = false;
-    }
+
+      this.isFavorite = !this.isFavorite;
   }
 
   dateFormat(date: Date): string {

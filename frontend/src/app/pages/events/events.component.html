@@ -6,9 +6,9 @@
       <input type="text" placeholder="Events Suchen" class="input input-bordered w-5/6" [(ngModel)]="searchTerm"
         (ngModelChange)="onSearchTermChange()" />
 
-      <!-- <mat-icon (click)="didClickFavButton()" class="float-right scale-150 translate-y-3 -translate-x-1">{{isFavorite ?
+      <mat-icon (click)="didClickFavButton()" class="float-right scale-150 translate-y-3 -translate-x-1">{{this.filter.onlyFavorites === true ?
         "favorite":
-        "favorite_border"}}</mat-icon> -->
+        "favorite_border"}}</mat-icon>
     </div>
 
 

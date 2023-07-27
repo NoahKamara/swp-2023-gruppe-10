@@ -68,11 +68,7 @@ export class DBEvent extends Model<Event> implements EventInterface {
    */
   static async filterUpcoming(filter: EventFilter, user_id: number): Promise<PublicEvent[]> {
     console.log('FILTER', filter);
-    const where: WhereOptions<DBEvent> = {
-      // start_date: {
-      //   [Op.gte]: filter.endDate
-      // }
-    };
+    const where: WhereOptions<DBEvent> = {};
 
     // event.term matches term
     if (filter.term) {
@@ -106,6 +102,8 @@ export class DBEvent extends Model<Event> implements EventInterface {
      * Date Filter
      */
 
+
+
      // event.start_date <= end date
      if (filter.endDate) {
       where.start_date = {
@@ -123,9 +121,10 @@ export class DBEvent extends Model<Event> implements EventInterface {
     const events = await DBEvent.findAll({
       include: {
         model: DBUser,
-        on: {
-          id: user_id,
-        }
+        where: {
+          id: user_id
+        },
+        required: false
       },
       where: where
     });
@@ -133,15 +132,12 @@ export class DBEvent extends Model<Event> implements EventInterface {
 
     console.log(filter);
     const filtered = events.filter(event => {
-        if (event.end_date > (filter.startDate ?? Date())) {
-          return false;
-        }
-
-        if (filter.endDate && event.start_date < filter.endDate) {
-          return false;
-        }
-        return true;
-      });
+      console.log('EVENT', event.title, event.favoritedUsers.length);
+      if (filter.onlyFavorites === true && event.favoritedUsers.length === 0 ) {
+        return false;
+      }
+      return true;
+    });
 
       console.log(filtered.length);
 

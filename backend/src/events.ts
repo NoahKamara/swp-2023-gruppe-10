@@ -6,7 +6,17 @@ import { EventListItem, User } from 'softwareproject-common';
 import { z } from 'zod';
 import { validateBody } from './validation/requestValidation';
 import { DBFavorites } from './models/db.favorites';
+import { EventFilter } from 'softwareproject-common';
 
+type EventFilterType = {
+  term?: string;
+  locations?: string[];
+  startDate?: Date;
+  endDate?: Date;
+  minPrice?: number;
+  maxPrice?: number;
+  onlyFavorites?: boolean;
+}
 
 const filterSchema = z.object({
   term: z.string().optional(),
@@ -14,8 +24,10 @@ const filterSchema = z.object({
   startDate: z.preprocess(arg => typeof arg === 'string' ? new Date( arg ) : undefined, z.date().optional()),
   endDate: z.preprocess(arg => typeof arg === 'string' ? new Date( arg ) : undefined, z.date().optional()),
   minPrice: z.number().min(0).optional(),
-  maxPrice: z.number().min(0).optional()
+  maxPrice: z.number().min(0).optional(),
+  onlyFavorites: z.boolean().optional()
 });
+
 export const  listItem = (item: PublicEvent): EventListItem => {
   return {
     id: item.id,
@@ -41,11 +53,14 @@ export class EventController {
     }
     try {
       const filter = validateBody(request,response,filterSchema);
-      console.log('FILTER', filter);
+
       if (!filter) {
         return;
       }
-      const events = await this.controller.events.filterUpcoming(filter ?? {},user.id);
+
+      console.log('FILTER', filter.startDate, filter.endDate);
+
+      const events = await this.controller.events.filterUpcoming(filter, user.id);
 
       APIResponse.success(events.map(e => listItem(e))).send(response);
     } catch (err) {
@@ -112,7 +127,7 @@ export class EventController {
     APIResponse.success(event).send(response);
     return;
   }
-  async makeFavorite(request: Request, response: Response): Promise<void>{
+  async toggleFavorite(request: Request, response: Response): Promise<void>{
     const user: User = response.locals.session?.user;
 
     if (!user || !user.id) {
@@ -126,27 +141,30 @@ export class EventController {
       APIResponse.badRequest('Missing "ID" in path').send(response);
       return;
     }
-    const isAlready = await DBFavorites.findOne({
+
+    console.log('find fav');
+    const favorite = await DBFavorites.findOne({
       where:{
         user_id: user.id,
         event_id: id,
       }
     });
 
-    if(isAlready === null){
+    console.log(favorite);
+
+    if (favorite) {
+      console.log('destroy fav');
+      // Remove Favorite
+      await favorite.destroy();
+      APIResponse.success().send(response);
+      return;
+    } else {
+      console.log('make fav');
+      // Make Favorite
       await DBFavorites.create({
         user_id: user.id,
         event_id: id,
       });
-      APIResponse.success().send(response);
-      return;
-    }
-    else{
-    await DBFavorites.destroy({
-      where:{
-        user_id: user.id,
-        event_id: id
-      }});
       APIResponse.success().send(response);
       return;
     }

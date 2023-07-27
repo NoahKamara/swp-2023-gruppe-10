@@ -12,6 +12,8 @@ export declare type EventFilter = {
 
   minPrice?: number
   maxPrice?: number
+
+  onlyFavorites?: boolean
 }
 
 export declare type EventListItem = {

@@ -101,11 +101,7 @@ export class EventsComponent implements OnInit {
     this.fetchAll();
   }
   didClickFavButton(): void {
-    if (this.isFavorite === false) {
-      this.isFavorite = true;
-    }
-    else {
-      this.isFavorite = false;
-    }
+    this.filter.onlyFavorites = !this.filter.onlyFavorites ?? true;
+    this.onSearchTermChange();
   }
 }

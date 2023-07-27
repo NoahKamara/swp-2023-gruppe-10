@@ -1,9 +1,9 @@
 import { EventListItem } from 'softwareproject-common';
 import { MockDBController } from '../../database/mock-controller';
-import { EventFactory, EventFilter } from './event.factory';
+import { EventFactory } from './event.factory';
 import { EventInterface } from './event.interface';
 import { PublicEvent } from './event.db';
-
+import { EventFilter } from 'softwareproject-common';
 
 
 

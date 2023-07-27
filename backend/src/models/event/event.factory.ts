@@ -1,12 +1,6 @@
 import { PublicEvent } from './event.db';
 import { EventInterface } from './event.interface';
-
-
-
-
-export type EventFilter = {
-  term?: string
-}
+import { EventFilter } from 'softwareproject-common';
 
 /**
 * An Interface for creating session instances
