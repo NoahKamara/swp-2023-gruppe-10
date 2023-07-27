@@ -1,6 +1,6 @@
 <div class="grid grid-cols-6 gap-0">
   <!-- Date -->
-  <div class="col-span-5">
+  <!-- <div class="col-span-5">
     <mat-form-field>
       <mat-date-range-input [min]="today" [max]="dateRange.controls.endDate.value" [rangePicker]="picker">
         <input matStartDate formControlName="start" placeholder="Start date"
@@ -14,7 +14,7 @@
 
   <app-button class="col-span-1" [level]="1" (didClick)="clearDate()">
     <mat-icon>remove</mat-icon>
-  </app-button>
+  </app-button> -->
 
   <app-price-filter class="col-span-5" [(minValue)]="minPrice" [(maxValue)]="maxPrice" (minValueChange)="didChange()" (maxValueChange)="didChange()"
       (maxValueChange)="didChange()"></app-price-filter>
