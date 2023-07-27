@@ -2,12 +2,10 @@ import { DBEvent, PublicEvent } from './models/event/event.db';
 import { Request, Response } from 'express';
 import { APIResponse } from './models/response';
 import { DBControllerInterface } from './database/DBController';
-import { EventFilter, EventListItem, User } from 'softwareproject-common';
+import { EventListItem, User } from 'softwareproject-common';
 import { z } from 'zod';
 import { validateBody } from './validation/requestValidation';
-import { DBUser } from './models/user/user';
 import { DBFavorites } from './models/db.favorites';
-import { Favorite } from 'softwareproject-common/dist/favorite';
 
 
 const filterSchema = z.object({
@@ -44,6 +42,9 @@ export class EventController {
     try {
       const filter = validateBody(request,response,filterSchema);
       console.log('FILTER', filter);
+      if (!filter) {
+        return;
+      }
       const events = await this.controller.events.filterUpcoming(filter ?? {},user.id);
 
       APIResponse.success(events.map(e => listItem(e))).send(response);
