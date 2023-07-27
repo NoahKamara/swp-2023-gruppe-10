@@ -8,8 +8,8 @@
         <div class="flex place-content-center">
           <div class="grid grid-cols-6 w-3/5 place-content-center">
             <div *ngFor="let n of [1,2,3,4,5]">
-              <button mat-icon-button (click)="setStars(n)">
-                <mat-icon style="font-size: 2rem; height: 2rem; width: 2rem;">{{starIcon(n,newReview.controls.stars.value ?? 0)}} </mat-icon>
+              <button (click)="setStars(n)">
+                <mat-icon style="color: var(--mainau-beige); font-size: 2rem; height: 2rem; width: 2rem;">{{starIcon(n,newReview.controls.stars.value ?? 0)}} </mat-icon>
               </button>
             </div>
           </div>

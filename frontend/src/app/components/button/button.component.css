@@ -8,3 +8,10 @@
   background-color: var(--foreground);
   color: var(--background);
 }
+
+.level-2 {
+  background-color: transparent!important;
+  border-color: transparent;
+  color: var(--foreground);
+}
+
