@@ -6,17 +6,7 @@ import { EventListItem, User } from 'softwareproject-common';
 import { z } from 'zod';
 import { validateBody } from './validation/requestValidation';
 import { DBFavorites } from './models/db.favorites';
-import { EventFilter } from 'softwareproject-common';
 
-type EventFilterType = {
-  term?: string;
-  locations?: string[];
-  startDate?: Date;
-  endDate?: Date;
-  minPrice?: number;
-  maxPrice?: number;
-  onlyFavorites?: boolean;
-}
 
 const filterSchema = z.object({
   term: z.string().optional(),

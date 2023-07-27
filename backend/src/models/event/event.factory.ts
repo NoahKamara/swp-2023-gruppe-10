@@ -7,6 +7,7 @@ import { EventFilter } from 'softwareproject-common';
 *
 * @interface
 */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export interface EventFactory<T extends EventInterface> {
   /**
     * returns upcoming events that match the filter

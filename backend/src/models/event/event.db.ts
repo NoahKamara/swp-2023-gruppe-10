@@ -1,12 +1,10 @@
-import { CreationOptional, Op, WhereOptions, col, fn } from 'sequelize';
-import { Column, Table, Model, HasMany, BelongsToMany } from 'sequelize-typescript';
-import { Event, EventListItem, EventFilter } from 'softwareproject-common';
-import { EventFactory } from './event.factory';
-import { EventInterface } from './event.interface';
+import { CreationOptional, Op, WhereOptions } from 'sequelize';
+import { BelongsToMany, Column, Model, Table } from 'sequelize-typescript';
+import { Event, EventFilter } from 'softwareproject-common';
 import { DBFavorites } from '../db.favorites';
 import { DBUser } from '../user/user';
-import { boolean } from 'zod';
-import { start } from 'repl';
+import { EventFactory } from './event.factory';
+import { EventInterface } from './event.interface';
 
 export interface PublicEvent extends Event {
   isFavorite: boolean;

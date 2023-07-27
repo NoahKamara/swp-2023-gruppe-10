@@ -1,11 +1,9 @@
-import { CreationOptional, Op } from 'sequelize';
+import { Op } from 'sequelize';
 import { Table, Model, ForeignKey, BelongsTo, Column, PrimaryKey, HasMany, Sequelize } from 'sequelize-typescript';
 import { DBUser } from './user/user';
 import { DBLocation } from './db.location';
 import { PublicReview } from 'softwareproject-common';
-import { randomInt } from 'crypto';
 import { DBHelpful } from './db.helpful';
-import { lookup } from 'dns';
 
 
 @Table({ modelName: 'reviews', timestamps: false })

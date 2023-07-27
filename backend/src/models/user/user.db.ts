@@ -2,7 +2,6 @@ import { CreationOptional } from 'sequelize';
 import { Table, Column, Model, HasMany } from 'sequelize-typescript';
 import { CreateUser, PublicUser, User } from 'softwareproject-common';
 import { DBTicket } from '../db.ticket';
-import { Response } from 'express';
 import { DBSession } from '../session/session.db';
 import uid from 'uid-safe';
 import { UserFactory } from './user.factory';

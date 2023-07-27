@@ -1,6 +1,6 @@
 import { DBReview } from './models/db.review';
 import { Request, Response } from 'express';
-import { Op, col, fn } from 'sequelize';
+import { Op } from 'sequelize';
 import { User } from 'softwareproject-common';
 import { DBLocation } from './models/db.location';
 import { APIResponse } from './models/response';

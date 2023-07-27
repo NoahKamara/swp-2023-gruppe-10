@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { User } from 'softwareproject-common';
-import { Favorite } from 'softwareproject-common/dist/favorite';
 import { DBEvent } from './models/event/event.db';
 import { DBUser } from './models/user/user.db';
 import { DBFavorites } from './models/db.favorites';
@@ -67,7 +66,7 @@ export class FavoritenController {
       response.send('object deleted');
     }
   }
-  
+
   // async deleteFavourite(request: Request, response: Response): Promise<void>{
   //   const user: User = response.locals.session?.user;
   //   if (!user || !user.id) {

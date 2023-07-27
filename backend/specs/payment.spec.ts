@@ -1,13 +1,11 @@
 /* eslint-disable jasmine/no-spec-dupes */
-import { PaymentProvider, PaymentError, SWPsafeData } from 'softwareproject-common';
-import { HCIPalData } from '../src/payment/HCIPalProvider';
-import { authorize, getInfo } from './helpers/user-helper';
+import { BachelorcardData, PaymentError, PaymentProvider, SWPsafeData } from 'softwareproject-common';
+import { Response, SuperAgentTest } from 'supertest';
 import app from '../src/app';
-import { SuperAgentTest } from 'supertest';
-import { matcher } from './helpers/responseMatching';
 import { APIResponse } from '../src/models/response';
-import { Response } from 'supertest';
-import { BachelorcardData } from 'softwareproject-common';
+import { HCIPalData } from '../src/payment/HCIPalProvider';
+import { matcher } from './helpers/responseMatching';
+import { authorize, getInfo } from './helpers/user-helper';
 /**
  * Requests can take up to 6 seconds
  * > https://gitlab.inf.uni-konstanz.de/ag-hci/lectures/2023-software-projekt/swp-2023-beispiele/-/wikis/Zahlungssysteme#:~:text=Requests%20k%C3%B6nnen%20bis%20zu%206%20Sekunden%20dauern.%20Ein%20entsprechendes%20Userfeedback%20(z.B.%20Ladeindikator%20sobald%20der%20Button%20gedr%C3%BCckt%20wird)%20wird%20erwartet.
@@ -19,6 +17,7 @@ describe('General', () => {
     return `/api/purchase?event=${eventID}&provider=${PaymentProvider.hciPal}&amount=${amount}`;
   };
   let agent: SuperAgentTest;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let userID: number;
 
   const eventID = 1;

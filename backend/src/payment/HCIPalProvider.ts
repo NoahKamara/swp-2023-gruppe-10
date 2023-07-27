@@ -1,7 +1,7 @@
 import { PaymentProviderInterface } from './PaymentProvider';
 import { PaymentError } from 'softwareproject-common';
 import { handleErrorResponse } from './util';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 export type HCIPalData = {
   name: string;
@@ -19,22 +19,7 @@ type HCIPalCountryResponse = {
   error?: string
 }
 
-type HCIPalPaymentValidationResponse = {
-  success: boolean;
-  token?: string;
-  status?: number;
-  error?: string;
-}
-
-type HCIPalPaymentValidationSuccess = {
-  token: string
-}
-
 export class HCIPalProvider extends PaymentProviderInterface<HCIPalData> {
-  private options = {
-    hostname: 'pass.hci.uni-konstanz.de',
-    port: 443,
-  };
 
   private baseURI = 'https://pass.hci.uni-konstanz.de/hcipal';
 

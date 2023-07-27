@@ -25,8 +25,6 @@ import { injectLogging } from './utils/logger';
 import { DBTicket } from './models/db.ticket';
 import { TicketController } from './tickets';
 import { DBSession } from './models/session/session.db';
-import { HCIPalProvider } from './payment/HCIPalProvider';
-import { PaymentProviderInterface } from './payment/PaymentProvider';
 import { PaymentController } from './payment';
 import { DBController } from './database/DBController';
 import { DBReview } from './models/db.review';
@@ -72,7 +70,7 @@ const sequelize = new Sequelize({
   port: 5432
 });
 
-const testDB = () => {
+const testDB = (): void => {
   DBUser.count();
   DBEvent.count();
   DBLocation.count();

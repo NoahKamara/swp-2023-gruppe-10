@@ -1,7 +1,6 @@
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup, UntypedFormGroup } from '@angular/forms';
-import { MatCalendar, MatCalendarCellClassFunction, MatCalendarCellCssClasses } from '@angular/material/datepicker';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { EventFilter, EventListItem } from 'softwareproject-common';
 import { EventService } from 'src/app/services/event.service';
 

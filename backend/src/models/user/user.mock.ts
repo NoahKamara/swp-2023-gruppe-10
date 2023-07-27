@@ -83,6 +83,7 @@ export class MockUser implements UserInterface, User {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   updatePassword(password: string): Promise<void> {
     throw new Error('updatePassword not implemented.');
   }
@@ -114,6 +115,7 @@ export class MockUser implements UserInterface, User {
     return Promise.resolve(sess);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   addTicket({ event, amount }: { event: number; amount: number; }): Promise<Ticket> {
     throw new Error('method not impl');
   }

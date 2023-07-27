@@ -1,5 +1,4 @@
 
-import https, { RequestOptions } from 'https';
 import { RequestLogger } from '../utils/logger';
 import { PaymentError } from 'softwareproject-common';
 

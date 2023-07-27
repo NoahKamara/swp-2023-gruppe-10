@@ -1,4 +1,4 @@
-import { Event, EventListItem } from 'softwareproject-common';
+import { Event } from 'softwareproject-common';
 
 
 export type EventInterface = Event

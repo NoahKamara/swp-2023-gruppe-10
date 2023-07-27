@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { PublicTicket, User } from 'softwareproject-common';
 import { DBTicket } from './models/db.ticket';
 import { DBEvent, PublicEvent } from './models/event/event.db';
-import { Ticket } from 'softwareproject-common';
 import { DBUser } from './models/user/user.db';
 import { APIResponse } from './models/response';
 import { listItem } from './events';

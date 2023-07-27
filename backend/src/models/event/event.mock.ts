@@ -10,6 +10,7 @@ import { EventFilter } from 'softwareproject-common';
 export class MockEventFactory implements EventFactory<MockEvent> {
   constructor(private controller: MockDBController) { }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   filterUpcoming(filter: EventFilter,user_id: number): Promise<PublicEvent[]> {
     throw Error('not implemented');
   }
