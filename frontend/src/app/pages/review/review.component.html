@@ -6,7 +6,7 @@
     <div>
       <div *ngIf="(!myReview)">
         <div class="flex place-content-center">
-          <div class="grid grid-cols-6 w-3/5 place-content-center">
+          <div class="grid grid-cols-5 w-3/5 place-content-center">
             <div *ngFor="let n of [1,2,3,4,5]">
               <button (click)="setStars(n)">
                 <mat-icon style="color: var(--mainau-beige); font-size: 2rem; height: 2rem; width: 2rem;">{{starIcon(n,newReview.controls.stars.value ?? 0)}} </mat-icon>
