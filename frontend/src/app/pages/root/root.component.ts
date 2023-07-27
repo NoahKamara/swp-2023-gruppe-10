@@ -13,7 +13,5 @@ import { AuthService } from 'src/app/services/auth.service';
   selector: 'app-root'
 })
 export class RootComponent {
-
   constructor(public loginService: AuthService) { }
-
 }

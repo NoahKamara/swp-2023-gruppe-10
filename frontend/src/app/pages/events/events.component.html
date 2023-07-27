@@ -4,7 +4,7 @@
   <div class="scrollable-container space-y-8">
     <div>
       <input type="text" placeholder="Events Suchen" class="input input-bordered w-5/6" [(ngModel)]="searchTerm"
-        (ngModelChange)="onSearchTermChange()" />
+        (ngModelChange)="updateList()" />
 
       <mat-icon (click)="didClickFavButton()" class="float-right scale-150 translate-y-3 -translate-x-1">{{this.filter.onlyFavorites === true ?
         "favorite":
@@ -12,21 +12,13 @@
     </div>
 
 
+    <app-event-filter (filterChange)="filterDidChange($event)"></app-event-filter>
 
-    <div class="w-full flex flex-col">
-      <app-event-filter *ngIf="isFilterExpanded" (filterChange)="filterDidChange($event)"></app-event-filter>
-
-      <button (click)="toggleFilters()" class="flex flex-row justify-center" style="color: var(--mainau-gold)">
-        <span>{{ isFilterExpanded ? 'weniger' : 'mehr'}} Filteroptionen</span>
-
-        <mat-icon>{{isFilterExpanded ? 'expand_less' : 'expand_more'}}</mat-icon>
-      </button>
-    </div>
 
 
 
     <div class="space-y-4">
-      <div @listAnimation *ngFor="let item of events">
+      <div *ngFor="let item of events">
         <app-event-list-item [item]="item"></app-event-list-item>
       </div>
     </div>

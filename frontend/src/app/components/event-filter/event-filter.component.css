@@ -1,0 +1,9 @@
+.collapsible {
+  padding-top: 1rem;
+  overflow: hidden;
+}
+
+.collapsed {
+  max-height: 0;
+  opacity: 0;
+}

@@ -26,7 +26,7 @@ export class LocationFilterComponent implements OnInit {
   ngOnInit(): void {
     this.locationService.list().subscribe({
       next: (value) => {
-        this.locations = value;
+        this.locations = value.sort((lhs,rhs) => { return rhs.name < lhs.name ? 1 : -1; });
       },
     });
   }

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 export interface NavigationEntry {
@@ -39,7 +39,7 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
     }
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     /**
@@ -52,6 +52,7 @@ export class NavigationBarComponent implements OnInit, OnDestroy {
      *  dass wir uns selbst wieder deregistrieren ("unsubscribe") sobald die Komponente
      *  zerstört wird (siehe ngOnDestroy Methode)
      */
+
     this.routerSub = this.router.events
       .subscribe((route) => {
         if (route instanceof NavigationEnd) {

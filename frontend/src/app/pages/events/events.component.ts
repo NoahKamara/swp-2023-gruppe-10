@@ -39,16 +39,6 @@ export class EventsComponent implements OnInit {
   public filter: EventFilter = {
     startDate: new Date()
   };
-  // dateFormat(date: string | Date): string {
-  //   console.log(typeof date);
-  //   return (new Date(date)).toLocaleDateString();
-  // }
-
-  public isFilterExpanded = true;
-
-  toggleFilters(): void {
-    this.isFilterExpanded = (!this.isFilterExpanded);
-  }
 
   filterDidChange(filter: EventFilter): void {
     if (this.filter === filter) {
@@ -56,7 +46,7 @@ export class EventsComponent implements OnInit {
       return;
     }
     this.filter = filter;
-    this.onSearchTermChange();
+    this.updateList();
     // console.log(JSON.stringify(this.filter, undefined, 2));
   }
 
@@ -66,7 +56,7 @@ export class EventsComponent implements OnInit {
   });
 
   // Perform search
-  onSearchTermChange(): void {
+  updateList(): void {
     const filter: EventFilter = {
       ...this.filter,
       term: this.searchTerm ?? undefined
@@ -82,26 +72,12 @@ export class EventsComponent implements OnInit {
     });
   }
 
-  // fetch all events
-  fetchAll(): void {
-    const filt: EventFilter =  {
-      ...this.filter,
-      term: this.searchTerm ?? undefined
-    };
-
-    this.eventService.filterUpcoming(filt).subscribe({
-      next: (value) => {
-        this.events = value;
-      },
-      error: console.error
-    });
-  }
-
   ngOnInit(): void {
-    this.fetchAll();
+    this.updateList();
   }
+
   didClickFavButton(): void {
     this.filter.onlyFavorites = !this.filter.onlyFavorites ?? true;
-    this.onSearchTermChange();
+    this.updateList();
   }
 }
