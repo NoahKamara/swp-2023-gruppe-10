@@ -74,27 +74,51 @@ export class DBEvent extends Model<Event> implements EventInterface {
       // }
     };
 
+    // event.term matches term
     if (filter.term) {
       where.title = {
         [Op.iLike]: '%' + filter.term + '%'
       };
     }
 
+    // event.location contained in locations
     if (filter.locations && filter.locations.length > 0) {
       where.location = {
         [Op.in]: filter.locations
       };
     }
 
+    // event.price <= Max Price
+    if (filter.maxPrice) {
+      where.price = {
+        [Op.lte]: filter.maxPrice
+      };
+    }
 
+    // event.price >= Min Price
+    if (filter.minPrice) {
+      where.price = {
+        [Op.gte]: filter.minPrice
+      };
+    }
 
-    console.log(filter.maxPrice);
+    /**
+     * Date Filter
+     */
 
-    // if (filter.maxPrice) {
-    //   where.price = {
-    //     [Op.lte]: filter.maxPrice
-    //   };
-    // }
+     // event.start_date <= end date
+     if (filter.endDate) {
+      where.start_date = {
+        [Op.lte]: filter.endDate
+      };
+    }
+
+    // event.end_date <= start date
+    if (filter.startDate) {
+      where.end_date = {
+        [Op.gte]: filter.startDate
+      };
+    }
 
     const events = await DBEvent.findAll({
       include: {
@@ -116,15 +140,6 @@ export class DBEvent extends Model<Event> implements EventInterface {
         if (filter.endDate && event.start_date < filter.endDate) {
           return false;
         }
-
-        if (filter.minPrice && event.price < filter.minPrice) {
-          return false;
-        }
-
-        if (filter.maxPrice && event.price > filter.maxPrice) {
-          return false;
-        }
-
         return true;
       });
 

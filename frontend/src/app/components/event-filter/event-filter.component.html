@@ -1,8 +1,8 @@
-<div class="grid grid-cols-6 gap-0">
+<div class="grid grid-cols-6 gap-0 right-2 left-2">
   <!-- Date -->
-  <!-- <div class="col-span-5">
+  <div class="col-span-5">
     <mat-form-field>
-      <mat-date-range-input [min]="today" [max]="dateRange.controls.endDate.value" [rangePicker]="picker">
+      <mat-date-range-input [min]="today" [rangePicker]="picker">
         <input matStartDate formControlName="start" placeholder="Start date"
           [formControl]="dateRange.controls.startDate">
         <input matEndDate formControlName="end" placeholder="End date" [formControl]="dateRange.controls.endDate">
@@ -14,12 +14,18 @@
 
   <app-button class="col-span-1" [level]="1" (didClick)="clearDate()">
     <mat-icon>remove</mat-icon>
-  </app-button> -->
+  </app-button>
 
   <app-price-filter class="col-span-5" [(minValue)]="minPrice" [(maxValue)]="maxPrice" (minValueChange)="didChange()" (maxValueChange)="didChange()"
       (maxValueChange)="didChange()"></app-price-filter>
 
   <app-button class="col-span-1" [level]="1" (didClick)="clearPrice()">
+    <mat-icon>remove</mat-icon>
+  </app-button>
+
+  <app-location-filter [(selection)]="locations" (selectionChange)="didChange()" class="col-span-5" style="margin-top: 22px;"></app-location-filter>
+
+  <app-button class="col-span-1" style="margin-top: 22px;" [level]="1" (didClick)="clearLocations()">
     <mat-icon>remove</mat-icon>
   </app-button>
 </div>

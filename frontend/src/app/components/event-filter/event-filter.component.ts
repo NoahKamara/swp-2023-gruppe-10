@@ -14,6 +14,7 @@ export class EventFilterComponent implements OnInit {
 
   @Output()
   filterChange = new EventEmitter<EventFilter>();
+  public debouncer = new Subject<EventFilter>();
 
   dateRange = new FormGroup({
     startDate: new FormControl<Date>(new Date()),
@@ -23,8 +24,11 @@ export class EventFilterComponent implements OnInit {
   public minPrice = 0;
 
   ngOnInit(): void {
-    this.dateRange.valueChanges.subscribe(() => { this.didChange(); });
+    this.debouncer
+      .pipe(debounceTime(100))
+      .subscribe((val) => this.filterChange.emit(val));
 
+    this.dateRange.valueChanges.subscribe(() => { this.didChange(); });
   }
 
   public maxPrice = 104.98;
@@ -43,10 +47,9 @@ export class EventFilterComponent implements OnInit {
     this.maxPrice = 104.98;
   }
 
-  clearLocation(): void {
+  clearLocations(): void {
     this.locations = [];
   }
-
 
 
   didChange(): void {
@@ -57,6 +60,7 @@ export class EventFilterComponent implements OnInit {
       maxPrice: this.maxPrice,
       locations: this.locations.length > 0 ? this.locations : undefined
     };
-    this.filterChange.emit(filter);
+
+    this.debouncer.next(filter);
   }
 }

@@ -1,6 +1,5 @@
-<mat-form-field>
-  <mat-label>Attraktionen</mat-label>
-  <mat-select [(value)]="selection" multiple style="color: black;">
+<mat-form-field style="width: 268px">
+  <mat-select [(value)]="selection" (valueChange)="selectionChange.emit($event)" multiple style="color: black" placeholder="Alle Attraktionen">
     <mat-option *ngFor="let location of locations" [value]="location.name">{{location.name}}</mat-option>
   </mat-select>
 </mat-form-field>

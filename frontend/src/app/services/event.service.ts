@@ -24,7 +24,7 @@ export class EventService {
   * Lists all _upcoming_ locations
   */
   public filterUpcoming(filter: Partial<EventFilter>): Observable<EventListItem[]> {
-    console.log('searching with filter', filter);
+    console.log('searching with filter');
     return this.http.post<EventListItem[]>('/api/events/', filter).pipe(debounceTime(500));
   }
 

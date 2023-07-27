@@ -18,6 +18,11 @@ export class LocationFilterComponent implements OnInit {
   selectionChange = new EventEmitter<string[]>();
 
   constructor(private locationService: LocationService) {}
+
+  didChange(): void {
+    console.log('change');
+    this.selectionChange.emit(this.selection);
+  }
   ngOnInit(): void {
     this.locationService.list().subscribe({
       next: (value) => {

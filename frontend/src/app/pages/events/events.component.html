@@ -6,9 +6,9 @@
       <input type="text" placeholder="Events Suchen" class="input input-bordered w-5/6" [(ngModel)]="searchTerm"
         (ngModelChange)="onSearchTermChange()" />
 
-      <mat-icon (click)="didClickFavButton()" class="float-right scale-150 translate-y-3 -translate-x-1">{{isFavorite ?
+      <!-- <mat-icon (click)="didClickFavButton()" class="float-right scale-150 translate-y-3 -translate-x-1">{{isFavorite ?
         "favorite":
-        "favorite_border"}}</mat-icon>
+        "favorite_border"}}</mat-icon> -->
     </div>
 
 
@@ -16,11 +16,11 @@
     <div class="w-full flex flex-col">
       <app-event-filter *ngIf="isFilterExpanded" (filterChange)="filterDidChange($event)"></app-event-filter>
 
-      <!-- <button (click)="toggleFilters()" class="flex flex-row justify-center" style="color: var(--mainau-gold)">
+      <button (click)="toggleFilters()" class="flex flex-row justify-center" style="color: var(--mainau-gold)">
         <span>{{ isFilterExpanded ? 'weniger' : 'mehr'}} Filteroptionen</span>
 
         <mat-icon>{{isFilterExpanded ? 'expand_less' : 'expand_more'}}</mat-icon>
-      </button> -->
+      </button>
     </div>
 
 

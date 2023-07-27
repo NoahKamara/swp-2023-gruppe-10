@@ -51,6 +51,10 @@ export class EventsComponent implements OnInit {
   }
 
   filterDidChange(filter: EventFilter): void {
+    if (this.filter === filter) {
+      console.debug('filter did not actually change. no reload');
+      return;
+    }
     this.filter = filter;
     this.onSearchTermChange();
     // console.log(JSON.stringify(this.filter, undefined, 2));
@@ -70,8 +74,9 @@ export class EventsComponent implements OnInit {
 
     this.eventService.filterUpcoming(filter).subscribe({
       next: (value) => {
-        this.events = [];
-        this.events = value;
+        if (this.events !== value) {
+          this.events = value;
+        }
       },
       error: console.error
     });
