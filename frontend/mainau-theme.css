@@ -1717,6 +1717,9 @@ select.mat-mdc-form-field-input-control:not(.mat-mdc-native-select-inline) optio
   color: var(--mdc-theme-text-disabled-on-background, rgba(255, 255, 255, 0.5))
 }
 
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: var(--mainau-green)!important;
+}
 .mat-mdc-menu-item .mat-icon-no-color,
 .mat-mdc-menu-submenu-icon {
   color: var(--mdc-theme-text-primary-on-background, white)

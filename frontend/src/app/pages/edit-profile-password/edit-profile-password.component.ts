@@ -44,6 +44,9 @@ export class EditProfilePasswordComponent {
       .subscribe({
         next: () => {
           this.dialogRef.close();
+        },
+        error: () => {
+          this.formGroup.controls.oldPassword.setErrors({wrong: true});
         }
       });
   }

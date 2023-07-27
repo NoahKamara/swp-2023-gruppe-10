@@ -1,94 +1,65 @@
 <div class="page-container">
 
- <app-top-bar title="Profil" />
+  <app-top-bar title="Profil" />
 
   <div class="scrollable-container">
-    <div class="profile-info w-full">
-      <div class="profile-row">
-        <div>
-          <p>Name:
-          <p>
-        </div>
-        <div class='profil-input'>{{ user?.firstName }} {{ user?.lastName }}</div>
-        <div>
-          <button class="btn edit-btn" (click)="openEditNameModal()">
+    <div class="card card-side card-compact">
+      <div class="card-body profile-info w-full">
+        <div class="flex flex-row">
+          <div class="profile-label">Name:</div>
+          <div class="profil-input">{{ user?.firstName }} {{ user?.lastName }}</div>
+          <app-button [level]="1" (click)="openEditNameModal()">
             <mat-icon>edit</mat-icon>
-          </button>
+          </app-button>
         </div>
 
-      </div>
-
-      <hr>
-      <div class="profile-row">
-        <div>
-          <p>Adresse:
-          <p>
-        </div>
-        <div>
-
-        </div>
-        <div class='profil-input'>
-          {{ user?.street }} {{ user?.number }}
-          <br>
-          {{ user?.zipcode }} {{ user?.city }}
-        </div>
-        <div>
-          <button class="btn edit-btn"  (click)="openEditAddressModal()">
+        <hr>
+        <div class="profile-row">
+          <span class="profile-label">Addresse:</span>
+          <div class='profil-input'>
+            {{ user?.street }} {{ user?.number }}
+            <br>
+            {{ user?.zipcode }} {{ user?.city }}
+          </div>
+          <app-button [level]="1" (click)="openEditAddressModal()">
             <mat-icon>edit</mat-icon>
-          </button>
+          </app-button>
+
         </div>
 
-      </div>
+        <hr>
 
-      <hr>
+        <div class="profile-row">
+          <div class="profile-label">Email:</div>
+          <div class='profil-input'>{{ user?.email }}</div>
 
-      <div class="profile-row">
-        <div>
-          <p>Email:
-          <p>
         </div>
-        <div class='profil-input'>{{ user?.email }}</div>
-
-      </div>
 
 
-      <hr>
-      <div class="profile-row">
-        <div>
-          <p>Passwort:
-          <p>
-        </div>
-        <div class='profil-input'>***********</div>
-        <div>
-          <button class="btn edit-btn"  (click)="openEditPasswordModal()">
+        <hr>
+        <div class="profile-row">
+          <div class="profile-label">Password:</div>
+          <div class='profil-input'>***********</div>
+          <app-button [level]="1" (click)="openEditPasswordModal()">
             <mat-icon>edit</mat-icon>
-          </button>
+          </app-button>
+
         </div>
 
+
+        <!-- Router Links sind generell relativ -- da diese Komponente auf der /profile Route erscheint, -->
+        <!-- leitet folgender Link auf die /profile/about Seite. Falls ein "absoluter" Link gewünscht ist, -->
+        <!-- sollte der Link mit "/" beginnen, z.b. "/map" -->
       </div>
-
-
-      <!-- Router Links sind generell relativ -- da diese Komponente auf der /profile Route erscheint, -->
-      <!-- leitet folgender Link auf die /profile/about Seite. Falls ein "absoluter" Link gewünscht ist, -->
-      <!-- sollte der Link mit "/" beginnen, z.b. "/map" -->
     </div>
 
-
-    <button class="btn logout-btn" (click)="logout()">
-
-      <div class="btn-layout">
-        <div class="icon">
-          <mat-icon>logout</mat-icon>
-        </div>
-        <div class="text">
-          Abmelden
-        </div>
-      </div>
-    </button>
-
+    <app-button (click)="logout()" class="w-full mt-10">
+      <mat-icon>logout</mat-icon>
+      Abmelden
+    </app-button>
 
     <div class="about">
       Mehr Informationen <a routerLink="about">über uns</a>
     </div>
-    <div>
-      <div>
+  </div>
+</div>

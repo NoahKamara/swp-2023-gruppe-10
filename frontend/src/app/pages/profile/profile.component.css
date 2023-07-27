@@ -6,18 +6,13 @@
 }
 
 .profile-info {
-    border: 1px solid var(--foreground);
-    padding: 10px;
+    padding: 20px;
 }
 
-.btn {
-    border-radius: 5px;
-    background: var(--foreground);
-    color: var(--background);
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 21px;
+hr {
+  border-color: var(--mainau-gold);
 }
+
 
 .logout-btn {
     margin-top: 40px;
@@ -49,12 +44,36 @@ button .text {
     bottom: 100px;
 }
 
-.profile-row{
-    margin-top: 5%;
+.profile-row {
+    margin-top: 2px;
+    margin-bottom: 2px;
     display: flex;
-    justify-content:space-between;
+    flex-direction: row;
 }
 
-.profil-input{
+.profile-label {
+  flex: none;
+  width: 100px;
+}
+
+.profile-btn  {
+  flex-grow:1;
+}
+
+.profil-input {
     font-size: 16px;
+    flex-grow: 1;
+}
+
+.card {
+  background: var(--foreground);
+}
+
+.card-body {
+  color: var(--background);
+}
+
+.card-body a {
+  color: var(--background);
+  text-decoration: underline;
 }
