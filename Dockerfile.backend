@@ -8,10 +8,7 @@ WORKDIR /app
 COPY ./backend /app
 COPY ./common /common
 
-# Clean Install project dependencies
-RUN rm -rf node_modules && \
-    rm package-lock.json && \
-    npm install
+RUN npm install
 
 # Build project
 RUN npm run build

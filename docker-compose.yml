@@ -1,26 +1,45 @@
 version: '3'
+networks:
+  privnet:
 services:
   database:
+    container_name: database
     image: postgres:15.2-alpine
     restart: unless-stopped
     environment:
-        - POSTGRES_USER=admin
-        - POSTGRES_PASSWORD=CHOOSE_A_PASSWORD
-        - POSTGRES_DB=postgres
-    ports:
-        - 5432:5432
-    volumes: 
-        - ./datbase/db_data:/var/lib/postgresql/data
-        - ./datbase/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - POSTGRES_USER=admin
+      - PGUSER=admin
+      - POSTGRES_PASSWORD=CHOOSE_A_PASSWORD
+      - POSTGRES_DB=postgres
+      - lc_monetary="de_DE(at)euro"
+    volumes:
+      - ./database/db_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - privnet
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   backend:
+    depends_on:
+      database:
+        condition: service_healthy
     build:
       context: .
       dockerfile: Dockerfile.backend
+    environment:
+      - DB_HOST=database
+    networks:
+      - privnet
     ports:
       - 80:80
-      
-  frontend:
-    build:
-      dockerfile: Dockerfile.frontend
-    ports:
-      - 4200:4200
+  # frontend:
+  #   depends_on:
+  #     - backend
+  #   build:
+  #     dockerfile: Dockerfile.frontend
+  #   ports:
+  #     - 4200:4200

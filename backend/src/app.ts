@@ -58,7 +58,7 @@ app.use(cookieParser());
 
 const sequelize = new Sequelize({
   dialect: 'postgres',
-  host: 'localhost',
+  host: process.env.DB_HOST ?? 'localhost', // get hostname from environment when running docker otherwise it is localhost
   username: 'admin',
   password: 'CHOOSE_A_PASSWORD',
   database: 'postgres',

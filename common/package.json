@@ -1,23 +1,24 @@
 {
-    "name": "softwareproject-common",
-    "version": "1.0.0",
-    "description": "",
-    "private": true,
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
-    "scripts": {
-        "build": "tsc && tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
-        "lintfix": "eslint \"**/*.{js,ts}\" --fix"
-    },
-    "devDependencies": {
-      "@typescript-eslint/eslint-plugin": "5.57.1",
-      "@typescript-eslint/parser": "5.57.1",
-      "concurrently": "8.0.1",
-      "eslint": "8.37.0",
-      "eslint-plugin-prefer-arrow": "^1.2.3",
-      "typescript": "5.0.3"
+  "name": "softwareproject-common",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc && tsc --noEmit",
+    "lintfix": "eslint \"**/*.{js,ts}\" --fix"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "5.54.0",
+    "@typescript-eslint/parser": "5.54.0",
+    "autoprefixer": "^10.4.14",
+    "eslint": "8.35.0",
+    "concurrently": "8.0.1",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "typescript": "5.0.3"
   },
   "engines": {
-      "node": ">=16.0.0"
+    "node": ">=16.0.0"
   }
 }
