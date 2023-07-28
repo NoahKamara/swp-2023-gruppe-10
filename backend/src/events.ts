@@ -2,7 +2,7 @@ import { DBEvent, PublicEvent } from './models/event/event.db';
 import { Request, Response } from 'express';
 import { APIResponse } from './models/response';
 import { DBControllerInterface } from './database/DBController';
-import { EventListItem, User } from 'softwareproject-common';
+import { EventFilter, EventListItem, User } from 'softwareproject-common';
 import { z } from 'zod';
 import { validateBody } from './validation/requestValidation';
 import { DBFavorites } from './models/db.favorites';
@@ -50,7 +50,12 @@ export class EventController {
 
       console.log('FILTER', filter.startDate, filter.endDate);
 
-      const events = await this.controller.events.filterUpcoming(filter, user.id);
+      const realFilter: EventFilter = {
+        ...filter,
+        startDate: filter.startDate as Date,
+        endDate: filter.startDate as Date
+      };
+      const events = await this.controller.events.filterUpcoming(realFilter, user.id);
 
       APIResponse.success(events.map(e => listItem(e))).send(response);
     } catch (err) {
