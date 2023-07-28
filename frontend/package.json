@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Template for the softwareproject lecture at the University of Konstanz, Germany",
   "scripts": {
-    "start-public": "ng serve --host=192.168.178.173 --disable-host-check",
+    "start-public": "ng serve --host=0.0.0.0 --disable-host-check",
     "start": "ng serve",
     "recbuild": "cd ../common && npm run build; npm install ../common; cd ../backend && npm run build",
     "present": "npm run start -- --configuration=present",
