@@ -1,4 +1,4 @@
-import { Op } from 'sequelize';
+import { CreationOptional, Op } from 'sequelize';
 import { Table, Model, ForeignKey, BelongsTo, Column, PrimaryKey, HasMany, Sequelize } from 'sequelize-typescript';
 import { DBUser } from './user/user';
 import { DBLocation } from './db.location';
@@ -8,15 +8,12 @@ import { DBHelpful } from './db.helpful';
 
 @Table({ modelName: 'reviews', timestamps: false })
 export class DBReview extends Model {
-  @Column
-  id!: number;
+  declare id: CreationOptional<number>;
 
-  @PrimaryKey
   @ForeignKey(() => DBUser)
   @Column
   user_id!: number;
 
-  @PrimaryKey
   @ForeignKey(() => DBLocation)
   @Column
   location_id!: number;

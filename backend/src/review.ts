@@ -13,9 +13,9 @@ import { DBHelpful } from './models/db.helpful';
 export class ReviewController {
 
   /**
- * returns details for a review by name of location
+ * returns list of review for a location by name of location
  */
-  async lookup(request: Request, response: Response): Promise<void> {
+  async list(request: Request, response: Response): Promise<void> {
     const name = request.params.name.toLowerCase();
     const userID = response.locals.session?.user?.id;
     if (!userID) {
@@ -47,14 +47,34 @@ export class ReviewController {
       }
 
       // Convert to public and remove signed-in user's review
-      const woOwn = location.reviews
-        .filter(r => r.user_id !== userID)
-        .map(r => r.public);
+      const reviews = await DBReview.findAll({
+        where: {
+          location_id: location.id,
+          user_id: {
+            [Op.not]: userID
+          }
+        },
+        include: [
+          {
+            model: DBHelpful,
+            required: false
+          },
+          {
+            model: DBUser,
+            attributes: ['firstName', 'lastName'],
+            required: false
+          }
+        ]
+      });
+
+      const publicReviews = reviews.map((r) => {
+        return r.public;
+      });
 
       // console.log('IDHERE', location.reviews[0]?.id);
 
       // console.log(rev2);
-      APIResponse.success(woOwn).send(response);
+      APIResponse.success(publicReviews).send(response);
     } catch (err) {
       request.logger.error(err);
       APIResponse.internal(err).send(response);
@@ -146,7 +166,7 @@ export class ReviewController {
       request.logger.info(data);
 
 
-      await DBReview.upsert(
+      await DBReview.create(
         {
           ...data,
           user_id: user.id,
@@ -243,6 +263,7 @@ export class ReviewController {
       } catch (err) {
         console.error(err);
         APIResponse.internal(err).send(response);
+        return;
       }
     } else { // Not marked
       await helpful.destroy();

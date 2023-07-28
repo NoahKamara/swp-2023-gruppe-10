@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, shareReplay } from 'rxjs';
 import { CreateReview, PublicReview } from 'softwareproject-common';
 
 @Injectable({
@@ -37,9 +37,12 @@ export class ReviewService {
   }
 
   post(locationName: string, review: CreateReview): Observable<PublicReview> {
-    const observable = this.http.post<PublicReview>('/api/locations/'+encodeURI(locationName)+'/reviews', review);
+    const observable = this.http.post<PublicReview>('/api/locations/'+encodeURI(locationName)+'/reviews', review).pipe(shareReplay());
 
     observable.subscribe({
+      next: (val) => {
+        console.log('response');
+      },
       error: (err) => {
         console.error(err);
       }

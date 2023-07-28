@@ -63,6 +63,9 @@ export class ReviewComponent implements OnInit {
 
   // submit review
   submitReview(): void {
+    if (this.myReview) {
+      return;
+    }
     // make errors show up
     this.newReview.markAsTouched();
 
@@ -78,6 +81,7 @@ export class ReviewComponent implements OnInit {
     };
 
     // Post review & set myReview upon success
+    console.log('creating review');
     this.review.post(this.locationName,review).subscribe({
       next: (val) => {
         this.myReview = val;
