@@ -20,8 +20,6 @@ describe('General', () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let userID: number;
 
-  const eventID = 1;
-
   beforeEach(async () => {
      agent = await authorize(app);
      userID  = (await getInfo(agent)).id;

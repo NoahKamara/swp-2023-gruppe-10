@@ -40,9 +40,6 @@ export class ReviewService {
     const observable = this.http.post<PublicReview>('/api/locations/'+encodeURI(locationName)+'/reviews', review).pipe(shareReplay());
 
     observable.subscribe({
-      next: (val) => {
-        console.log('response');
-      },
       error: (err) => {
         console.error(err);
       }

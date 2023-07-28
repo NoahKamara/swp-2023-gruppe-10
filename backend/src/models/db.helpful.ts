@@ -1,7 +1,6 @@
-import { CreationOptional } from 'sequelize';
-import { Table, Model, ForeignKey, BelongsTo, Column, PrimaryKey } from 'sequelize-typescript';
-import { DBUser } from './user/user';
+import { BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript';
 import { DBReview } from './db.review';
+import { DBUser } from './user/user';
 
 
 @Table({ modelName: 'helpfuls', timestamps: false })
