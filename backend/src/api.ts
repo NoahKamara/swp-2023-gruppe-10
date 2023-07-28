@@ -22,8 +22,8 @@ export class ApiController {
     response.send({
       firstName: 'Marius',
       lastName: 'Berner',
-      semester: '5th semester',
-      course: 'Computer Science',
+      semester: '5. semester',
+      course: 'Informatik',
       mail: 'marius.berner@uni.kn'
     });
   }
@@ -34,7 +34,7 @@ export class ApiController {
       firstName: 'Emanuel',
       lastName: 'Moell',
       semester: '?',
-      course:'Computer Science',
+      course:'Informatik',
       mail: 'emanuel.moell@uni.kn'
     });
   }
@@ -47,8 +47,8 @@ export class ApiController {
     response.send({
       firstName: 'Noah',
       lastName: 'Kamara',
-      semester: '8th Semester',
-      course: 'Computer Science',
+      semester: '8. Semester',
+      course: 'Informatik',
       mail: 'noah.kamara@uni.kn'
     });
   }
@@ -58,8 +58,8 @@ export class ApiController {
     response.send({
       firstName: 'Niklas',
       lastName: 'Groene',
-      semester: '6th semester',
-      course: 'Computer Science',
+      semester: '6. semester',
+      course: 'Informatik',
       mail: 'niklas.groene@uni.kn'
     });
   }

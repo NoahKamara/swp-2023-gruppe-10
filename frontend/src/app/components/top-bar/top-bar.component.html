@@ -1,6 +1,6 @@
 <div class="navbar bg-base-100 sticky top-0 left-0 right-0">
   <div class="fixed float-left">
-    <button mat-icon-button class="back-btn btn-square" style="color: foreground;" (click)="didClickBackBtn()">
+    <button *ngIf="showBackBtn" mat-icon-button class="back-btn btn-square" style="color: foreground;" (click)="didClickBackBtn()">
       <mat-icon style="color: var(--foreground);">arrow_back</mat-icon>
     </button>
   </div>

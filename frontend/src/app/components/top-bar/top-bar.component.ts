@@ -8,7 +8,6 @@ import { Location } from '@angular/common';
   styleUrls: ['./top-bar.component.css']
 })
 export class TopBarComponent {
-  public isFavorite = false;
   @Input()
   public title!: string;
 

@@ -36,10 +36,10 @@ services:
       - privnet
     ports:
       - 80:80
-  # frontend:
-  #   depends_on:
-  #     - backend
-  #   build:
-  #     dockerfile: Dockerfile.frontend
-  #   ports:
-  #     - 4200:4200
+  frontend:
+    depends_on:
+      - backend
+    build:
+      dockerfile: Dockerfile.frontend
+    ports:
+      - 4200:4200

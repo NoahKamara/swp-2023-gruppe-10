@@ -48,13 +48,20 @@ export class EventController {
         return;
       }
 
-      console.log('FILTER', filter.startDate, filter.endDate);
-
       const realFilter: EventFilter = {
         ...filter,
-        startDate: filter.startDate as Date,
-        endDate: filter.startDate as Date
+        startDate: undefined,
+        endDate: undefined
       };
+
+      if (filter.startDate) {
+        realFilter.startDate = filter.startDate as Date;
+      }
+
+      if (filter.endDate) {
+        realFilter.endDate = filter.endDate as Date;
+      }
+
       const events = await this.controller.events.filterUpcoming(realFilter, user.id);
 
       APIResponse.success(events.map(e => listItem(e))).send(response);

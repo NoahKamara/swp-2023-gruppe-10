@@ -16,13 +16,8 @@
         </div>
 
         <div>
-          {{amount}}x Ticket
+          {{amount}} Ticket{{ amount > 1 ? 's' : ''}}
         </div>
-      </div>
-      <div class="w-full">
-        <mat-slider style="width: 90%; align-self: center;">
-          <input matSliderThumb [(ngModel)]="amount" [min]="0" [max]="20">
-        </mat-slider>
       </div>
 
       <div class="flex flex-row gap-1">
@@ -39,6 +34,20 @@
 
         <div>
           {{ event.price * amount }} €
+        </div>
+      </div>
+
+      <div class="w-full">
+        <mat-slider style="width: 90%; align-self: center;" [min]="1" [max]="20">
+          <input matSliderThumb [(ngModel)]="amount" [maxLength]="">
+        </mat-slider>
+        <div *ngIf="amount === 20" class="alert alert-warning" style="background-color: var(--mainau-beige);">
+          <span>
+            Um mehr als 20 Tickets zu erwerben, kontaktieren sie uns bitte telefonisch
+          </span>
+          <app-button>
+            <a href="https://www.mainau.de/de/kontakt.html">Kontakt</a>
+          </app-button>
         </div>
       </div>
     </div>

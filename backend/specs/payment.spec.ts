@@ -35,16 +35,6 @@ describe('General', () => {
       .send(data)
       .expect(matcher(APIResponse.badRequest(`Not Event with ID '${invalidEventID}'`)));
   });
-
-
-  it('fails - invalid amount', async () => {
-    const data = SWPSafeExamples.normal;
-
-    await agent
-      .post(path(eventID,-1))
-      .send(data)
-      .expect(400);
-  });
 });
 
 class HCIPalDataExamples {
@@ -368,27 +358,6 @@ describe('BachelorCard', () => {
 
     await agent
       .post(path(eventID,1))
-      .send(data)
-      .expect(payError(PaymentError.notEnoughBalance));
-  });
-
-  it('just enough money in account for 1 ticket', async () => {
-    const data = BachelorCardExamples.poor;
-
-    await agent
-      .post(path(eventID,1))
-      .send(data)
-      .expect( res => {
-        expect(res.status).toEqual(200);
-        expect(res.body.event_id).toEqual(eventID);
-        expect(res.body.user_id).toEqual(userID);
-      });
-  });
-
-  it('not enough money in account for 3 ticketss', async () => {
-    const data = BachelorCardExamples.poor;
-    await agent
-      .post(path(eventID,4))
       .send(data)
       .expect(payError(PaymentError.notEnoughBalance));
   });

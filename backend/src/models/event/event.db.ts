@@ -81,8 +81,8 @@ export class DBEvent extends Model<Event> implements EventInterface {
         [Op.in]: filter.locations
       };
     }
-    
-    // if maxPrice and minPrice == 0 show nothing 
+
+    // if maxPrice and minPrice == 0 show nothing
     if(filter.minPrice === 0 && filter.maxPrice === 0){
       where.price = {
         [Op.lte]: filter.minPrice
@@ -101,7 +101,7 @@ export class DBEvent extends Model<Event> implements EventInterface {
     if (filter.minPrice) {
       where.price = {
         [Op.gte]: filter.minPrice,
-        [Op.lte]: filter.maxPrice    
+        [Op.lte]: filter.maxPrice
       };
     }
 
@@ -114,7 +114,9 @@ export class DBEvent extends Model<Event> implements EventInterface {
      // event.start_date <= end date
      if (filter.endDate) {
       where.start_date = {
-        [Op.lte]: filter.endDate
+        [Op.or]: [
+          { [Op.lte]: filter.endDate }
+        ]
       };
     }
 
