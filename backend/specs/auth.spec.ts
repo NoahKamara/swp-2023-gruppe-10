@@ -33,7 +33,7 @@ describe('Registration', () => {
     authCtrl.db = db;
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     // Reset Controller to default
     authCtrl.db = DBController.default;
   });
@@ -42,7 +42,6 @@ describe('Registration', () => {
 
 
   it('succeeds', () => {
-    db.db;
     const user = {
       ...baseUser,
       email: 'test@test.de'
@@ -55,7 +54,13 @@ describe('Registration', () => {
         console.log(db.db.users);
 
         expect(res.status).toBe(200);
-        console.log(res.body);
+        expect(db.db.users.length).toBe(1);
+        expect(db.db.users[0].firstName).toBe(baseUser.firstName);
+        expect(db.db.users[0].lastName).toBe(baseUser.lastName);
+        expect(db.db.users[0].street).toBe(baseUser.street);
+        expect(db.db.users[0].number).toBe(baseUser.number);
+        expect(db.db.users[0].city).toBe(baseUser.city);
+        expect(db.db.users[0].zipcode).toBe(baseUser.zipcode);
       });
   });
 
