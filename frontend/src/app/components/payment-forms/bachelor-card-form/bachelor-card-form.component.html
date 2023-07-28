@@ -29,5 +29,19 @@
   Alle Felder müssen ausgefüllt werden
 </div>
 
-<button class="btn btn-active btn-accent btn-block text-accent-content" (click)="submit()">Jetzt Kaufen</button>
+<app-button (click)="submit()" [disabled]="!formGroup.enabled">
+  <div class="items-center">
+    <div *ngIf="!formGroup.enabled" >
+      <mat-progress-spinner style="margin:0 auto;" [diameter]="25" mode="indeterminate"/>
+    </div>
+    <div>
+      <span *ngIf="formGroup.enabled">
+        Jetzt Kaufen
+      </span>
+      <span *ngIf="!formGroup.enabled">
+        Zahlung wird durchgeführt
+      </span>
+    </div>
+  </div>
+</app-button>
 

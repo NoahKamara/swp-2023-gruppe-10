@@ -241,10 +241,15 @@ describe('Update Name', () => {
 
   // Create User
   beforeEach(async () => {
+    // erstellt eine app, die bereits auth hat,
+    // also user registriert und session id ist schon als cookie gespeichert
     agent = await authorize(app);
   });
 
   it('succeeds', async () => {
+    // call an `path` mit `updateData`
+    // also user registriert und session id ist schon als cookie gespeichert
+
     await agent
       .patch(path)
       .send(updateData)

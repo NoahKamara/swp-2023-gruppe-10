@@ -3,7 +3,6 @@
 <div class="grid gap-1 grid-cols-4 grid-rows-4">
   <!-- Name -->
   <app-validated-input label="Email" [control]="formGroup.controls.email" class="col-span-4">
-    <app-payment-error-message [control]="formGroup.controls.email"/>
     <span *ngIf="formGroup.controls.email.hasError('email')">
       Keine gültige email
     </span>
@@ -12,6 +11,8 @@
     <app-payment-error-message [control]="formGroup.controls.password"/>
   </app-validated-input>
 </div>
+
+<app-payment-error-message class="alert bg-transparent alert-error mb-4" [control]="formGroup.controls.email"/>
 
 <app-button (click)="submit()" [disabled]="!formGroup.enabled">
   <div class="items-center">

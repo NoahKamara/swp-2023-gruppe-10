@@ -54,7 +54,7 @@ export class BachelorCardFormComponent implements PaymentProviderPurchaseInterfa
     this.formGroup.markAllAsTouched();
 
     if (this.formGroup.invalid) return;
-
+    this.formGroup.disable();
     const values = this.formGroup.value;
 
     const data = {
@@ -64,7 +64,7 @@ export class BachelorCardFormComponent implements PaymentProviderPurchaseInterfa
       date: values.date ?? ''
     };
 
-    this.payment.bachelorCard({ eventID: this.eventID, amount: 1, data: data }).subscribe({
+    this.payment.bachelorCard({ eventID: this.eventID, amount: this.amount, data: data }).subscribe({
       next: (val) => {
         console.log(val);
         this.didPurchase.emit(val);

@@ -11,6 +11,8 @@
   Alle Felder müssen ausgefüllt werden
 </div>
 
+<app-payment-error-message [control]="formGroup.controls.code"/>
+
 <app-button (click)="submit()" [disabled]="!formGroup.enabled">
   <div class="items-center">
     <div *ngIf="!formGroup.enabled" >

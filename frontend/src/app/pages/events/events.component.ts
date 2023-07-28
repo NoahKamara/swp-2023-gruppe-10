@@ -44,7 +44,7 @@ export class EventsComponent implements OnInit {
       console.debug('filter did not actually change. no reload');
       return;
     }
-    const isFav = filter.onlyFavorites;
+    const isFav = this.filter.onlyFavorites;
     this.filter = filter;
     this.filter.onlyFavorites = isFav;
     this.updateList();

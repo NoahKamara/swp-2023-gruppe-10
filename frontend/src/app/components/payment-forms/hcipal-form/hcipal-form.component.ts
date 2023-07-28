@@ -60,7 +60,7 @@ export class HCIPalFormComponent implements PaymentProviderPurchaseInterfaceNew,
     };
 
 
-    this.payment.hcipal({ eventID: this.eventID, amount: 1, data: data }).subscribe({
+    this.payment.hcipal({ eventID: this.eventID, amount: this.amount, data: data }).subscribe({
       next: (val) => {
         console.log(val);
         this.didPurchase.emit(val);
