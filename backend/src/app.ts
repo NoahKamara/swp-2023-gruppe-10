@@ -164,7 +164,7 @@ app.get('/api/locations/:name/rating', locations.lookup2);
  * Reviews
  */
 const review = new ReviewController();
- app.get('/api/locations/:name/reviews', review.lookup);            // lookup reviews by locationname
+ app.get('/api/locations/:name/reviews', review.list);            // list reviews by locationname
  app.post('/api/locations/:name/reviews', review.postReview);       // post review by locationname
  app.patch('/api/helpful/:reviewID', review.toggleHelpful);       // post review by locationname
  app.get('/api/locations/:name/reviews/me', review.mine);                 // lookup user's review by locationname

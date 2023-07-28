@@ -69,6 +69,7 @@ CREATE TABLE reviews (
 );
 
 CREATE TABLE helpfuls (
+    id serial UNIQUE NOT NULL,
     rev_id int NOT NULL,
     user_id int NOT NULL,
     CONSTRAINT helpful_pk PRIMARY KEY (rev_id, user_id)

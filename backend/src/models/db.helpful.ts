@@ -6,15 +6,13 @@ import { DBReview } from './db.review';
 
 @Table({ modelName: 'helpfuls', timestamps: false })
 export class DBHelpful extends Model {
-  declare id: CreationOptional<number>;
-
-  @PrimaryKey
   @ForeignKey(() => DBUser)
+  @PrimaryKey
   @Column
   user_id!: number;
 
-  @PrimaryKey
   @ForeignKey(() => DBReview)
+  @PrimaryKey
   @Column
   rev_id!: number;
 
