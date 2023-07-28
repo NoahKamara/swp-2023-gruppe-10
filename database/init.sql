@@ -825,7 +825,7 @@ Wie hat es Ihnen bei uns in der Schwedenschenke gefallen? Wir freuen uns auf Ihr
   </a>
  </p>
 </div>
-'),('Bäckerei &quot;Täglich Brot&quot;',47.70529116742851, 9.200597610067433,'gastro_brot-4_1080x720.jpg','
+'),('Bäckerei "Täglich Brot"',47.70529116742851, 9.200597610067433,'gastro_brot-4_1080x720.jpg','
 Öffnungszeiten17. März bis 31. März: 11.00 bis 16.00 Uhr1. April bis 1. Oktober: 10.00 Bis 17.00 Uhr2. bis 22. Oktober: 11.00 bis 16.00 UhrMittwoch & Donnerstag Ruhetag
 Speisekarte herunterladen
 Der verführerische Duft von selbstgebackenem Brot heißt Sie herzlich in unserer Insel-Bäckerei "Täglich Brot" willkommen. Täglich werden rund 300 Laibe Mainau-Brot gebacken, das Sie mit frischen Aufstrichen und einer extravaganten Schinkenvariation genießen können.
@@ -938,7 +938,7 @@ Wie hat es Ihnen bei uns in den Rothaus Seeterrassen gefallen? Wir freuen uns au
   </em>
  </p>
 </div>
-'),('Café &quot;Vergissmeinnicht&quot;',47.70541029577561, 9.193795471661895,'gastro_vergissmeinnicht-1_1080x720.jpg','
+'),('Café "Vergissmeinnicht"',47.70541029577561, 9.193795471661895,'gastro_vergissmeinnicht-1_1080x720.jpg','
 ÖffnungszeitenMontag bis Freitag von 10.00 bis 16.00 Uhr, Sonntag von 11.00 bis 16.00 UhrSamstag Ruhetag
 Das Café "Vergissmeinnicht" wird von Jugendlichen mit besonderem Förderbedarf betrieben, die Teil des Fachbereiches "Pro Integration" des gemeinnützigen Vereins "Gärtnern für Alle e.V." sind. Die 11-monatigen berufsvorbereitende Bildungsmaßnahme fördert die sozialen und praktischen Kompetenzen der Teilnehmerinnen und Teilnehmer. Sie werden aktiv in allen Bereichen eingebunden: von der Produktion bis hin zum Verkauf. Ziel ist es, am Ende der Bildungsmaßnahme einen Ausbildungsplatz für die Jugendlichen zu finden.
 Angeboten werden vor allem selbsterzeugte Produkte, die im eigenen Garten angepflanzt werden: Tee, Kräuter und Holunder - besonders lecker: unser Mainau-Apfelsaft!Genießen Sie in der idyllischen Gartenlounge Frischkäsebrote mit Kräutern, Kaffeespezialitäten, Bodenseewasser und Erfrischungsgetränke. Entspannen Sie in den gemütlichen Sitzgruppen und lassen Sie Ihren Blick über den "Garten für Alle" schweifen. Das Besondere an diesem grünen Blickfang sind die verschiedenen Hochbeete, die rollstuhlgerecht angelegt und in Blindenschrift beschildert sind.
